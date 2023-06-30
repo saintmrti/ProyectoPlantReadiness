@@ -4,8 +4,7 @@ import { Button, Input, Select } from "@rewind-ui/core";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
 
-import { insertExpectancyRequest, fetchExpectancyRequest } from "../../slices/expectancy";
-// import { headingsRequest } from "../../slices/headings";
+import { insertExpectancyRequest } from "../../slices/expectancy";
 
 // eslint-disable-next-line react/prop-types
 const ExpectationForm = ({ setOpen, data }) => {
@@ -14,13 +13,9 @@ const ExpectationForm = ({ setOpen, data }) => {
 
   const onSubmit = (values) => {
     dispatch(insertExpectancyRequest(values));
-    dispatch(fetchExpectancyRequest());
     setOpen(false);
   };
 
-  // useEffect(() => {
-  //   dispatch(headingsRequest());
-  // }, [dispatch]);
   return (
     <div className="max-w-lg">
       <form
@@ -38,7 +33,7 @@ const ExpectationForm = ({ setOpen, data }) => {
               {...register("expectancy", { required: true })}
             />
           </div>
-          <div className="flex justify-end items-center w-full">
+          <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4 py-2 w-36">Rubro</label>
             <Select defaultValue="" {...register("area", { required: true })}>
               <option value="">Seleccionar rubro</option>

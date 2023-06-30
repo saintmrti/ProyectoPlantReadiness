@@ -1,24 +1,17 @@
 import { useForm } from "react-hook-form";
 import { Button, Select, Input, Textarea } from "@rewind-ui/core";
 import { useDispatch } from "react-redux";
-// import _ from "lodash";
 
-import {
-  insertShippableRequest,
-  fetchShippableRequest,
-} from "../../slices/shippable";
+import { insertShippableRequest } from "../../slices/shippable";
 
 // eslint-disable-next-line react/prop-types
 const ShippableForm = ({ setOpen, idExpectancy }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
 
-  // const { data } = useSelector((state) => state.expectancy);
-
   const onSubmit = (values) => {
     values.expectativa = idExpectancy;
     dispatch(insertShippableRequest(values));
-    dispatch(fetchShippableRequest());
     setOpen(false);
     reset();
   };
@@ -29,9 +22,7 @@ const ShippableForm = ({ setOpen, idExpectancy }) => {
         className="flex justify-center flex-wrap bg-gray-100 shadow-md rounded-md p-4"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-3xl mb-5 w-full text-center">
-          Nuevo entregable
-        </h1>
+        <h1 className="text-3xl mb-5 w-full text-center">Nuevo entregable</h1>
         <div>
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4 py-2 w-40">Entregable</label>

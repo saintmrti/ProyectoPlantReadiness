@@ -33,6 +33,7 @@ function* insertShippable({ payload }) {
     const { data, isError } = yield call(insertShippableApi.run, payload);
     if (isError) throw new Error();
     yield put(insertShippableSuccess({ data }));
+    yield put(fetchShippableRequest());
   } catch (e) {
     yield put(insertShippableError());
   } finally {
