@@ -3,8 +3,22 @@ import _ from "lodash";
 
 export const groupedByIdField = createSelector(
   ({ expectancy }) => expectancy.data,
-  (data) => {
-    const list = _.groupBy(data, "rubro");
+  ({ shippable }) => shippable.data,
+
+  (expectancy, shippable) => {
+    const list = _.groupBy(expectancy, "rubro");
+
+    _.forEach(list, (value, key) => {
+      list[key] = _.map(value, (item) => ({
+        ...item,
+        shippables: _.filter(
+          shippable,
+          (entregable) => entregable.expectativa === item.id
+        ),
+      }));
+    });
+
+    // console.log(list);
     return list;
   }
 );

@@ -11,8 +11,8 @@ const ShippableTable = ({ data }) => {
             <Table.Th className="w-10">#</Table.Th>
             <Table.Th align="left">Entregable</Table.Th>
             <Table.Th align="left">Evidencia</Table.Th>
-            <Table.Th align="left">Prioridad</Table.Th>
-            <Table.Th align="left">Ponderación</Table.Th>
+            <Table.Th align="center">Prioridad</Table.Th>
+            <Table.Th align="center">Ponderación</Table.Th>
             <Table.Th>Comentarios</Table.Th>
           </Table.Tr>
         </Table.Thead>

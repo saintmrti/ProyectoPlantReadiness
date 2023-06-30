@@ -101,7 +101,7 @@ const MachinesForm = () => {
             <Input
               type="text"
               placeholder="Responsable"
-              className="px-4 py-2 rounded-md m-2 w-40"
+              className="m-2 w-40"
               autoComplete="off"
               disabled={!checkboxStates[machine.name]}
               {...validateRegister(`responsible_${index}`, index)}
@@ -109,28 +109,28 @@ const MachinesForm = () => {
             <Input
               type="date"
               placeholder="Fecha de inicio"
-              className="px-4 py-2 rounded-md m-2 w-40"
+              className="m-2 w-40"
               disabled={!checkboxStates[machine.name]}
               {...validateRegister(`datestart_${index}`, index)}
             />
             <Input
               type="date"
               placeholder="Fecha de termino"
-              className="px-4 py-2 rounded-md m-2 w-40"
+              className="m-2 w-40"
               disabled={!checkboxStates[machine.name]}
               {...validateRegister(`dateend_${index}`, index)}
             />
             <Input
               type="date"
               placeholder="Fecha real"
-              className="px-4 py-2 rounded-md m-2 w-40"
+              className="m-2 w-40"
               disabled={!checkboxStates[machine.name]}
               {...validateRegister(`datereal_${index}`, index)}
             />
             <Input
               type="number"
               placeholder="Avance"
-              className="px-4 py-2 rounded-md m-2 w-40"
+              className="m-2 w-40"
               disabled={!checkboxStates[machine.name]}
               {...validateRegister(`advance_${index}`, index)}
             />

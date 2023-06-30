@@ -9,19 +9,30 @@ import _ from "lodash";
 import ExpectationForm from "../components/Forms/ExpectationForm";
 import ShippableForm from "../components/Forms/ShippableForm";
 import ShippableTable from "../components/ShippableTable";
-import { expectativas } from "../components/ShippableTable/data";
 import { fetchExpectancyRequest } from "../slices/expectancy";
+import { fetchShippableRequest } from "../slices/shippable";
 import { groupedByIdField } from "../selectors/expectancy";
+import { headingsRequest } from '../slices/headings';
 
 const Home = () => {
   const dispatch = useDispatch();
   const [openExp, setOpenExp] = useState(false);
   const [openShi, setOpenShi] = useState(false);
+  const [idExpectancy, setIdExpectancy] = useState(null);
 
-  const list = useSelector(groupedByIdField);
+  const data = useSelector(groupedByIdField);
+
+  const { list } = useSelector((state) => state.headings);
+
+  const handleOnClick = (id) => {
+    setIdExpectancy(id);
+    setOpenShi(true);
+  }
 
   useEffect(() => {
     dispatch(fetchExpectancyRequest());
+    dispatch(fetchShippableRequest());
+    dispatch(headingsRequest());
   }, [dispatch]);
   return (
     <>
@@ -42,41 +53,35 @@ const Home = () => {
         </Button>
         <Tabs defaultTab="item-1" color="red">
           <Tabs.List>
-            <Tabs.Tab anchor="tab-1">Seguridad</Tabs.Tab>
-            <Tabs.Tab anchor="tab-2">Calidad</Tabs.Tab>
-            <Tabs.Tab anchor="tab-3">RH</Tabs.Tab>
-            <Tabs.Tab anchor="tab-4">Producción</Tabs.Tab>
-            <Tabs.Tab anchor="tab-5">Mantenimiento</Tabs.Tab>
+            {_.map(list, (item, index) => (
+              <Tabs.Tab anchor={`tab-${index + 1}`} key={index}>{item.rubro}</Tabs.Tab>
+            ))}
           </Tabs.List>
-          <Tabs.Content anchor="tab-1">
+          {_.map(list, (item, index) => (
+          <Tabs.Content anchor={`tab-${index + 1}`} key={index}>
             <Accordion
-              defaultItem="item-1"
-              bordered={false}
               shadow="base"
               activeColor="red"
               shadowColor="gray"
             >
-              {_.map(list["1"], (item, index) => (
+              {_.map(data[item.id], (item, index) => (
                 <Accordion.Item anchor={`item-${index + 1}`} key={index}>
                   <Accordion.Header>{item.expectativa}</Accordion.Header>
                   <Accordion.Body>
                     <IconButton
                       aria-label="add"
                       size="small"
-                      onClick={() => setOpenShi(true)}
+                      onClick={() => handleOnClick(item.id)}
                     >
                       <AddCircleOutlineIcon />
                     </IconButton>
-                    <ShippableTable data={expectativas} />
+                    <ShippableTable data={item.shippables} />
                   </Accordion.Body>
                 </Accordion.Item>
               ))}
             </Accordion>
           </Tabs.Content>
-          <Tabs.Content anchor="tab-2">Content B</Tabs.Content>
-          <Tabs.Content anchor="tab-3">Content C</Tabs.Content>
-          <Tabs.Content anchor="tab-4">Content D</Tabs.Content>
-          <Tabs.Content anchor="tab-5">Content E</Tabs.Content>
+          ))}
         </Tabs>
         <Modal
           position="center"
@@ -84,10 +89,10 @@ const Home = () => {
           open={openExp}
           onClose={() => setOpenExp(false)}
         >
-          <ExpectationForm />
+          <ExpectationForm data={list} setOpen={setOpenExp}/>
         </Modal>
         <Modal size="md" open={openShi} onClose={() => setOpenShi(false)}>
-          <ShippableForm />
+          <ShippableForm setOpen={setOpenShi} idExpectancy={idExpectancy}/>
         </Modal>
       </div>
     </>

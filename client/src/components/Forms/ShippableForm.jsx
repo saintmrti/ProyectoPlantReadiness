@@ -1,25 +1,28 @@
 import { useForm } from "react-hook-form";
-import { Button, Input, Select, Textarea } from "@rewind-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import _ from "lodash";
+import { Button, Select, Input, Textarea } from "@rewind-ui/core";
+import { useDispatch } from "react-redux";
+// import _ from "lodash";
 
-import { insertShippableRequest } from "../../slices/shippable";
-import { fetchExpectancyRequest } from "../../slices/expectancy";
+import {
+  insertShippableRequest,
+  fetchShippableRequest,
+} from "../../slices/shippable";
 
-const ShippableForm = () => {
+// eslint-disable-next-line react/prop-types
+const ShippableForm = ({ setOpen, idExpectancy }) => {
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
-  const { data } = useSelector((state) => state.expectancy);
+  // const { data } = useSelector((state) => state.expectancy);
 
   const onSubmit = (values) => {
+    values.expectativa = idExpectancy;
     dispatch(insertShippableRequest(values));
+    dispatch(fetchShippableRequest());
+    setOpen(false);
+    reset();
   };
 
-  useEffect(() => {
-    dispatch(fetchExpectancyRequest());
-  }, [dispatch]);
   return (
     <div className="max-w-lg">
       <form
@@ -27,7 +30,7 @@ const ShippableForm = () => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="text-3xl mb-5 w-full text-center">
-          Seguridad Entregables
+          Nuevo entregable
         </h1>
         <div>
           <div className="flex justify-end items-center w-full mb-3">
@@ -36,10 +39,10 @@ const ShippableForm = () => {
               type="text"
               placeholder="Agregar entregable"
               autoComplete="off"
-              {...register("name", { required: true })}
+              {...register("nombre", { required: true })}
             />
           </div>
-          <div className="flex justify-end items-center w-full mb-3">
+          {/* <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4 py-2 w-40">Expectativa</label>
             <Select
               {...register("expectativa", { required: true })}
@@ -52,7 +55,7 @@ const ShippableForm = () => {
                 </option>
               ))}
             </Select>
-          </div>
+          </div> */}
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4 py-2 w-40">Evidencia</label>
             <Input

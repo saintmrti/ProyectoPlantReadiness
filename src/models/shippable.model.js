@@ -7,11 +7,11 @@ export const getSummary = async (conn) => {
 
 export const insertShippable = async (
   conn,
-  { name, evidencia, prioridad, ponderacion, comentarios, expectativa }
+  { nombre, evidencia, prioridad, ponderacion, comentarios, expectativa }
 ) => {
   const { data } = await conn.query(`
-    INSERT INTO vki40_entregables (fecha, name, evidencia, prioridad, ponderacion, comentarios, expectativa)
-    VALUES (GETDATE(), '${name}', '${evidencia}', '${prioridad}', ${ponderacion},'${comentarios}', ${expectativa});
+    INSERT INTO vki40_entregables (fecha, nombre, evidencia, prioridad, ponderacion, comentarios, expectativa)
+    VALUES (GETDATE(), '${nombre}', '${evidencia}', '${prioridad}', ${ponderacion},'${comentarios}', ${expectativa});
       `);
   return data;
 };
