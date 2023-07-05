@@ -11,15 +11,16 @@ export const getShippable = (req, res) => {
 };
 
 export const createShippable = (req, res) => {
-  const {
-    nombre,
-    evidencia,
-    prioridad,
-    ponderacion,
-    comentarios,
-    expectativa,
-  } = req.body;
   try {
+    const {
+      nombre,
+      evidencia,
+      prioridad,
+      ponderacion,
+      comentarios,
+      expectativa,
+    } = req.body;
+
     const newRegister = {
       nombre,
       evidencia,

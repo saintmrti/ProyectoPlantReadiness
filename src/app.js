@@ -6,6 +6,8 @@ import config from "./config.js";
 import expectancyRoutes from "./routes/expectancy.routes.js";
 import headingsRoutes from "./routes/headings.routes.js";
 import shippableRoutes from "./routes/shippable.routes.js";
+import machinesRoutes from "./routes/machines.routes.js";
+import advanceRoutes from "./routes/advance.routes.js";
 
 const app = express();
 
@@ -20,5 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api", expectancyRoutes);
 app.use("/api", headingsRoutes);
 app.use("/api", shippableRoutes);
+app.use("/api", machinesRoutes);
+app.use("/api", advanceRoutes);
 
 export default app;

@@ -1,8 +1,11 @@
 import { Table } from "@rewind-ui/core";
+import { useNavigate } from "react-router-dom";
 import _ from "lodash";
 
 // eslint-disable-next-line react/prop-types
 const ShippableTable = ({ data }) => {
+  const navigate = useNavigate();
+
   return (
     <>
       <Table>
@@ -18,7 +21,11 @@ const ShippableTable = ({ data }) => {
         </Table.Thead>
         <Table.Tbody>
           {_.map(data, (item, index) => (
-            <Table.Tr key={index}>
+            <Table.Tr
+              key={index}
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate(`/progreso/${item.id}`)}
+            >
               <Table.Td className="w-10" align="center">
                 {index + 1}
               </Table.Td>

@@ -11,8 +11,8 @@ export const getExpectancy = (req, res) => {
 };
 
 export const createExpectancy = (req, res) => {
-  const { expectancy, area } = req.body;
   try {
+    const { expectancy, area } = req.body;
     const newRegister = {
       expectancy,
       area: parseInt(area),

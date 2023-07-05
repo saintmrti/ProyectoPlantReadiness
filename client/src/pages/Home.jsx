@@ -8,7 +8,7 @@ import _ from "lodash";
 
 import ExpectationForm from "../components/Forms/ExpectationForm";
 import ShippableForm from "../components/Forms/ShippableForm";
-import ShippableTable from "../components/ShippableTable";
+import ShippableTable from "../components/Tables/ShippableTable";
 import { fetchExpectancyRequest } from "../slices/expectancy";
 import { fetchShippableRequest } from "../slices/shippable";
 import { groupedByIdField } from "../selectors/expectancy";
@@ -59,7 +59,7 @@ const Home = () => {
         ) : didError ? (
           <div>Error</div>
         ) : (
-          <Tabs defaultTab="item-1" color="red">
+          <Tabs defaultTab="tab-1" color="red">
             <Tabs.List>
               {_.map(list, (item, index) => (
                 <Tabs.Tab anchor={`tab-${index + 1}`} key={index}>
