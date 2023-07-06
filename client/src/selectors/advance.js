@@ -8,16 +8,16 @@ const formatearFecha = (fechaCompleta) =>
 export const groupedByIdPhase = createSelector(
   ({ advance }) => advance.data,
 
-  (advance) => {
-    const list = _.groupBy(advance, "idFase");
+  ({ advance, shippable }) => {
+    const summaryAdvanced = _.groupBy(advance, "idFase");
 
-    _.forEach(list, (value, key) => {
-      list[key] = _.map(value, (item) => ({
+    _.forEach(summaryAdvanced, (value, key) => {
+      summaryAdvanced[key] = _.map(value, (item) => ({
         id: item.id,
         idEntregable: item.idEntregable,
         idFase: item.idFase,
         idMaquina: item.idMaquina,
-        nombre: item.name,
+        maquina: item.maquina,
         responsable: item.responsable,
         fechaInicio: formatearFecha(item.fecha_inicio),
         fechaTermino: formatearFecha(item.fecha_termino),
@@ -26,6 +26,11 @@ export const groupedByIdPhase = createSelector(
         comentarios: item.comentarios,
       }));
     });
-    return list;
+
+    return {
+      summaryAdvanced,
+      shippable,
+      advance,
+    };
   }
 );

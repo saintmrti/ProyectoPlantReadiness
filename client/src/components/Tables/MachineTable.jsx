@@ -24,7 +24,7 @@ const MachineTable = ({ data }) => {
               <Table.Td className="w-10" align="center">
                 {index + 1}
               </Table.Td>
-              <Table.Td align="left">{row.nombre}</Table.Td>
+              <Table.Td align="left">{row.maquina}</Table.Td>
               <Table.Td align="left">{row.responsable}</Table.Td>
               <Table.Td align="left">{row.fechaInicio}</Table.Td>
               <Table.Td align="left">{row.fechaTermino}</Table.Td>

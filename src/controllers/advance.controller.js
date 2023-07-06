@@ -27,7 +27,7 @@ export const createAdvance = (req, res) => {
     const newRegister = {
       idEntregable: parseInt(idEntregable),
       idMaquina: parseInt(idMaquina),
-      idFase: parseInt(idFase),
+      idFase: idFase,
       responsable,
       fecha_inicio,
       fecha_termino,

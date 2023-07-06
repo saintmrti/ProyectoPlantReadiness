@@ -5,34 +5,22 @@ import { useDispatch } from "react-redux";
 
 import { insertAdvanceRequest } from "../../slices/advance";
 
-// const machines = [
-//   { id: 1, name: "Extruder 4.5" },
-//   { id: 2, name: "Buncher 1800" },
-//   { id: 3, name: "B T 3+1" },
-//   { id: 4, name: "MSM86" },
-//   { id: 5, name: "Cableadora" },
-//   { id: 6, name: "Compound" },
-//   { id: 7, name: "P. ELEC." },
-//   { id: 8, name: "Med 2da" },
-//   { id: 9, name: "Coiler 2da" },
-//   { id: 10, name: "Cabelle" },
-// ];
 // eslint-disable-next-line react/prop-types
-const MachineForm = ({ setOpen, data, idEntregable }) => {
+const MachineForm = ({ setOpen, data, idEntregable, selectedTab }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = (values) => {
     values.idEntregable = idEntregable;
-    values.idFase = "1";
+    values.idFase = selectedTab;
     dispatch(insertAdvanceRequest(values));
-    console.log(values);
     setOpen(false);
     reset();
   };
 
   return (
     <div className="max-w-lg">
+      {console.log(selectedTab)}
       <form
         className="flex justify-center flex-wrap bg-gray-100 shadow-md rounded-md p-4"
         onSubmit={handleSubmit(onSubmit)}
@@ -66,7 +54,7 @@ const MachineForm = ({ setOpen, data, idEntregable }) => {
               <option value="">Seleccione una maquina</option>
               {_.map(data, (item) => (
                 <option key={item.id} value={item.id}>
-                  {item.name}
+                  {item.maquina}
                 </option>
               ))}
             </Select>

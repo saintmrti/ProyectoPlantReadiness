@@ -12,7 +12,6 @@ import {
 
 function* fetchAdvance({ payload: { idEntregable } }) {
   try {
-    console.log(idEntregable);
     const { data, isError } = yield call(fetchAdvanceApi.run, { idEntregable });
     if (isError) throw new Error();
     yield put(fetchAdvanceSuccess({ data }));
