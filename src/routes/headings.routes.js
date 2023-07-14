@@ -1,9 +1,9 @@
-import {Router} from 'express';
+import { Router } from "express";
 
-import {getItems} from '../controllers/headings.controller.js';
+import { getItems } from "../controllers/headings.controller.js";
 
 const router = Router();
 
-router.get('/rubros', getItems);
+router.get("/", getItems);
 
 export default router;

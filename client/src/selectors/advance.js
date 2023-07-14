@@ -5,32 +5,29 @@ import moment from "moment-timezone";
 const formatearFecha = (fechaCompleta) =>
   moment.utc(fechaCompleta).format("DD-MM-YYYY");
 
-export const groupedByIdPhase = createSelector(
+export const summaryAdvanced = createSelector(
   ({ advance }) => advance.data,
 
-  ({ advance, shippable }) => {
-    const summaryAdvanced = _.groupBy(advance, "idFase");
+  (data) => {
+    const groupedData = _.groupBy(data, "expectativa");
 
-    _.forEach(summaryAdvanced, (value, key) => {
-      summaryAdvanced[key] = _.map(value, (item) => ({
+    const groupedByIdShippable = _.mapValues(groupedData, (items) => {
+      items = _.map(items, (item) => ({
         id: item.id,
         idEntregable: item.idEntregable,
         idFase: item.idFase,
         idMaquina: item.idMaquina,
-        maquina: item.maquina,
+        idGrupo: item.idGrupo,
         responsable: item.responsable,
-        fechaInicio: formatearFecha(item.fecha_inicio),
-        fechaTermino: formatearFecha(item.fecha_termino),
-        fechaReal: formatearFecha(item.fecha_real),
+        fecha_inicio: formatearFecha(item.fecha_inicio),
+        fecha_termino: formatearFecha(item.fecha_termino),
+        fecha_real: formatearFecha(item.fecha_real),
         avance: item.avance,
         comentarios: item.comentarios,
       }));
+      return _.groupBy(items, "idEntregable");
     });
 
-    return {
-      summaryAdvanced,
-      shippable,
-      advance,
-    };
+    return groupedByIdShippable;
   }
 );

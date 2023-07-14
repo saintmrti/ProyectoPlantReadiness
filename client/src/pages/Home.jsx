@@ -3,29 +3,44 @@ import { Tabs, Modal, Button, Accordion } from "@rewind-ui/core";
 import { useEffect } from "react";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import ExpectationForm from "../components/Forms/ExpectationForm";
 import ShippableForm from "../components/Forms/ShippableForm";
 import ShippableTable from "../components/Tables/ShippableTable";
+// import AdvanceTable from "../components/Tables/AdvanceTable";
 import { fetchExpectancyRequest } from "../slices/expectancy";
 import { fetchShippableRequest } from "../slices/shippable";
+import { fetchAdvanceRequest } from "../slices/advance";
 import { groupedByIdField } from "../selectors/expectancy";
+import { summaryAdvanced } from "../selectors/advance";
 import { headingsRequest } from "../slices/headings";
+import { fases } from "../components/Tables/data";
 
 const Home = () => {
   const dispatch = useDispatch();
   const [openExp, setOpenExp] = useState(false);
   const [openShi, setOpenShi] = useState(false);
   const [idExpectancy, setIdExpectancy] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const data = useSelector(groupedByIdField);
-
+  const advance = useSelector(summaryAdvanced);
   const { list } = useSelector((state) => state.headings);
 
   const isFetching = useSelector((state) => state.expectancy.isFetching);
   const didError = useSelector((state) => state.expectancy.didError);
+
+  const handleNext = () => {
+    setActiveIndex((prevIndex) => (prevIndex === 11 - 1 ? 0 : prevIndex + 1));
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prevIndex) => (prevIndex === 0 ? 11 - 1 : prevIndex - 1));
+  };
 
   const handleOnClick = (id) => {
     setIdExpectancy(id);
@@ -35,6 +50,7 @@ const Home = () => {
   useEffect(() => {
     dispatch(fetchExpectancyRequest());
     dispatch(fetchShippableRequest());
+    dispatch(fetchAdvanceRequest());
     dispatch(headingsRequest());
   }, [dispatch]);
   return (
@@ -68,23 +84,53 @@ const Home = () => {
                   </Tabs.Tab>
                 ))}
               </Tabs.List>
-              {_.map(list, (item, index) => (
+              {_.map(list, (rubro, index) => (
                 <Tabs.Content anchor={`tab-${index + 1}`} key={index}>
                   <Accordion shadow="base" activeColor="red" shadowColor="gray">
-                    {_.map(data[item.id], (item, index) => (
+                    {_.map(data[rubro.id], (item, index) => (
                       <Accordion.Item anchor={`item-${index + 1}`} key={index}>
                         <Accordion.Header>{item.expectativa}</Accordion.Header>
                         <Accordion.Body>
-                          <IconButton
-                            aria-label="add"
-                            size="small"
-                            onClick={() => handleOnClick(item.id)}
-                          >
-                            <AddCircleOutlineIcon />
-                          </IconButton>
+                          <div className="flex">
+                            <IconButton
+                              aria-label="add"
+                              size="small"
+                              onClick={() => handleOnClick(item.id)}
+                            >
+                              <AddCircleOutlineIcon />
+                            </IconButton>
+                            <div className="flex ml-auto">
+                              <IconButton
+                                aria-label="back"
+                                size="small"
+                                onClick={() => handlePrev(item.id)}
+                              >
+                                <ArrowBackIcon />
+                              </IconButton>
+                              <IconButton
+                                aria-label="forward"
+                                size="small"
+                                onClick={() => handleNext(item.id)}
+                              >
+                                <ArrowForwardIcon />
+                              </IconButton>
+                            </div>
+                          </div>
                           {item.shippables && item.shippables.length > 0 && (
-                            <ShippableTable data={item.shippables} />
+                            <ShippableTable
+                              data={item.shippables}
+                              fases={fases}
+                              activeIndex={activeIndex}
+                              advance={advance[item.id]}
+                            />
                           )}
+                          {/* <div className="flex overflow-x-auto">
+                            {_.map(advance[1], (item) => (
+                              <div key={item.id} style={{ minWidth: "700px" }}>
+                                <AdvanceTable data={item} />
+                              </div>
+                            ))}
+                          </div> */}
                         </Accordion.Body>
                       </Accordion.Item>
                     ))}

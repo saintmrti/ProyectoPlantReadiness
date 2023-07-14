@@ -1,9 +1,9 @@
-import {Router} from 'express';
+import { Router } from "express";
 
-import {getItems} from '../controllers/machines.controller.js';
+import { getItems } from "../controllers/machines.controller.js";
 
 const router = Router();
 
-router.get('/maquinas', getItems);
+router.get("/", getItems);
 
 export default router;

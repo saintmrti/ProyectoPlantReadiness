@@ -10,9 +10,9 @@ import {
   fetchAdvanceError,
 } from "../slices/advance";
 
-function* fetchAdvance({ payload: { idEntregable } }) {
+function* fetchAdvance() {
   try {
-    const { data, isError } = yield call(fetchAdvanceApi.run, { idEntregable });
+    const { data, isError } = yield call(fetchAdvanceApi.run);
     if (isError) throw new Error();
     yield put(fetchAdvanceSuccess({ data }));
   } catch (e) {
@@ -30,11 +30,10 @@ export function* fetchAdvanceSaga() {
 
 function* insertAdvance({ payload }) {
   try {
-    const { idEntregable } = payload;
     const { data, isError } = yield call(insertAdvanceApi.run, payload);
     if (isError) throw new Error();
     yield put(insertAdvanceSuccess({ data }));
-    yield put(fetchAdvanceRequest({ idEntregable }));
+    yield put(fetchAdvanceRequest());
   } catch (e) {
     yield put(insertAdvanceError());
   } finally {

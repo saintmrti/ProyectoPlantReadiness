@@ -5,14 +5,31 @@ import { useDispatch } from "react-redux";
 
 import { insertAdvanceRequest } from "../../slices/advance";
 
-// eslint-disable-next-line react/prop-types
-const MachineForm = ({ setOpen, data, idEntregable, selectedTab }) => {
+const MachineForm = ({
+  // eslint-disable-next-line react/prop-types
+  setOpen,
+  // eslint-disable-next-line react/prop-types
+  data,
+  // eslint-disable-next-line react/prop-types
+  idEntregable,
+  // eslint-disable-next-line react/prop-types
+  selectedTab,
+  // eslint-disable-next-line react/prop-types
+  summaryAdvanced,
+  // eslint-disable-next-line react/prop-types
+  activeBtn,
+  // eslint-disable-next-line react/prop-types
+  setActiveBtn,
+}) => {
   const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
 
   const onSubmit = (values) => {
+    if (_.isEmpty(values)) {
+      values.fase = toString(selectedTab);
+      setActiveBtn(true);
+    }
     values.idEntregable = idEntregable;
-    values.idFase = selectedTab;
     dispatch(insertAdvanceRequest(values));
     setOpen(false);
     reset();
@@ -20,22 +37,12 @@ const MachineForm = ({ setOpen, data, idEntregable, selectedTab }) => {
 
   return (
     <div className="max-w-lg">
-      {console.log(selectedTab)}
       <form
         className="flex justify-center flex-wrap bg-gray-100 shadow-md rounded-md p-4"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="text-3xl mb-5 w-full text-center">Nueva maquina</h1>
         <div>
-          {/* <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4 py-2 w-40">Entregable</label>
-            <Input
-              type="text"
-              placeholder="Agregar entregable"
-              autoComplete="off"
-              {...register("nombre", { required: true })}
-            />
-          </div> */}
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4 py-2 w-40">Responsable</label>
             <Input
@@ -59,6 +66,21 @@ const MachineForm = ({ setOpen, data, idEntregable, selectedTab }) => {
               ))}
             </Select>
           </div>
+          {activeBtn ? (
+            <div></div>
+          ) : (
+            <div className="flex justify-end items-center w-full mb-3">
+              <label className="px-4 py-2 w-40">Fase</label>
+              <Select {...register("fase", { required: true })} defaultValue="">
+                <option value="">Seleccione una fase</option>
+                {_.map(summaryAdvanced, (item, index) => (
+                  <option key={index} value={item[0].fase}>
+                    {`Fase ${item[0].fase}`}
+                  </option>
+                ))}
+              </Select>
+            </div>
+          )}
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4 py-2 w-40">Fecha inicio</label>
             <Input

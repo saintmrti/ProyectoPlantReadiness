@@ -18,7 +18,6 @@ export const groupedByIdField = createSelector(
       }));
     });
 
-    // console.log(list);
     return list;
   }
 );

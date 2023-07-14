@@ -1,10 +1,9 @@
 import response from "../helpers/response.js";
-import { getAdvance, insertAdvance } from "../models/advance.model.js";
+import { insertAdvance, getSummary } from "../models/advance.model.js";
 
-export const getAdvanceByIdEntregable = (req, res) => {
+export const getAdvance = (req, res) => {
   try {
-    const { idEntregable } = req.query;
-    response(res, null, getAdvance, idEntregable);
+    response(res, null, getSummary);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -27,7 +26,7 @@ export const createAdvance = (req, res) => {
     const newRegister = {
       idEntregable: parseInt(idEntregable),
       idMaquina: parseInt(idMaquina),
-      idFase: idFase,
+      idFase: parseInt(idFase),
       responsable,
       fecha_inicio,
       fecha_termino,

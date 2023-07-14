@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, Button, Modal } from "@rewind-ui/core";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -19,32 +19,34 @@ const Progress = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [selectedTab, setSelectedTab] = useState(1);
+  const [selectedTab, setSelectedTab] = useState(null);
+  const [activeBtn, setActiveBtn] = useState(false);
 
-  let prevSelectedTab = useRef(selectedTab);
+  // let prevSelectedTab = useRef(selectedTab);
 
   const { list } = useSelector((state) => state.machines);
-  const { summaryAdvanced, shippable } = useSelector(groupedByIdPhase);
+  const { summaryAdvanced, shippable, phases } = useSelector(groupedByIdPhase);
 
   const isFetching = useSelector((state) => state.advance.isFetching);
   const didError = useSelector((state) => state.advance.didError);
 
   const handleOnClick = () => {
     setSelectedTab(selectedTab + 1);
+    setActiveBtn(true);
     setOpen(true);
   };
 
   const handleOnClose = () => {
-    setSelectedTab(prevSelectedTab.current);
+    setSelectedTab(phases === 0 ? 1 : phases);
+    setActiveBtn(false);
     setOpen(false);
   };
 
-  // const renderBtn = summaryAdvanced && !_.isEmpty(summaryAdvanced);
-
   useEffect(() => {
     dispatch(machinesRequest());
-    dispatch(fetchAdvanceRequest({ idEntregable }));
-  }, [dispatch, idEntregable]);
+    dispatch(fetchAdvanceRequest());
+    phases === 0 ? setSelectedTab(1) : setSelectedTab(phases);
+  }, [dispatch, idEntregable, phases]);
   return (
     <>
       <div className="container mx-auto p-4">
@@ -82,9 +84,9 @@ const Progress = () => {
                   <Tabs.Tab
                     anchor={`tab-${index}`}
                     key={index}
-                    onClick={() => setSelectedTab(parseInt(index))}
+                    // onClick={() => setSelectedTab(parseInt(index))}
                   >
-                    {`Fase ${item[0].idFase}`}
+                    {`Fase ${item[0].fase}`}
                   </Tabs.Tab>
                 ))}
                 {_.isEmpty(summaryAdvanced) ? (
@@ -107,6 +109,9 @@ const Progress = () => {
                 data={list}
                 idEntregable={idEntregable}
                 selectedTab={selectedTab}
+                summaryAdvanced={summaryAdvanced}
+                activeBtn={activeBtn}
+                setActiveBtn={setActiveBtn}
               />
             </Modal>
           </>

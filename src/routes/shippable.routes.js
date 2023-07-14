@@ -7,7 +7,7 @@ import {
 
 const router = Router();
 
-router.get("/entregables", getShippable);
-router.post("/entregables", createShippable);
+router.get("/", getShippable);
+router.post("/", createShippable);
 
 export default router;

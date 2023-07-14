@@ -7,7 +7,7 @@ import {
 
 const router = Router();
 
-router.get("/expectativas", getExpectancy);
-router.post("/expectativas", createExpectancy);
+router.get("/", getExpectancy);
+router.post("/", createExpectancy);
 
 export default router;

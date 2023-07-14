@@ -12,11 +12,10 @@ export const insertAdvanceApi = {
 
 export const fetchAdvanceApi = {
   cancel: null,
-  run: (params) =>
+  run: () =>
     axios
       .get("/api/avances", {
         cancelToken: new CancelToken((c) => (fetchAdvanceApi.cancel = c)),
-        params,
       })
       .then(({ data }) => data),
 };

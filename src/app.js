@@ -19,10 +19,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // Routes
-app.use("/api", expectancyRoutes);
-app.use("/api", headingsRoutes);
-app.use("/api", shippableRoutes);
-app.use("/api", machinesRoutes);
-app.use("/api", advanceRoutes);
+app.use("/api/expectativas", expectancyRoutes);
+app.use("/api/rubros", headingsRoutes);
+app.use("/api/entregables", shippableRoutes);
+app.use("/api/maquinas", machinesRoutes);
+app.use("/api/avances", advanceRoutes);
 
 export default app;

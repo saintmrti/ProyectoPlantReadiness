@@ -1,18 +1,13 @@
-export const getAdvance = async (conn, idEntregable) => {
-  const { data: advance } = await conn.query(`
-    SELECT a.id, m.maquina, a.idEntregable, a.idMaquina, a.idFase,  a.responsable, a.fecha_inicio, a.fecha_termino, a.fecha_real, a.avance, a.comentarios
-    FROM vki40_maquinas_PR AS m
-    INNER JOIN vki40_avances AS a ON m.id = a.idMaquina
-    WHERE a.idEntregable = ${idEntregable};
+export const getSummary = async (conn) => {
+  const { data } = await conn.query(`
+    SELECT a.id, a.idEntregable, a.idFase, f.idMaquina, f.idGrupo, a.responsable,
+    a.fecha_inicio, a.fecha_termino, a.fecha_real, a.avance, a.comentarios, e.expectativa
+    FROM vki40_avances AS a
+    INNER JOIN vki40_entregables AS e ON a.idEntregable = e.id
+    INNER JOIN vki40_fases AS f ON a.idFase = f.id;
     `);
 
-  const { data: shippable } = await conn.query(`
-    SELECT * FROM vki40_entregables WHERE id= ${idEntregable};
-  `);
-  return {
-    advance,
-    shippable,
-  };
+  return data;
 };
 
 export const insertAdvance = async (
