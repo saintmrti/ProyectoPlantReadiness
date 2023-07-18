@@ -3,13 +3,13 @@ import _ from "lodash";
 import moment from "moment-timezone";
 
 const formatearFecha = (fechaCompleta) =>
-  moment.utc(fechaCompleta).format("DD-MM-YYYY");
+  fechaCompleta === null ? null : moment.utc(fechaCompleta).format("DD-MMM");
 
 export const summaryAdvanced = createSelector(
   ({ advance }) => advance.data,
 
   (data) => {
-    const groupedData = _.groupBy(data, "expectativa");
+    const groupedData = _.groupBy(data, "idExpectativa");
 
     const groupedByIdShippable = _.mapValues(groupedData, (items) => {
       items = _.map(items, (item) => ({

@@ -1,19 +1,31 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Select, Input, Textarea } from "@rewind-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import { insertShippableRequest } from "../../slices/shippable";
 
-// eslint-disable-next-line react/prop-types
 const ShippableForm = ({ setOpen, idExpectancy }) => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
+  const lastShippable = useSelector((state) => state.shippable.lastShippable);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+
+  useEffect(() => {
+    if (shouldRedirect && lastShippable && lastShippable.id) {
+      setShouldRedirect(false);
+      navigate(`/avances/${lastShippable.id}`);
+    }
+  }, [lastShippable, navigate, shouldRedirect]);
 
   const onSubmit = (values) => {
-    values.expectativa = idExpectancy;
+    values.idExpectativa = idExpectancy;
     dispatch(insertShippableRequest(values));
     setOpen(false);
     reset();
+    setShouldRedirect(true);
   };
 
   return (

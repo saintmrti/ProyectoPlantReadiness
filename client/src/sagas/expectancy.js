@@ -33,7 +33,6 @@ function* insertExpectancy({ payload }) {
     const { data, isError } = yield call(insertExpectancyApi.run, payload);
     if (isError) throw new Error();
     yield put(insertExpectancySuccess({ data }));
-    yield put(fetchExpectancyRequest());
   } catch (e) {
     yield put(insertExpectancyError());
   } finally {

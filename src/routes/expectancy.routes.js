@@ -2,12 +2,12 @@ import { Router } from "express";
 
 import {
   createExpectancy,
-  getExpectancy,
+  getExpectancies,
 } from "../controllers/expectancy.controller.js";
 
 const router = Router();
 
-router.get("/", getExpectancy);
+router.get("/", getExpectancies);
 router.post("/", createExpectancy);
 
 export default router;

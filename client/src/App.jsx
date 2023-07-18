@@ -1,4 +1,4 @@
-import Root from "./components/routes";
+import { Root } from "./components/routes";
 
 const App = () => {
   return <Root />;

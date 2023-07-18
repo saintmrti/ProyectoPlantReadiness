@@ -89,14 +89,14 @@ export const fases = [
     idMaquina: 5,
     idGrupo: 1,
     fase: "Fase 1",
-    maquina: "C. Strander",
+    maquina: "Cableadora C.",
   },
   {
     id: 6,
     idMaquina: 6,
     idGrupo: 1,
     fase: "Fase 1",
-    maquina: "C. Compound",
+    maquina: "X Compound",
   },
   {
     id: 7,

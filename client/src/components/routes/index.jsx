@@ -1,19 +1,26 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Routes,
+  Route,
+} from "react-router-dom";
 
-import MachinesForm from "../Forms/MachinesForm";
+import Advance from "../../pages/Advance";
 
-import Home from "../../pages/Home";
+import Dashboard from "../../pages/Dashboard";
 
-const Root = () => {
-  return (
-    <BrowserRouter>
+// eslint-disable-next-line react-refresh/only-export-components
+export const router = createBrowserRouter([
+  {
+    path: "*",
+    element: (
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/avances/:idEntregable" element={<Advance />} />
         <Route path="*" element={<h1>Not Found</h1>} />
-        <Route path="/avances/:idEntregable" element={<MachinesForm />} />
       </Routes>
-    </BrowserRouter>
-  );
-};
+    ),
+  },
+]);
 
-export default Root;
+export const Root = () => <RouterProvider router={router} />;

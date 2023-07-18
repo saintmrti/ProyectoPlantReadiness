@@ -7,11 +7,14 @@ export const getSummary = async (conn) => {
 
 export const insertShippable = async (
   conn,
-  { nombre, evidencia, prioridad, ponderacion, comentarios, expectativa }
+  { nombre, evidencia, prioridad, ponderacion, comentarios, idExpectativa }
 ) => {
   const { data } = await conn.query(`
-    INSERT INTO vki40_entregables (fecha, nombre, evidencia, prioridad, ponderacion, comentarios, expectativa)
-    VALUES (GETDATE(), '${nombre}', '${evidencia}', '${prioridad}', ${ponderacion},'${comentarios}', ${expectativa});
+    INSERT INTO vki40_entregables (fecha, nombre, evidencia, prioridad, ponderacion, comentarios, idExpectativa)
+    VALUES (GETDATE(), '${nombre}', '${evidencia}', '${prioridad}', ${ponderacion},'${comentarios}', ${idExpectativa});
+
+    SELECT TOP 1 * FROM vki40_entregables ORDER BY id DESC;
       `);
-  return data;
+
+  return data[0];
 };

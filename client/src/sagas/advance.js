@@ -1,4 +1,5 @@
 import { takeLatest, call, put, cancelled } from "redux-saga/effects";
+import { router } from "../components/routes";
 
 import { insertAdvanceApi, fetchAdvanceApi } from "../api";
 import {
@@ -33,7 +34,7 @@ function* insertAdvance({ payload }) {
     const { data, isError } = yield call(insertAdvanceApi.run, payload);
     if (isError) throw new Error();
     yield put(insertAdvanceSuccess({ data }));
-    yield put(fetchAdvanceRequest());
+    router.navigate("/");
   } catch (e) {
     yield put(insertAdvanceError());
   } finally {

@@ -5,29 +5,31 @@ import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CommentIcon from "@mui/icons-material/Comment";
+import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import ExpectationForm from "../components/Forms/ExpectationForm";
 import ShippableForm from "../components/Forms/ShippableForm";
 import ShippableTable from "../components/Tables/ShippableTable";
-// import AdvanceTable from "../components/Tables/AdvanceTable";
 import { fetchExpectancyRequest } from "../slices/expectancy";
 import { fetchShippableRequest } from "../slices/shippable";
 import { fetchAdvanceRequest } from "../slices/advance";
-import { groupedByIdField } from "../selectors/expectancy";
+import { groupedByIdExpectancy } from "../selectors/expectancy";
 import { summaryAdvanced } from "../selectors/advance";
 import { headingsRequest } from "../slices/headings";
 import { fases } from "../components/Tables/data";
 
-const Home = () => {
+const Dashboard = () => {
   const dispatch = useDispatch();
   const [openExp, setOpenExp] = useState(false);
   const [openShi, setOpenShi] = useState(false);
   const [idExpectancy, setIdExpectancy] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [activeComment, setActiveComment] = useState(false);
 
-  const data = useSelector(groupedByIdField);
+  const data = useSelector(groupedByIdExpectancy);
   const advance = useSelector(summaryAdvanced);
   const { list } = useSelector((state) => state.headings);
 
@@ -99,38 +101,49 @@ const Home = () => {
                             >
                               <AddCircleOutlineIcon />
                             </IconButton>
-                            <div className="flex ml-auto">
-                              <IconButton
-                                aria-label="back"
-                                size="small"
-                                onClick={() => handlePrev(item.id)}
-                              >
-                                <ArrowBackIcon />
-                              </IconButton>
-                              <IconButton
-                                aria-label="forward"
-                                size="small"
-                                onClick={() => handleNext(item.id)}
-                              >
-                                <ArrowForwardIcon />
-                              </IconButton>
-                            </div>
-                          </div>
-                          {item.shippables && item.shippables.length > 0 && (
-                            <ShippableTable
-                              data={item.shippables}
-                              fases={fases}
-                              activeIndex={activeIndex}
-                              advance={advance[item.id]}
-                            />
-                          )}
-                          {/* <div className="flex overflow-x-auto">
-                            {_.map(advance[1], (item) => (
-                              <div key={item.id} style={{ minWidth: "700px" }}>
-                                <AdvanceTable data={item} />
+                            {item.shippables && item.shippables.length > 0 && (
+                              <div className="flex ml-auto">
+                                <IconButton
+                                  aria-label="comment"
+                                  size="small"
+                                  onClick={() =>
+                                    setActiveComment(!activeComment)
+                                  }
+                                >
+                                  {activeComment ? (
+                                    <CommentIcon />
+                                  ) : (
+                                    <CommentsDisabledIcon />
+                                  )}
+                                </IconButton>
+                                <IconButton
+                                  aria-label="back"
+                                  size="small"
+                                  onClick={() => handlePrev(item.id)}
+                                >
+                                  <ArrowBackIcon />
+                                </IconButton>
+                                <IconButton
+                                  aria-label="forward"
+                                  size="small"
+                                  onClick={() => handleNext(item.id)}
+                                >
+                                  <ArrowForwardIcon />
+                                </IconButton>
                               </div>
-                            ))}
-                          </div> */}
+                            )}
+                          </div>
+                          {item.shippables &&
+                            item.shippables.length > 0 &&
+                            advance[item.id] && (
+                              <ShippableTable
+                                data={item.shippables}
+                                fases={fases}
+                                activeIndex={activeIndex}
+                                advance={advance[item.id]}
+                                activeComment={activeComment}
+                              />
+                            )}
                         </Accordion.Body>
                       </Accordion.Item>
                     ))}
@@ -156,4 +169,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Dashboard;

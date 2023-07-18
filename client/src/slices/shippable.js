@@ -4,6 +4,7 @@ const Slice = createSlice({
   name: "shippable",
   initialState: {
     data: {},
+    lastShippable: {},
     isFetching: false,
     didError: false,
     isFetchingInsert: false,
@@ -28,7 +29,7 @@ const Slice = createSlice({
       state.didErrorInsert = false;
     },
     insertShippableSuccess: (state, { payload: { data } }) => {
-      state.data = data;
+      state.lastShippable = data;
       state.isFetchingInsert = false;
     },
     insertShippableError: (state) => {

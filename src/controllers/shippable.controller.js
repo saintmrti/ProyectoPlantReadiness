@@ -1,7 +1,7 @@
 import response from "../helpers/response.js";
 import { insertShippable, getSummary } from "../models/shippable.model.js";
 
-export const getShippable = (req, res) => {
+export const getShippables = (req, res) => {
   try {
     response(res, null, getSummary);
   } catch (error) {
@@ -18,7 +18,7 @@ export const createShippable = (req, res) => {
       prioridad,
       ponderacion,
       comentarios,
-      expectativa,
+      idExpectativa,
     } = req.body;
 
     const newRegister = {
@@ -27,7 +27,7 @@ export const createShippable = (req, res) => {
       prioridad,
       ponderacion: parseInt(ponderacion),
       comentarios,
-      expectativa: parseInt(expectativa),
+      idExpectativa: parseInt(idExpectativa),
     };
     response(res, null, insertShippable, newRegister);
   } catch (error) {

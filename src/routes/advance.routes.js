@@ -2,12 +2,12 @@ import { Router } from "express";
 
 import {
   createAdvance,
-  getAdvance,
+  getAdvances,
 } from "../controllers/advance.controller.js";
 
 const router = Router();
 
-router.get("/", getAdvance);
+router.get("/", getAdvances);
 router.post("/", createAdvance);
 
 export default router;

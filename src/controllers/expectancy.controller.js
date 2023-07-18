@@ -1,7 +1,7 @@
 import response from "../helpers/response.js";
 import { insertExpectancy, getSummary } from "../models/expectancy.model.js";
 
-export const getExpectancy = (req, res) => {
+export const getExpectancies = (req, res) => {
   try {
     response(res, null, getSummary);
   } catch (error) {
