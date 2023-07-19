@@ -3,6 +3,7 @@ import headings from "./headings";
 import shippable from "./shippable";
 import machines from "./machines";
 import advance from "./advance";
+import phase from "./phase";
 
 const reducer = {
   expectancy,
@@ -10,6 +11,7 @@ const reducer = {
   headings,
   machines,
   advance,
+  phase,
 };
 
 export default reducer;

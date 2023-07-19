@@ -8,6 +8,7 @@ import headingsRoutes from "./routes/headings.routes.js";
 import shippableRoutes from "./routes/shippable.routes.js";
 import machinesRoutes from "./routes/machines.routes.js";
 import advanceRoutes from "./routes/advance.routes.js";
+import phaseRoutes from "./routes/phase.routes.js";
 
 const app = express();
 
@@ -24,5 +25,6 @@ app.use("/api/rubros", headingsRoutes);
 app.use("/api/entregables", shippableRoutes);
 app.use("/api/maquinas", machinesRoutes);
 app.use("/api/avances", advanceRoutes);
+app.use("/api/fases", phaseRoutes);
 
 export default app;

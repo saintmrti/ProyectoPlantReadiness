@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
     element: (
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/avances/:idEntregable" element={<Advance />} />
+        <Route path="/avances/:idEntregable/:idGrupo" element={<Advance />} />
         <Route path="*" element={<h1>Not Found</h1>} />
       </Routes>
     ),

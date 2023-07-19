@@ -6,7 +6,6 @@ import _ from "lodash";
 
 import { insertExpectancyRequest } from "../../slices/expectancy";
 
-// eslint-disable-next-line react/prop-types
 const ExpectationForm = ({ setOpen, data }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit } = useForm();

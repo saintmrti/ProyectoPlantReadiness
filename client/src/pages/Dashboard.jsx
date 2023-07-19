@@ -7,53 +7,81 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CommentIcon from "@mui/icons-material/Comment";
 import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
+import AddchartIcon from "@mui/icons-material/Addchart";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
 import ExpectationForm from "../components/Forms/ExpectationForm";
 import ShippableForm from "../components/Forms/ShippableForm";
+import PhaseForm from "../components/Forms/PhaseForm";
+import AdvanceForm from "../components/Forms/AdvanceForm";
 import ShippableTable from "../components/Tables/ShippableTable";
 import { fetchExpectancyRequest } from "../slices/expectancy";
 import { fetchShippableRequest } from "../slices/shippable";
 import { fetchAdvanceRequest } from "../slices/advance";
+import { headingsRequest } from "../slices/headings";
+import { machinesRequest } from "../slices/machines";
+import { fetchPhaseRequest } from "../slices/phase";
 import { groupedByIdExpectancy } from "../selectors/expectancy";
 import { summaryAdvanced } from "../selectors/advance";
-import { headingsRequest } from "../slices/headings";
-import { fases } from "../components/Tables/data";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [openExp, setOpenExp] = useState(false);
   const [openShi, setOpenShi] = useState(false);
+  const [openPha, setOpenPha] = useState(false);
+  const [openAdv, setOpenAdv] = useState(false);
   const [idExpectancy, setIdExpectancy] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [activeComment, setActiveComment] = useState(false);
+  const [activeComment, setActiveComment] = useState(true);
+  const [changeShi, setChangeShi] = useState([]);
 
-  const data = useSelector(groupedByIdExpectancy);
+  const expectancy = useSelector(groupedByIdExpectancy);
   const advance = useSelector(summaryAdvanced);
-  const { list } = useSelector((state) => state.headings);
+  const { list: headings } = useSelector((state) => state.headings);
+  const { list: machines } = useSelector((state) => state.machines);
+  const { list: fases } = useSelector((state) => state.phase);
+  const { data: shippables } = useSelector((state) => state.shippable);
+
+  const fasesByidGrupo = _.uniqBy(fases, "idGrupo");
+  const maxIdGrupo = _.maxBy(fases, "idGrupo");
 
   const isFetching = useSelector((state) => state.expectancy.isFetching);
   const didError = useSelector((state) => state.expectancy.didError);
 
   const handleNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex === 11 - 1 ? 0 : prevIndex + 1));
+    setActiveIndex((prevIndex) =>
+      prevIndex === fases?.length - 1 ? 0 : prevIndex + 1
+    );
   };
 
   const handlePrev = () => {
-    setActiveIndex((prevIndex) => (prevIndex === 0 ? 11 - 1 : prevIndex - 1));
+    setActiveIndex((prevIndex) =>
+      prevIndex === 0 ? fases?.length - 1 : prevIndex - 1
+    );
   };
 
-  const handleOnClick = (id) => {
+  const handleOnClickShi = (id) => {
     setIdExpectancy(id);
     setOpenShi(true);
+  };
+
+  const handleOnClickAdv = (id) => {
+    const arrayShippable = _.filter(
+      shippables,
+      (item) => item.idExpectativa === id
+    );
+    setChangeShi(arrayShippable);
+    setOpenAdv(true);
   };
 
   useEffect(() => {
     dispatch(fetchExpectancyRequest());
     dispatch(fetchShippableRequest());
     dispatch(fetchAdvanceRequest());
+    dispatch(fetchPhaseRequest());
     dispatch(headingsRequest());
+    dispatch(machinesRequest());
   }, [dispatch]);
   return (
     <>
@@ -70,26 +98,31 @@ const Dashboard = () => {
               </h1>
               <div className="w-2/3 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
             </div>
-            <Button
-              color="blue"
-              shadow="md"
-              className="mb-3"
-              onClick={() => setOpenExp(true)}
-            >
-              Agregar expectativa
-            </Button>
+            <div className="flex mb-3">
+              <Button
+                color="blue"
+                shadow="md"
+                className="mr-2"
+                onClick={() => setOpenExp(true)}
+              >
+                Agregar expectativa
+              </Button>
+              <Button color="red" shadow="md" onClick={() => setOpenPha(true)}>
+                Agregar fase
+              </Button>
+            </div>
             <Tabs defaultTab="tab-1" color="red">
               <Tabs.List>
-                {_.map(list, (item, index) => (
+                {_.map(headings, (item, index) => (
                   <Tabs.Tab anchor={`tab-${index + 1}`} key={index}>
                     {item.rubro}
                   </Tabs.Tab>
                 ))}
               </Tabs.List>
-              {_.map(list, (rubro, index) => (
+              {_.map(headings, (rubro, index) => (
                 <Tabs.Content anchor={`tab-${index + 1}`} key={index}>
                   <Accordion shadow="base" activeColor="red" shadowColor="gray">
-                    {_.map(data[rubro.id], (item, index) => (
+                    {_.map(expectancy[rubro.id], (item, index) => (
                       <Accordion.Item anchor={`item-${index + 1}`} key={index}>
                         <Accordion.Header>{item.expectativa}</Accordion.Header>
                         <Accordion.Body>
@@ -97,40 +130,49 @@ const Dashboard = () => {
                             <IconButton
                               aria-label="add"
                               size="small"
-                              onClick={() => handleOnClick(item.id)}
+                              onClick={() => handleOnClickShi(item.id)}
                             >
                               <AddCircleOutlineIcon />
                             </IconButton>
                             {item.shippables && item.shippables.length > 0 && (
-                              <div className="flex ml-auto">
+                              <>
                                 <IconButton
-                                  aria-label="comment"
+                                  aria-label="addAdvance"
                                   size="small"
-                                  onClick={() =>
-                                    setActiveComment(!activeComment)
-                                  }
+                                  onClick={() => handleOnClickAdv(item.id)}
                                 >
-                                  {activeComment ? (
-                                    <CommentIcon />
-                                  ) : (
-                                    <CommentsDisabledIcon />
-                                  )}
+                                  <AddchartIcon />
                                 </IconButton>
-                                <IconButton
-                                  aria-label="back"
-                                  size="small"
-                                  onClick={() => handlePrev(item.id)}
-                                >
-                                  <ArrowBackIcon />
-                                </IconButton>
-                                <IconButton
-                                  aria-label="forward"
-                                  size="small"
-                                  onClick={() => handleNext(item.id)}
-                                >
-                                  <ArrowForwardIcon />
-                                </IconButton>
-                              </div>
+                                <div className="flex ml-auto">
+                                  <IconButton
+                                    aria-label="comment"
+                                    size="small"
+                                    onClick={() =>
+                                      setActiveComment(!activeComment)
+                                    }
+                                  >
+                                    {activeComment ? (
+                                      <CommentIcon />
+                                    ) : (
+                                      <CommentsDisabledIcon />
+                                    )}
+                                  </IconButton>
+                                  <IconButton
+                                    aria-label="back"
+                                    size="small"
+                                    onClick={() => handlePrev(item.id)}
+                                  >
+                                    <ArrowBackIcon />
+                                  </IconButton>
+                                  <IconButton
+                                    aria-label="forward"
+                                    size="small"
+                                    onClick={() => handleNext(item.id)}
+                                  >
+                                    <ArrowForwardIcon />
+                                  </IconButton>
+                                </div>
+                              </>
                             )}
                           </div>
                           {item.shippables &&
@@ -157,10 +199,34 @@ const Dashboard = () => {
               open={openExp}
               onClose={() => setOpenExp(false)}
             >
-              <ExpectationForm data={list} setOpen={setOpenExp} />
+              <ExpectationForm data={headings} setOpen={setOpenExp} />
+            </Modal>
+            <Modal
+              position="center"
+              size="md"
+              open={openPha}
+              onClose={() => setOpenPha(false)}
+            >
+              <PhaseForm
+                setOpen={setOpenPha}
+                data={machines}
+                idGrupo={maxIdGrupo?.idGrupo + 1}
+              />
             </Modal>
             <Modal size="md" open={openShi} onClose={() => setOpenShi(false)}>
               <ShippableForm setOpen={setOpenShi} idExpectancy={idExpectancy} />
+            </Modal>
+            <Modal
+              position="center"
+              size="md"
+              open={openAdv}
+              onClose={() => setOpenAdv(false)}
+            >
+              <AdvanceForm
+                setOpen={setOpenAdv}
+                data={changeShi}
+                fases={fasesByidGrupo}
+              />
             </Modal>
           </>
         )}

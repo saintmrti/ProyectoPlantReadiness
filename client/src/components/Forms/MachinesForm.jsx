@@ -4,10 +4,9 @@ import { useDispatch } from "react-redux";
 import { Button, Input, Checkbox, Badge, Textarea } from "@rewind-ui/core";
 import _ from "lodash";
 
-import { fases } from "../Tables/data";
 import { insertAdvanceRequest } from "../../slices/advance";
 
-const MachinesForm = ({ idEntregable }) => {
+const MachinesForm = ({ idEntregable, fases }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
   const [checkboxStates, setCheckboxStates] = useState({});
@@ -49,7 +48,6 @@ const MachinesForm = ({ idEntregable }) => {
 
     const filteredArray = _.values(groupedValues);
 
-    console.log(filteredArray);
     dispatch(insertAdvanceRequest({ filteredArray }));
     reset();
   };
@@ -60,7 +58,7 @@ const MachinesForm = ({ idEntregable }) => {
         className="flex flex-col justify-center w-full bg-gray-100 shadow-md rounded-md px-10 py-5"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-3xl mb-5 text-center">Fase 1</h1>
+        <h1 className="text-3xl mb-5 text-center">{fases[0]?.fase}</h1>
         <div className="flex justify-between items-center w-full mb-5">
           <div className="w-40 text-center">
             <Badge color="blue" shadowColor="black" className="px-2">
@@ -102,10 +100,9 @@ const MachinesForm = ({ idEntregable }) => {
           <div className="flex justify-between items-center mb-4" key={index}>
             <div className="flex w-40">
               <Checkbox
-                label=""
+                label={machine.maquina}
                 onChange={(event) => handleCheckboxChange(machine, event)}
               />
-              <label>{machine.maquina}</label>
             </div>
             <Input
               type="text"
