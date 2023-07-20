@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 const Slice = createSlice({
   name: "advance",
@@ -16,7 +17,7 @@ const Slice = createSlice({
     },
     fetchAdvanceSuccess: (state, action) => {
       const { data } = action.payload;
-      state.data = data;
+      state.data = _.keyBy(data, "id");
       state.isFetching = false;
     },
     fetchAdvanceError: (state) => {
@@ -28,7 +29,9 @@ const Slice = createSlice({
       state.didErrorInsert = false;
     },
     insertAdvanceSuccess: (state, { payload: { data } }) => {
-      state.data = data;
+      _.forEach(data, (item) => {
+        state.data[item.id] = item;
+      });
       state.isFetchingInsert = false;
     },
     insertAdvanceError: (state) => {

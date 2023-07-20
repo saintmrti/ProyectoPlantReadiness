@@ -10,11 +10,18 @@ export const getSummary = async (conn) => {
 export const insertPhase = async (conn, modifiedArray) => {
   const insertPromises = modifiedArray.map(async (item) => {
     const { idMaquina, idGrupo, fase } = item;
-    const { data } = await conn.query(`
+    const {
+      info: { insertId },
+    } = await conn.query(`
       INSERT INTO vki40_fases (idMaquina, idGrupo, fase)
       VALUES(${idMaquina}, ${idGrupo}, '${fase}');
     `);
-    return data;
+
+    const { data } = await conn.query(`
+      SELECT * FROM vki40_fases WHERE id = ${insertId};
+    `);
+
+    return data[0];
   });
 
   const results = await Promise.all(insertPromises);

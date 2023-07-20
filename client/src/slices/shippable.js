@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 const Slice = createSlice({
   name: "shippable",
   initialState: {
     data: {},
-    lastShippable: {},
     isFetching: false,
     didError: false,
     isFetchingInsert: false,
@@ -17,7 +17,7 @@ const Slice = createSlice({
     },
     fetchShippableSuccess: (state, action) => {
       const { data } = action.payload;
-      state.data = data;
+      state.data = _.keyBy(data, "id");
       state.isFetching = false;
     },
     fetchShippableError: (state) => {
@@ -29,7 +29,7 @@ const Slice = createSlice({
       state.didErrorInsert = false;
     },
     insertShippableSuccess: (state, { payload: { data } }) => {
-      state.lastShippable = data;
+      state.data[data.id] = data;
       state.isFetchingInsert = false;
     },
     insertShippableError: (state) => {

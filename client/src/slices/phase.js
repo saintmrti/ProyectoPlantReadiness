@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 const Slice = createSlice({
   name: "phase",
@@ -16,7 +17,7 @@ const Slice = createSlice({
     },
     fetchPhaseSuccess: (state, action) => {
       const { data } = action.payload;
-      state.list = data;
+      state.list = _.keyBy(data, "id");
       state.isFetching = false;
     },
     fetchPhaseError: (state) => {
@@ -28,7 +29,9 @@ const Slice = createSlice({
       state.didErrorInsert = false;
     },
     insertPhaseSuccess: (state, { payload: { data } }) => {
-      state.list = data;
+      _.forEach(data, (item) => {
+        state.list[item.id] = item;
+      });
       state.isFetchingInsert = false;
     },
     insertPhaseError: (state) => {

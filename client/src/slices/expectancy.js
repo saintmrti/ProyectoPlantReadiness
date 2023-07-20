@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import _ from "lodash";
 
 const Slice = createSlice({
   name: "expectancy",
@@ -16,7 +17,7 @@ const Slice = createSlice({
     },
     fetchExpectancySuccess: (state, action) => {
       const { data } = action.payload;
-      state.data = data;
+      state.data = _.keyBy(data, "id");
       state.isFetching = false;
     },
     fetchExpectancyError: (state) => {
@@ -28,7 +29,7 @@ const Slice = createSlice({
       state.didErrorInsert = false;
     },
     insertExpectancySuccess: (state, { payload: { data } }) => {
-      state.data = data;
+      state.data[data.id] = data;
       state.isFetchingInsert = false;
     },
     insertExpectancyError: (state) => {

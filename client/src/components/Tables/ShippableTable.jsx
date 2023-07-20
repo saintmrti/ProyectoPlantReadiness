@@ -16,7 +16,7 @@ const ShippableTable = ({
             <Table.Tr>
               <Table.Th colSpan={5}></Table.Th>
               <Table.Th colSpan={6}>
-                {fases[activeIndex].fase} <br /> {fases[activeIndex].maquina}
+                {fases[activeIndex]?.fase} <br /> {fases[activeIndex]?.maquina}
               </Table.Th>
             </Table.Tr>
           )}
@@ -62,7 +62,7 @@ const ShippableTable = ({
                         {
                           advance[item.id].find(
                             (obj) =>
-                              obj.idMaquina === fases[activeIndex].idMaquina
+                              obj.idMaquina === fases[activeIndex]?.idMaquina
                           )?.responsable
                         }
                       </Table.Td>
@@ -70,7 +70,7 @@ const ShippableTable = ({
                         {
                           advance[item.id].find(
                             (obj) =>
-                              obj.idMaquina === fases[activeIndex].idMaquina
+                              obj.idMaquina === fases[activeIndex]?.idMaquina
                           )?.fecha_inicio
                         }
                       </Table.Td>
@@ -78,7 +78,7 @@ const ShippableTable = ({
                         {
                           advance[item.id].find(
                             (obj) =>
-                              obj.idMaquina === fases[activeIndex].idMaquina
+                              obj.idMaquina === fases[activeIndex]?.idMaquina
                           )?.fecha_termino
                         }
                       </Table.Td>
@@ -86,7 +86,7 @@ const ShippableTable = ({
                         {
                           advance[item.id].find(
                             (obj) =>
-                              obj.idMaquina === fases[activeIndex].idMaquina
+                              obj.idMaquina === fases[activeIndex]?.idMaquina
                           )?.fecha_real
                         }
                       </Table.Td>
@@ -94,7 +94,7 @@ const ShippableTable = ({
                         {
                           advance[item.id].find(
                             (obj) =>
-                              obj.idMaquina === fases[activeIndex].idMaquina
+                              obj.idMaquina === fases[activeIndex]?.idMaquina
                           )?.avance
                         }
                       </Table.Td>
@@ -102,7 +102,7 @@ const ShippableTable = ({
                         {
                           advance[item.id].find(
                             (obj) =>
-                              obj.idMaquina === fases[activeIndex].idMaquina
+                              obj.idMaquina === fases[activeIndex]?.idMaquina
                           )?.comentarios
                         }
                       </Table.Td>

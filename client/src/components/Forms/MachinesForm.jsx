@@ -6,7 +6,7 @@ import _ from "lodash";
 
 import { insertAdvanceRequest } from "../../slices/advance";
 
-const MachinesForm = ({ idEntregable, fases }) => {
+const MachinesForm = ({ idEntregable, fases, isFetching }) => {
   const dispatch = useDispatch();
   const { register, handleSubmit, reset } = useForm();
   const [checkboxStates, setCheckboxStates] = useState({});
@@ -152,6 +152,8 @@ const MachinesForm = ({ idEntregable, fases }) => {
           <Button
             className="rounded-md bg-blue-600 px-2 text-white my-2"
             type="submit"
+            disabled={isFetching}
+            loading={isFetching}
           >
             Agregar
           </Button>

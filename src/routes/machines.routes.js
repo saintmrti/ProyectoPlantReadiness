@@ -1,9 +1,13 @@
 import { Router } from "express";
 
-import { getMachines } from "../controllers/machines.controller.js";
+import {
+  getMachines,
+  createMachine,
+} from "../controllers/machines.controller.js";
 
 const router = Router();
 
 router.get("/", getMachines);
+router.post("/", createMachine);
 
 export default router;

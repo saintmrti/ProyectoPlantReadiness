@@ -32,7 +32,7 @@ const Dashboard = () => {
   const [openPha, setOpenPha] = useState(false);
   const [openAdv, setOpenAdv] = useState(false);
   const [idExpectancy, setIdExpectancy] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(1);
   const [activeComment, setActiveComment] = useState(true);
   const [changeShi, setChangeShi] = useState([]);
 
@@ -40,24 +40,22 @@ const Dashboard = () => {
   const advance = useSelector(summaryAdvanced);
   const { list: headings } = useSelector((state) => state.headings);
   const { list: machines } = useSelector((state) => state.machines);
-  const { list: fases } = useSelector((state) => state.phase);
   const { data: shippables } = useSelector((state) => state.shippable);
+  const { list: fases } = useSelector((state) => state.phase);
+  const { isFetching, didError } = useSelector((state) => state.expectancy);
 
-  const fasesByidGrupo = _.uniqBy(fases, "idGrupo");
-  const maxIdGrupo = _.maxBy(fases, "idGrupo");
-
-  const isFetching = useSelector((state) => state.expectancy.isFetching);
-  const didError = useSelector((state) => state.expectancy.didError);
+  const fasesByidGrupo = _.uniqBy(_.values(fases), "idGrupo");
+  const maxIdGrupo = _.maxBy(_.values(fases), "idGrupo");
 
   const handleNext = () => {
     setActiveIndex((prevIndex) =>
-      prevIndex === fases?.length - 1 ? 0 : prevIndex + 1
+      prevIndex === _.size(fases) ? 1 : prevIndex + 1
     );
   };
 
   const handlePrev = () => {
     setActiveIndex((prevIndex) =>
-      prevIndex === 0 ? fases?.length - 1 : prevIndex - 1
+      prevIndex === 1 ? _.size(fases) : prevIndex - 1
     );
   };
 
@@ -114,16 +112,16 @@ const Dashboard = () => {
             <Tabs defaultTab="tab-1" color="red">
               <Tabs.List>
                 {_.map(headings, (item, index) => (
-                  <Tabs.Tab anchor={`tab-${index + 1}`} key={index}>
+                  <Tabs.Tab anchor={`tab-${index}`} key={index}>
                     {item.rubro}
                   </Tabs.Tab>
                 ))}
               </Tabs.List>
               {_.map(headings, (rubro, index) => (
-                <Tabs.Content anchor={`tab-${index + 1}`} key={index}>
+                <Tabs.Content anchor={`tab-${index}`} key={index}>
                   <Accordion shadow="base" activeColor="red" shadowColor="gray">
                     {_.map(expectancy[rubro.id], (item, index) => (
-                      <Accordion.Item anchor={`item-${index + 1}`} key={index}>
+                      <Accordion.Item anchor={`item-${index}`} key={index}>
                         <Accordion.Header>{item.expectativa}</Accordion.Header>
                         <Accordion.Body>
                           <div className="flex">
@@ -175,17 +173,15 @@ const Dashboard = () => {
                               </>
                             )}
                           </div>
-                          {item.shippables &&
-                            item.shippables.length > 0 &&
-                            advance[item.id] && (
-                              <ShippableTable
-                                data={item.shippables}
-                                fases={fases}
-                                activeIndex={activeIndex}
-                                advance={advance[item.id]}
-                                activeComment={activeComment}
-                              />
-                            )}
+                          {item.shippables && item.shippables.length > 0 && (
+                            <ShippableTable
+                              data={item.shippables}
+                              fases={fases}
+                              activeIndex={activeIndex}
+                              advance={advance[item?.id]}
+                              activeComment={activeComment}
+                            />
+                          )}
                         </Accordion.Body>
                       </Accordion.Item>
                     ))}
