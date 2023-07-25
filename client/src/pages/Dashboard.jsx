@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Tabs, Modal, Button, Accordion } from "@rewind-ui/core";
+import { Tabs, Modal, Accordion } from "@rewind-ui/core";
 import { useEffect } from "react";
+import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -97,19 +98,22 @@ const Dashboard = () => {
               <div className="w-2/3 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
             </div>
             <div className="flex mb-3">
-              <Button
-                color="blue"
-                shadow="md"
-                className="mr-2"
-                onClick={() => setOpenExp(true)}
-              >
-                Agregar expectativa
-              </Button>
-              <Button color="red" shadow="md" onClick={() => setOpenPha(true)}>
+              <div className="mr-2">
+                <Button variant="contained" onClick={() => setOpenExp(true)}>
+                  Agregar expectativa
+                </Button>
+              </div>
+              <Button variant="contained" onClick={() => setOpenPha(true)}>
                 Agregar fase
               </Button>
             </div>
-            <Tabs defaultTab="tab-1" color="red">
+            <Tabs
+              defaultTab="tab-1"
+              color="black"
+              radius="md"
+              tone="pill"
+              fullWidth={true}
+            >
               <Tabs.List>
                 {_.map(headings, (item, index) => (
                   <Tabs.Tab anchor={`tab-${index}`} key={index}>
@@ -119,7 +123,7 @@ const Dashboard = () => {
               </Tabs.List>
               {_.map(headings, (rubro, index) => (
                 <Tabs.Content anchor={`tab-${index}`} key={index}>
-                  <Accordion shadow="base" activeColor="red" shadowColor="gray">
+                  <Accordion shadow="lg" activeColor="red">
                     {_.map(expectancy[rubro.id], (item, index) => (
                       <Accordion.Item anchor={`item-${index}`} key={index}>
                         <Accordion.Header>{item.expectativa}</Accordion.Header>
@@ -191,7 +195,7 @@ const Dashboard = () => {
             </Tabs>
             <Modal
               position="center"
-              size="md"
+              radius="lg"
               open={openExp}
               onClose={() => setOpenExp(false)}
             >
@@ -199,7 +203,7 @@ const Dashboard = () => {
             </Modal>
             <Modal
               position="center"
-              size="md"
+              radius="lg"
               open={openPha}
               onClose={() => setOpenPha(false)}
             >
@@ -209,12 +213,17 @@ const Dashboard = () => {
                 idGrupo={maxIdGrupo?.idGrupo + 1}
               />
             </Modal>
-            <Modal size="md" open={openShi} onClose={() => setOpenShi(false)}>
+            <Modal
+              radius="lg"
+              position="center"
+              open={openShi}
+              onClose={() => setOpenShi(false)}
+            >
               <ShippableForm setOpen={setOpenShi} idExpectancy={idExpectancy} />
             </Modal>
             <Modal
               position="center"
-              size="md"
+              radius="lg"
               open={openAdv}
               onClose={() => setOpenAdv(false)}
             >

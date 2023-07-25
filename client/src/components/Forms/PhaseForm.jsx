@@ -45,12 +45,12 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
   };
 
   return (
-    <div>
+    <div className="mt-10">
       <form
-        className="flex justify-center flex-wrap bg-gray-100 shadow-md rounded-md p-4"
+        className="flex justify-center items-center flex-wrap shadow-md rounded-md"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-3xl mb-3 w-full text-center">Nueva fase</h1>
+        <h1 className="text-3xl mb-5 w-full text-center">Nueva fase</h1>
         <div className="mb-5">
           <div className="flex justify-end items-center mb-5">
             <label className="px-4 py-2 w-36">Nombre</label>
@@ -84,6 +84,9 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
             </div>
             <div>
               <Button
+                color="red"
+                shadow="md"
+                shadowColor="red"
                 onClick={handleAddMachine}
                 disabled={machine === "" ? true : false}
                 loading={isFetchingInsert}
@@ -93,8 +96,14 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
             </div>
           </div>
         </div>
-        <div className="w-full flex justify-center">
-          <Button type="submit" disabled={selectedMachines.length === 0}>
+        <div className="w-full flex justify-center mb-10">
+          <Button
+            type="submit"
+            color="red"
+            shadow="md"
+            shadowColor="red"
+            disabled={selectedMachines.length === 0}
+          >
             Agregar
           </Button>
         </div>

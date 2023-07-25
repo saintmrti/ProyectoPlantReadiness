@@ -17,10 +17,12 @@ const AdvanceForm = ({ setOpen, fases, data }) => {
   return (
     <div className="max-w-lg">
       <form
-        className="flex justify-center flex-wrap bg-gray-100 shadow-md rounded-md p-4"
+        className="flex justify-center items-center flex-wrap shadow-md rounded-md h-80"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-3xl mb-5 w-full text-center">Agregar avances</h1>
+        <h1 className="text-3xl mb-5 w-full text-center mt-5">
+          Agregar avances
+        </h1>
         <div>
           {/* <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4 py-2 w-40">Responsable</label>
@@ -32,39 +34,40 @@ const AdvanceForm = ({ setOpen, fases, data }) => {
             />
           </div> */}
           <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4 py-2 w-40">Entregable</label>
-            <Select
-              {...register("idEntregable", { required: true })}
-              defaultValue=""
-            >
-              <option value="">Seleccione un entregable</option>
-              {_.map(data, (item) => (
-                <option key={item.id} value={item.id}>
-                  {item.nombre}
-                </option>
-              ))}
-            </Select>
+            <label className="px-4">Entregable</label>
+            <div className="w-60">
+              <Select
+                {...register("idEntregable", { required: true })}
+                defaultValue=""
+              >
+                <option value="">Seleccione un entregable</option>
+                {_.map(data, (item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.nombre}
+                  </option>
+                ))}
+              </Select>
+            </div>
           </div>
           <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4 py-2 w-40">Fase</label>
-            <Select
-              {...register("idGrupo", { required: true })}
-              defaultValue=""
-            >
-              <option value="">Seleccione una fase</option>
-              {_.map(fases, (item) => (
-                <option key={item.id} value={item.idGrupo}>
-                  {item.fase}
-                </option>
-              ))}
-            </Select>
+            <label className="px-4">Fase</label>
+            <div className="w-60">
+              <Select
+                {...register("idGrupo", { required: true })}
+                defaultValue=""
+              >
+                <option value="">Seleccione una fase</option>
+                {_.map(fases, (item) => (
+                  <option key={item.id} value={item.idGrupo}>
+                    {item.fase}
+                  </option>
+                ))}
+              </Select>
+            </div>
           </div>
         </div>
-        <div className="w-full flex justify-center">
-          <Button
-            className="rounded-md bg-blue-600 px-2 text-white my-2"
-            type="submit"
-          >
+        <div className="w-full flex justify-center mb-5">
+          <Button color="red" shadow="md" shadowColor="red" type="submit">
             Enviar
           </Button>
         </div>

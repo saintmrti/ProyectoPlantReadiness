@@ -53,45 +53,87 @@ const MachinesForm = ({ idEntregable, fases, isFetching }) => {
   };
 
   return (
-    <div>
+    <div className="h-screen">
       <form
-        className="flex flex-col justify-center w-full bg-gray-100 shadow-md rounded-md px-10 py-5"
+        className="flex flex-col justify-center px-10"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-3xl mb-5 text-center">{fases[0]?.fase}</h1>
+        <h1 className="text-3xl mb-5 text-center mt-5">{fases[0]?.fase}</h1>
         <div className="flex justify-between items-center w-full mb-5">
           <div className="w-40 text-center">
-            <Badge color="blue" shadowColor="black" className="px-2">
+            <Badge
+              tone="glossy"
+              color="red"
+              shadow="md"
+              shadowColor="red"
+              className="px-7 py-4"
+            >
               Maquina
             </Badge>
           </div>
           <div className="w-40 text-center">
-            <Badge color="blue" shadowColor="black" className="px-2">
+            <Badge
+              tone="glossy"
+              color="red"
+              shadow="md"
+              shadowColor="red"
+              className="px-7 py-4"
+            >
               Responsable
             </Badge>
           </div>
           <div className="w-40 text-center">
-            <Badge color="blue" shadowColor="black" className="px-2">
+            <Badge
+              tone="glossy"
+              color="red"
+              shadow="md"
+              shadowColor="red"
+              className="px-7 py-4"
+            >
               Fecha Inicio
             </Badge>
           </div>
           <div className="w-40 text-center">
-            <Badge color="blue" shadowColor="black" className="px-2">
+            <Badge
+              tone="glossy"
+              color="red"
+              shadow="md"
+              shadowColor="red"
+              className="px-7 py-4"
+            >
               Fecha Termino
             </Badge>
           </div>
           <div className="w-40 text-center">
-            <Badge color="blue" shadowColor="black" className="px-2">
+            <Badge
+              tone="glossy"
+              color="red"
+              shadow="md"
+              shadowColor="red"
+              className="px-7 py-4"
+            >
               Fecha Real
             </Badge>
           </div>
           <div className="w-40 text-center">
-            <Badge color="blue" shadowColor="black" className="px-2">
+            <Badge
+              tone="glossy"
+              color="red"
+              shadow="md"
+              shadowColor="red"
+              className="px-7 py-4"
+            >
               Avance
             </Badge>
           </div>
           <div className="w-60 text-center">
-            <Badge color="blue" shadowColor="black" className="px-2">
+            <Badge
+              tone="glossy"
+              color="red"
+              shadow="md"
+              shadowColor="red"
+              className="px-7 py-4"
+            >
               Comentarios
             </Badge>
           </div>
@@ -148,9 +190,11 @@ const MachinesForm = ({ idEntregable, fases, isFetching }) => {
             />
           </div>
         ))}
-        <div className="flex justify-center mt-5">
+        <div className="flex justify-center">
           <Button
-            className="rounded-md bg-blue-600 px-2 text-white my-2"
+            color="red"
+            shadowColor="red"
+            shadow="md"
             type="submit"
             disabled={isFetching}
             loading={isFetching}

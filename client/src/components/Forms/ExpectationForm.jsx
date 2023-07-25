@@ -1,6 +1,6 @@
-// import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button, Input, Select } from "@rewind-ui/core";
+import TextField from "@mui/material/TextField";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
 
@@ -18,37 +18,37 @@ const ExpectationForm = ({ setOpen, data }) => {
   return (
     <div className="max-w-lg">
       <form
-        className="flex justify-center flex-wrap bg-gray-100 shadow-md rounded-md p-4"
+        className="flex justify-center items-center flex-wrap shadow-md rounded-md h-80"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-3xl mb-3 w-full text-center">Nueva expectativa</h1>
+        <h1 className="text-3xl mb-3 w-full text-center mt-5">
+          Nueva expectativa
+        </h1>
         <div>
           <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4 py-2 w-36">Expectativa</label>
-            <Input
-              type="text"
-              placeholder="Agregar expectativa"
+            <label className="px-4">Expectativa</label>
+            <TextField
+              label="Expectativa"
               autoComplete="off"
               {...register("expectancy", { required: true })}
             />
           </div>
           <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4 py-2 w-36">Rubro</label>
-            <Select defaultValue="" {...register("area", { required: true })}>
-              <option value="">Seleccionar rubro</option>
-              {_.map(data, (item) => (
-                <option key={item.id} value={item.id}>
-                  {item.rubro}
-                </option>
-              ))}
-            </Select>
+            <label className="px-4">Rubro</label>
+            <div className="w-60">
+              <Select defaultValue="" {...register("area", { required: true })}>
+                <option value="">Seleccionar rubro</option>
+                {_.map(data, (item) => (
+                  <option key={item.id} value={item.id}>
+                    {item.rubro}
+                  </option>
+                ))}
+              </Select>
+            </div>
           </div>
         </div>
-        <div className="w-full flex justify-center">
-          <Button
-            className="rounded-md bg-blue-600 px-2 text-white my-2"
-            type="submit"
-          >
+        <div className="w-full flex justify-center mb-5">
+          <Button color="red" shadow="md" shadowColor="red" type="submit">
             Agregar
           </Button>
         </div>

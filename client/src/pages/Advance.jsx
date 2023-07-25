@@ -14,7 +14,7 @@ const Advance = () => {
     (item) => item.idGrupo === parseInt(idGrupo)
   );
   return (
-    <div className="container mx-auto">
+    <div>
       <MachinesForm
         idEntregable={idEntregable}
         fases={filterFases}

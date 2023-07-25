@@ -16,69 +16,74 @@ const ShippableForm = ({ setOpen, idExpectancy }) => {
   };
 
   return (
-    <div className="max-w-lg">
+    <div className="max-w-lg mt-10">
       <form
-        className="flex justify-center flex-wrap bg-gray-100 shadow-md rounded-md p-4"
+        className="flex justify-center flex-wrap shadow-md rounded-md"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="text-3xl mb-5 w-full text-center">Nuevo entregable</h1>
         <div>
           <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4 py-2 w-40">Entregable</label>
-            <Input
-              type="text"
-              placeholder="Agregar entregable"
-              autoComplete="off"
-              {...register("nombre", { required: true })}
-            />
+            <label className="px-4">Entregable</label>
+            <div className="w-64">
+              <Input
+                type="text"
+                placeholder="Agregar entregable"
+                autoComplete="off"
+                {...register("nombre", { required: true })}
+              />
+            </div>
           </div>
           <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4 py-2 w-40">Evidencia</label>
-            <Input
-              type="text"
-              placeholder="Documento"
-              autoComplete="off"
-              {...register("evidencia", { required: true })}
-            />
+            <label className="px-4">Evidencia</label>
+            <div className="w-64">
+              <Input
+                type="text"
+                placeholder="Documento"
+                autoComplete="off"
+                {...register("evidencia", { required: true })}
+              />
+            </div>
           </div>
           <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4 py-2 w-40">Prioridad</label>
-            <Select
-              defaultValue=""
-              {...register("prioridad", { required: true })}
-            >
-              <option value="">Seleccione prioridad</option>
-              <option value="P1">P1</option>
-              <option value="P2">P2</option>
-              <option value="P3">P3</option>
-            </Select>
+            <label className="px-4">Prioridad</label>
+            <div className="w-64">
+              <Select
+                defaultValue=""
+                {...register("prioridad", { required: true })}
+              >
+                <option value="">Seleccione prioridad</option>
+                <option value="P1">P1</option>
+                <option value="P2">P2</option>
+                <option value="P3">P3</option>
+              </Select>
+            </div>
           </div>
           <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4 py-2 w-40">Ponderación</label>
-            <Select
-              defaultValue=""
-              {...register("ponderacion", { required: true })}
-            >
-              <option value="">Seleccione una ponderacion</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </Select>
+            <label className="px-4">Ponderación</label>
+            <div className="w-64">
+              <Select
+                defaultValue=""
+                {...register("ponderacion", { required: true })}
+              >
+                <option value="">Seleccione una ponderacion</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </Select>
+            </div>
           </div>
           <div className="flex justify-end w-full mb-3">
-            <label className="px-4 py-2 w-40">Comentarios</label>
+            <label className="px-4">Comentarios</label>
             <Textarea
               placeholder="Ingresar comentarios..."
-              className="h-60"
+              className="h-60 w-64"
               {...register("comentarios", { required: true })}
-            ></Textarea>
+            />
           </div>
         </div>
-        <div className="w-full flex justify-center">
-          <Button
-            className="rounded-md bg-blue-600 px-2 text-white my-2"
-            type="submit"
-          >
+        <div className="w-full flex justify-center mb-10 mt-5">
+          <Button color="red" shadow="md" shadowColor="red" type="submit">
             Agregar
           </Button>
         </div>
