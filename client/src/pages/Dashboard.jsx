@@ -1,7 +1,16 @@
 import { useState } from "react";
-import { Tabs, Modal, Accordion } from "@rewind-ui/core";
 import { useEffect } from "react";
+
 import Button from "@mui/material/Button";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
@@ -25,6 +34,19 @@ import { machinesRequest } from "../slices/machines";
 import { fetchPhaseRequest } from "../slices/phase";
 import { groupedByIdExpectancy } from "../selectors/expectancy";
 import { summaryAdvanced } from "../selectors/advance";
+import { CustomTabPanel, a11yProps } from "../components/Tabs/CustomTabPanel";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  // width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -47,6 +69,12 @@ const Dashboard = () => {
 
   const fasesByidGrupo = _.uniqBy(_.values(fases), "idGrupo");
   const maxIdGrupo = _.maxBy(_.values(fases), "idGrupo");
+
+  const [value, setValue] = useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   const handleNext = () => {
     setActiveIndex((prevIndex) =>
@@ -92,7 +120,7 @@ const Dashboard = () => {
         ) : (
           <>
             <div className="flex flex-col items-center mb-6">
-              <h1 className="text-2xl font-bold text-gray-800 text-center">
+              <h1 className="text-3xl font-bold text-center">
                 Plant Readiness
               </h1>
               <div className="w-2/3 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
@@ -107,27 +135,35 @@ const Dashboard = () => {
                 Agregar fase
               </Button>
             </div>
-            <Tabs
-              defaultTab="tab-1"
-              color="black"
-              radius="md"
-              tone="pill"
-              fullWidth={true}
-            >
-              <Tabs.List>
-                {_.map(headings, (item, index) => (
-                  <Tabs.Tab anchor={`tab-${index}`} key={index}>
-                    {item.rubro}
-                  </Tabs.Tab>
-                ))}
-              </Tabs.List>
+            <Box sx={{ width: "100%" }}>
+              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <Tabs value={value} onChange={handleChange}>
+                  {_.map(headings, (item, index) => (
+                    <Tab
+                      key={index}
+                      label={item.rubro}
+                      {...a11yProps(parseInt(index - 1))}
+                    />
+                  ))}
+                </Tabs>
+              </Box>
               {_.map(headings, (rubro, index) => (
-                <Tabs.Content anchor={`tab-${index}`} key={index}>
-                  <Accordion shadow="lg" activeColor="red">
+                <CustomTabPanel
+                  value={value}
+                  key={index}
+                  index={parseInt(index - 1)}
+                >
+                  <div>
                     {_.map(expectancy[rubro.id], (item, index) => (
-                      <Accordion.Item anchor={`item-${index}`} key={index}>
-                        <Accordion.Header>{item.expectativa}</Accordion.Header>
-                        <Accordion.Body>
+                      <Accordion anchor={`item-${index}`} key={index}>
+                        <AccordionSummary
+                          expandIcon={<ExpandMoreIcon />}
+                          aria-controls="panel1a-content"
+                          id="panel1a-header"
+                        >
+                          <Typography>{item.expectativa}</Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
                           <div className="flex">
                             <IconButton
                               aria-label="add"
@@ -178,60 +214,53 @@ const Dashboard = () => {
                             )}
                           </div>
                           {item.shippables && item.shippables.length > 0 && (
-                            <ShippableTable
-                              data={item.shippables}
-                              fases={fases}
-                              activeIndex={activeIndex}
-                              advance={advance[item?.id]}
-                              activeComment={activeComment}
-                            />
+                            <div className="mb-5">
+                              <ShippableTable
+                                data={item.shippables}
+                                fases={fases}
+                                activeIndex={activeIndex}
+                                advance={advance[item?.id]}
+                                activeComment={activeComment}
+                              />
+                            </div>
                           )}
-                        </Accordion.Body>
-                      </Accordion.Item>
+                        </AccordionDetails>
+                      </Accordion>
                     ))}
-                  </Accordion>
-                </Tabs.Content>
+                  </div>
+                </CustomTabPanel>
               ))}
-            </Tabs>
-            <Modal
-              position="center"
-              radius="lg"
-              open={openExp}
-              onClose={() => setOpenExp(false)}
-            >
-              <ExpectationForm data={headings} setOpen={setOpenExp} />
+            </Box>
+            <Modal open={openExp} onClose={() => setOpenExp(false)}>
+              <Box sx={style}>
+                <ExpectationForm data={headings} setOpen={setOpenExp} />
+              </Box>
             </Modal>
-            <Modal
-              position="center"
-              radius="lg"
-              open={openPha}
-              onClose={() => setOpenPha(false)}
-            >
-              <PhaseForm
-                setOpen={setOpenPha}
-                data={machines}
-                idGrupo={maxIdGrupo?.idGrupo + 1}
-              />
+            <Modal open={openPha} onClose={() => setOpenPha(false)}>
+              <Box sx={style}>
+                <PhaseForm
+                  setOpen={setOpenPha}
+                  data={machines}
+                  idGrupo={maxIdGrupo?.idGrupo + 1}
+                />
+              </Box>
             </Modal>
-            <Modal
-              radius="lg"
-              position="center"
-              open={openShi}
-              onClose={() => setOpenShi(false)}
-            >
-              <ShippableForm setOpen={setOpenShi} idExpectancy={idExpectancy} />
+            <Modal open={openShi} onClose={() => setOpenShi(false)}>
+              <Box sx={style}>
+                <ShippableForm
+                  setOpen={setOpenShi}
+                  idExpectancy={idExpectancy}
+                />
+              </Box>
             </Modal>
-            <Modal
-              position="center"
-              radius="lg"
-              open={openAdv}
-              onClose={() => setOpenAdv(false)}
-            >
-              <AdvanceForm
-                setOpen={setOpenAdv}
-                data={changeShi}
-                fases={fasesByidGrupo}
-              />
+            <Modal open={openAdv} onClose={() => setOpenAdv(false)}>
+              <Box sx={style}>
+                <AdvanceForm
+                  setOpen={setOpenAdv}
+                  data={changeShi}
+                  fases={fasesByidGrupo}
+                />
+              </Box>
             </Modal>
           </>
         )}

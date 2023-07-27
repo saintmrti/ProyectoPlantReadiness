@@ -1,5 +1,31 @@
-import { Table } from "@rewind-ui/core";
+import { styled } from "@mui/material/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 import _ from "lodash";
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  // [`&.${tableCellClasses.head}`]: {
+  //   backgroundColor: theme.palette.common.black,
+  //   color: theme.palette.common.white,
+  // },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 
 const ShippableTable = ({
   data,
@@ -10,119 +36,136 @@ const ShippableTable = ({
 }) => {
   return (
     <>
-      <Table size="sm">
-        <Table.Thead>
-          {!activeComment && (
-            <Table.Tr>
-              <Table.Th colSpan={5}></Table.Th>
-              <Table.Th colSpan={6}>
-                {fases[activeIndex]?.fase} <br /> {fases[activeIndex]?.maquina}
-              </Table.Th>
-            </Table.Tr>
-          )}
-          <Table.Tr>
-            <Table.Th className="w-10">#</Table.Th>
-            <Table.Th align="left">Entregable</Table.Th>
-            <Table.Th align="left">Evidencia</Table.Th>
-            <Table.Th>Prioridad</Table.Th>
-            <Table.Th>Ponderación</Table.Th>
-            {activeComment ? (
-              <Table.Th>Comentarios</Table.Th>
-            ) : (
-              <>
-                <Table.Th>Responsable</Table.Th>
-                <Table.Th>Fecha Inicio</Table.Th>
-                <Table.Th>Fecha Termino</Table.Th>
-                <Table.Th>Fecha Real</Table.Th>
-                <Table.Th>Avance</Table.Th>
-                <Table.Th>Comentarios</Table.Th>
-              </>
+      <TableContainer
+        component={Paper}
+        sx={{ boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)" }}
+      >
+        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+          <TableHead>
+            {!activeComment && (
+              <TableRow>
+                <StyledTableCell colSpan={5}></StyledTableCell>
+                <StyledTableCell colSpan={6} sx={{ textAlign: "center" }}>
+                  {`${fases[activeIndex]?.fase} - ${fases[activeIndex]?.maquina}`}
+                  {/* {fases[activeIndex]?.fase}
+                  <br />
+                  {fases[activeIndex]?.maquina} */}
+                </StyledTableCell>
+              </TableRow>
             )}
-          </Table.Tr>
-        </Table.Thead>
-        <Table.Tbody>
-          {_.map(data, (item, index) => (
-            <Table.Tr key={item.id}>
-              <Table.Td className="w-10" align="center">
-                {index + 1}
-              </Table.Td>
-              <Table.Td>{item.nombre}</Table.Td>
-              <Table.Td>{item.evidencia}</Table.Td>
-              <Table.Td align="center">{item.prioridad}</Table.Td>
-              <Table.Td align="center">{item.ponderacion}</Table.Td>
+            <TableRow>
+              <StyledTableCell sx={{ width: "2.5rem" }}>#</StyledTableCell>
+              <StyledTableCell align="left">Entregable</StyledTableCell>
+              <StyledTableCell align="left">Evidencia</StyledTableCell>
+              <StyledTableCell>Prioridad</StyledTableCell>
+              <StyledTableCell>Ponderación</StyledTableCell>
               {activeComment ? (
-                <Table.Td>{item.comentarios}</Table.Td>
+                <StyledTableCell align="center">Comentarios</StyledTableCell>
               ) : (
                 <>
-                  {advance &&
-                  advance[item.id] &&
-                  advance[item.id].length > 0 ? (
-                    <>
-                      <Table.Td>
-                        {
-                          advance[item.id].find(
-                            (obj) =>
-                              obj.idMaquina === fases[activeIndex]?.idMaquina
-                          )?.responsable
-                        }
-                      </Table.Td>
-                      <Table.Td align="center">
-                        {
-                          advance[item.id].find(
-                            (obj) =>
-                              obj.idMaquina === fases[activeIndex]?.idMaquina
-                          )?.fecha_inicio
-                        }
-                      </Table.Td>
-                      <Table.Td align="center">
-                        {
-                          advance[item.id].find(
-                            (obj) =>
-                              obj.idMaquina === fases[activeIndex]?.idMaquina
-                          )?.fecha_termino
-                        }
-                      </Table.Td>
-                      <Table.Td align="center">
-                        {
-                          advance[item.id].find(
-                            (obj) =>
-                              obj.idMaquina === fases[activeIndex]?.idMaquina
-                          )?.fecha_real
-                        }
-                      </Table.Td>
-                      <Table.Td align="center">
-                        {
-                          advance[item.id].find(
-                            (obj) =>
-                              obj.idMaquina === fases[activeIndex]?.idMaquina
-                          )?.avance
-                        }
-                      </Table.Td>
-                      <Table.Td>
-                        {
-                          advance[item.id].find(
-                            (obj) =>
-                              obj.idMaquina === fases[activeIndex]?.idMaquina
-                          )?.comentarios
-                        }
-                      </Table.Td>
-                    </>
-                  ) : (
-                    <>
-                      <Table.Td></Table.Td>
-                      <Table.Td></Table.Td>
-                      <Table.Td></Table.Td>
-                      <Table.Td></Table.Td>
-                      <Table.Td></Table.Td>
-                      <Table.Td></Table.Td>
-                    </>
-                  )}
+                  <StyledTableCell>Responsable</StyledTableCell>
+                  <StyledTableCell>Fecha Inicio</StyledTableCell>
+                  <StyledTableCell>Fecha Termino</StyledTableCell>
+                  <StyledTableCell>Fecha Real</StyledTableCell>
+                  <StyledTableCell>Avance</StyledTableCell>
+                  <StyledTableCell>Comentarios</StyledTableCell>
                 </>
               )}
-            </Table.Tr>
-          ))}
-        </Table.Tbody>
-      </Table>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {_.map(data, (item, index) => (
+              <StyledTableRow key={item.id}>
+                <StyledTableCell
+                  sx={{ width: "2.5rem" }}
+                  component="th"
+                  scope="row"
+                  align="center"
+                >
+                  {index + 1}
+                </StyledTableCell>
+                <StyledTableCell>{item.nombre}</StyledTableCell>
+                <StyledTableCell>{item.evidencia}</StyledTableCell>
+                <StyledTableCell align="center">
+                  {item.prioridad}
+                </StyledTableCell>
+                <StyledTableCell align="center">
+                  {item.ponderacion}
+                </StyledTableCell>
+                {activeComment ? (
+                  <StyledTableCell>{item.comentarios}</StyledTableCell>
+                ) : (
+                  <>
+                    {advance &&
+                    advance[item.id] &&
+                    advance[item.id].length > 0 ? (
+                      <>
+                        <StyledTableCell>
+                          {
+                            advance[item.id].find(
+                              (obj) =>
+                                obj.idMaquina === fases[activeIndex]?.idMaquina
+                            )?.responsable
+                          }
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {
+                            advance[item.id].find(
+                              (obj) =>
+                                obj.idMaquina === fases[activeIndex]?.idMaquina
+                            )?.fecha_inicio
+                          }
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {
+                            advance[item.id].find(
+                              (obj) =>
+                                obj.idMaquina === fases[activeIndex]?.idMaquina
+                            )?.fecha_termino
+                          }
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {
+                            advance[item.id].find(
+                              (obj) =>
+                                obj.idMaquina === fases[activeIndex]?.idMaquina
+                            )?.fecha_real
+                          }
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                          {
+                            advance[item.id].find(
+                              (obj) =>
+                                obj.idMaquina === fases[activeIndex]?.idMaquina
+                            )?.avance
+                          }
+                        </StyledTableCell>
+                        <StyledTableCell>
+                          {
+                            advance[item.id].find(
+                              (obj) =>
+                                obj.idMaquina === fases[activeIndex]?.idMaquina
+                            )?.comentarios
+                          }
+                        </StyledTableCell>
+                      </>
+                    ) : (
+                      <>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                      </>
+                    )}
+                  </>
+                )}
+              </StyledTableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };

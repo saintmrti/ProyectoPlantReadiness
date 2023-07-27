@@ -14,7 +14,7 @@ const Advance = () => {
     (item) => item.idGrupo === parseInt(idGrupo)
   );
   return (
-    <div>
+    <div className="w-full">
       <MachinesForm
         idEntregable={idEntregable}
         fases={filterFases}

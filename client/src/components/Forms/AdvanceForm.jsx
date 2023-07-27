@@ -1,5 +1,9 @@
 import { useForm } from "react-hook-form";
-import { Button, Select } from "@rewind-ui/core";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import _ from "lodash";
 
@@ -17,12 +21,10 @@ const AdvanceForm = ({ setOpen, fases, data }) => {
   return (
     <div className="max-w-lg">
       <form
-        className="flex justify-center items-center flex-wrap shadow-md rounded-md h-80"
+        className="flex justify-center items-center flex-wrap h-80"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-3xl mb-5 w-full text-center mt-5">
-          Agregar avances
-        </h1>
+        <h1 className="text-3xl mb-5 w-full text-center">Agregar avances</h1>
         <div>
           {/* <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4 py-2 w-40">Responsable</label>
@@ -35,39 +37,51 @@ const AdvanceForm = ({ setOpen, fases, data }) => {
           </div> */}
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4">Entregable</label>
-            <div className="w-60">
+            <FormControl sx={{ width: "15rem" }}>
+              <InputLabel id="entregable">Seleccionar entregable</InputLabel>
               <Select
-                {...register("idEntregable", { required: true })}
+                labelId="entregable"
+                id="select-entregable"
+                label="Seleccionar entregable"
+                autoComplete="off"
                 defaultValue=""
+                {...register("idEntregable", { required: true })}
               >
-                <option value="">Seleccione un entregable</option>
+                <MenuItem value="">Seleccione un entregable</MenuItem>
                 {_.map(data, (item) => (
-                  <option key={item.id} value={item.id}>
+                  <MenuItem key={item.id} value={item.id}>
                     {item.nombre}
-                  </option>
+                  </MenuItem>
                 ))}
               </Select>
-            </div>
+            </FormControl>
           </div>
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4">Fase</label>
-            <div className="w-60">
+            <FormControl sx={{ width: "15rem" }}>
+              <InputLabel id="fase">Seleccionar fase</InputLabel>
               <Select
-                {...register("idGrupo", { required: true })}
+                labelId="fase"
+                id="select-phase"
+                label="Seleccionar fase"
+                autoComplete="off"
                 defaultValue=""
+                {...register("idGrupo", { required: true })}
               >
-                <option value="">Seleccione una fase</option>
+                <MenuItem value="">
+                  <em>Seleccionar fase</em>
+                </MenuItem>
                 {_.map(fases, (item) => (
-                  <option key={item.id} value={item.idGrupo}>
+                  <MenuItem key={item.id} value={item.idGrupo}>
                     {item.fase}
-                  </option>
+                  </MenuItem>
                 ))}
               </Select>
-            </div>
+            </FormControl>
           </div>
         </div>
-        <div className="w-full flex justify-center mb-5">
-          <Button color="red" shadow="md" shadowColor="red" type="submit">
+        <div className="w-full flex justify-center">
+          <Button variant="contained" type="submit">
             Enviar
           </Button>
         </div>

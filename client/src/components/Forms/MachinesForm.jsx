@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { Button, Input, Checkbox, Badge, Textarea } from "@rewind-ui/core";
+import Button from "@mui/material/Button";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import _ from "lodash";
 
 import { insertAdvanceRequest } from "../../slices/advance";
@@ -53,157 +59,91 @@ const MachinesForm = ({ idEntregable, fases, isFetching }) => {
   };
 
   return (
-    <div className="h-screen">
-      <form
-        className="flex flex-col justify-center px-10"
-        onSubmit={handleSubmit(onSubmit)}
+    <form
+      className="flex flex-col justify-center pb-5 px-10"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <h1 className="text-3xl mb-5 text-center mt-5">{fases[0]?.fase}</h1>
+      <Stack
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          mb: 2,
+        }}
+        direction="row"
+        spacing={1}
       >
-        <h1 className="text-3xl mb-5 text-center mt-5">{fases[0]?.fase}</h1>
-        <div className="flex justify-between items-center w-full mb-5">
-          <div className="w-40 text-center">
-            <Badge
-              tone="glossy"
-              color="red"
-              shadow="md"
-              shadowColor="red"
-              className="px-7 py-4"
-            >
-              Maquina
-            </Badge>
-          </div>
-          <div className="w-40 text-center">
-            <Badge
-              tone="glossy"
-              color="red"
-              shadow="md"
-              shadowColor="red"
-              className="px-7 py-4"
-            >
-              Responsable
-            </Badge>
-          </div>
-          <div className="w-40 text-center">
-            <Badge
-              tone="glossy"
-              color="red"
-              shadow="md"
-              shadowColor="red"
-              className="px-7 py-4"
-            >
-              Fecha Inicio
-            </Badge>
-          </div>
-          <div className="w-40 text-center">
-            <Badge
-              tone="glossy"
-              color="red"
-              shadow="md"
-              shadowColor="red"
-              className="px-7 py-4"
-            >
-              Fecha Termino
-            </Badge>
-          </div>
-          <div className="w-40 text-center">
-            <Badge
-              tone="glossy"
-              color="red"
-              shadow="md"
-              shadowColor="red"
-              className="px-7 py-4"
-            >
-              Fecha Real
-            </Badge>
-          </div>
-          <div className="w-40 text-center">
-            <Badge
-              tone="glossy"
-              color="red"
-              shadow="md"
-              shadowColor="red"
-              className="px-7 py-4"
-            >
-              Avance
-            </Badge>
-          </div>
-          <div className="w-60 text-center">
-            <Badge
-              tone="glossy"
-              color="red"
-              shadow="md"
-              shadowColor="red"
-              className="px-7 py-4"
-            >
-              Comentarios
-            </Badge>
-          </div>
-        </div>
-        {_.map(fases, (machine, index) => (
-          <div className="flex justify-between items-center mb-4" key={index}>
-            <div className="flex w-40">
-              <Checkbox
-                label={machine.maquina}
-                onChange={(event) => handleCheckboxChange(machine, event)}
-              />
-            </div>
-            <Input
-              type="text"
-              placeholder="Responsable"
-              className="w-40"
-              autoComplete="off"
-              disabled={!checkboxStates[machine.maquina]}
-              {...validateRegister(`responsible_${index}`, index)}
-            />
-            <Input
-              type="date"
-              placeholder="Fecha de inicio"
-              className="w-40"
-              disabled={!checkboxStates[machine.maquina]}
-              {...validateRegister(`startDate_${index}`, index)}
-            />
-            <Input
-              type="date"
-              placeholder="Fecha de termino"
-              className="w-40"
-              disabled={!checkboxStates[machine.maquina]}
-              {...validateRegister(`endDate_${index}`, index)}
-            />
-            <Input
-              type="date"
-              placeholder="Fecha real"
-              className="w-40"
-              disabled={!checkboxStates[machine.maquina]}
-              {...register(`realDate_${index}`, { required: false })}
-            />
-            <Input
-              type="number"
-              placeholder="Avance"
-              className="w-40"
-              disabled={!checkboxStates[machine.maquina]}
-              {...validateRegister(`advance_${index}`, index)}
-            />
-            <Textarea
-              placeholder="Comentarios"
-              className="w-60 h-10"
-              disabled={!checkboxStates[machine.maquina]}
-              {...register(`comments_${index}`, { required: false })}
-            />
-          </div>
-        ))}
-        <div className="flex justify-center">
-          <Button
-            color="red"
-            shadowColor="red"
-            shadow="md"
-            type="submit"
-            disabled={isFetching}
-            loading={isFetching}
+        <Chip sx={{ width: "11rem" }} label="Maquina" color="primary" />
+        <Chip sx={{ width: "11rem" }} label="Responsable" color="primary" />
+        <Chip sx={{ width: "11rem" }} label="Fecha de inicio" color="primary" />
+        <Chip sx={{ width: "11rem" }} label="Fecha de fin" color="primary" />
+        <Chip sx={{ width: "11rem" }} label="Fecha real" color="primary" />
+        <Chip sx={{ width: "11rem" }} label="Avance" color="primary" />
+        <Chip sx={{ width: "11rem" }} label="Comentarios" color="primary" />
+      </Stack>
+      {_.map(fases, (machine, index) => (
+        <div className="flex justify-between items-center mb-2" key={index}>
+          <FormGroup
+            sx={{ display: "flex", itemsAlign: "center", width: "11rem" }}
           >
-            Agregar
-          </Button>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  onChange={(event) => handleCheckboxChange(machine, event)}
+                />
+              }
+              label={machine.maquina}
+            />
+          </FormGroup>
+          <TextField
+            sx={{ width: "11rem" }}
+            type="text"
+            label="Responsable"
+            autoComplete="off"
+            disabled={!checkboxStates[machine.maquina]}
+            {...validateRegister(`responsible_${index}`, index)}
+          />
+          <TextField
+            sx={{ width: "11rem" }}
+            type="date"
+            disabled={!checkboxStates[machine.maquina]}
+            {...validateRegister(`startDate_${index}`, index)}
+          />
+          <TextField
+            sx={{ width: "11rem" }}
+            type="date"
+            disabled={!checkboxStates[machine.maquina]}
+            {...validateRegister(`endDate_${index}`, index)}
+          />
+          <TextField
+            sx={{ width: "11rem" }}
+            type="date"
+            disabled={!checkboxStates[machine.maquina]}
+            {...register(`realDate_${index}`, { required: false })}
+          />
+          <TextField
+            sx={{ width: "11rem" }}
+            type="number"
+            label="Avance"
+            disabled={!checkboxStates[machine.maquina]}
+            {...validateRegister(`advance_${index}`, index)}
+          />
+          <TextField
+            sx={{ width: "11rem" }}
+            type="text"
+            label="Comentarios"
+            disabled={!checkboxStates[machine.maquina]}
+            {...register(`comments_${index}`, { required: false })}
+          />
         </div>
-      </form>
-    </div>
+      ))}
+      <div className="flex justify-center mt-5">
+        <Button type="submit" variant="contained" disabled={isFetching}>
+          {isFetching ? "Cargando..." : "Agregar"}
+        </Button>
+      </div>
+    </form>
   );
 };
 

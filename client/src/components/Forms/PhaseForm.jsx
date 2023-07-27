@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Input, Checkbox } from "@rewind-ui/core";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import _ from "lodash";
 
 import { insertPhaseRequest } from "../../slices/phase";
@@ -15,15 +19,15 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
   const { isFetchingInsert } = useSelector((state) => state.machines);
 
   const handleCheckboxChange = (event) => {
-    const { id, checked } = event.target;
+    const { value, checked } = event.target;
     if (checked) {
       setSelectedMachines((prevSelectedMachines) => [
         ...prevSelectedMachines,
-        { id },
+        { id: value },
       ]);
     } else {
       setSelectedMachines((prevSelectedMachines) =>
-        prevSelectedMachines.filter((machine) => machine.id !== id)
+        prevSelectedMachines.filter((machine) => machine.id !== value)
       );
     }
   };
@@ -45,63 +49,61 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
   };
 
   return (
-    <div className="mt-10">
+    <div>
       <form
-        className="flex justify-center items-center flex-wrap shadow-md rounded-md"
+        className="flex justify-center items-center flex-wrap"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="text-3xl mb-5 w-full text-center">Nueva fase</h1>
         <div className="mb-5">
-          <div className="flex justify-end items-center mb-5">
-            <label className="px-4 py-2 w-36">Nombre</label>
-            <Input
+          <div className="flex justify-center items-center mb-5">
+            <label className="px-4">Nombre</label>
+            <TextField
+              sx={{ width: "15rem" }}
               type="text"
-              placeholder="Agregar fase"
+              label="Fase"
               autoComplete="off"
               {...register("name", { required: true })}
             />
           </div>
           <div className="grid grid-cols-3 gap-4 mb-5">
             {_.map(data, (item) => (
-              <div key={item.id}>
-                <Checkbox
+              <FormGroup
+                key={item.id}
+                sx={{ display: "flex", itemsAlign: "center" }}
+              >
+                <FormControlLabel
+                  control={
+                    <Checkbox value={item.id} onChange={handleCheckboxChange} />
+                  }
                   label={item.maquina}
-                  id={item.id}
-                  onChange={handleCheckboxChange}
                 />
-              </div>
+              </FormGroup>
             ))}
           </div>
-          <div className="flex justify-evenly">
-            <div>
-              <Input
-                type="text"
-                placeholder="Agregar maquina"
-                autoComplete="off"
-                onChange={(e) => setMachine(e.target.value)}
-                value={machine}
-              />
-            </div>
+          <div className="flex justify-evenly items-center">
+            <TextField
+              sx={{ width: "15rem" }}
+              label="Maquina"
+              autoComplete="off"
+              onChange={(e) => setMachine(e.target.value)}
+              value={machine}
+            />
             <div>
               <Button
-                color="red"
-                shadow="md"
-                shadowColor="red"
                 onClick={handleAddMachine}
+                variant="outlined"
                 disabled={machine === "" ? true : false}
-                loading={isFetchingInsert}
               >
-                Agregar maquina
+                {isFetchingInsert ? "Cargando..." : "Agregar maquina"}
               </Button>
             </div>
           </div>
         </div>
-        <div className="w-full flex justify-center mb-10">
+        <div className="w-full flex justify-center">
           <Button
             type="submit"
-            color="red"
-            shadow="md"
-            shadowColor="red"
+            variant="contained"
             disabled={selectedMachines.length === 0}
           >
             Agregar

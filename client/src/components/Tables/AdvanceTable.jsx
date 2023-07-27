@@ -2,10 +2,7 @@ import { Table } from "@rewind-ui/core";
 // import { useNavigate } from "react-router-dom";
 // import _ from "lodash";
 
-// eslint-disable-next-line react/prop-types
 const ShippableTable = ({ data }) => {
-  // const navigate = useNavigate();
-
   return (
     <>
       <Table size="sm">
