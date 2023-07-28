@@ -1,11 +1,24 @@
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
+// import DarkUnica from 'highcharts/themes/dark-unica';
+import Highcharts from "highcharts";
+import moment from "moment";
 
 import { Root } from "./components/routes";
 import { getTheme } from "./utilities/getTheme";
 
+Highcharts.setOptions({
+  time: {
+    timezone: "America/Mexico_City",
+    useUTC: false,
+    moment,
+  },
+});
+
 const App = () => {
+  // if(theme !== 'light') DarkUnica(Highcharts);
+
   return (
     <>
       <ThemeProvider theme={getTheme("light")}>
