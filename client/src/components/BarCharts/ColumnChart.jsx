@@ -1,14 +1,22 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-const StackedBar = ({ title, categories, series }) => {
+const ColumnChart = ({ title, series }) => {
   return (
     <HighchartsReact
       highcharts={Highcharts}
       options={{
         chart: {
-          type: "bar",
+          type: "column",
+          height: 200,
+          style: {
+            fontFamily: "Roboto",
+          },
+          time: {
+            timezone: "America/Mexico_City",
+          },
         },
+
         title: {
           text: title,
           style: {
@@ -17,15 +25,17 @@ const StackedBar = ({ title, categories, series }) => {
             lineHeight: "1.75rem",
           },
         },
+
         xAxis: {
-          categories,
+          type: "datetime",
         },
+
         yAxis: {
+          allowDecimals: false,
           min: 0,
           title: {
-            text: "Entregables",
+            text: "Count medals",
           },
-          gridLineWidth: 0,
         },
         legend: {
           enabled: false,
@@ -38,31 +48,24 @@ const StackedBar = ({ title, categories, series }) => {
         credits: {
           enabled: false,
         },
+
+        tooltip: {
+          shared: true,
+          xDateFormat: "%d/%m/%Y",
+        },
+
         plotOptions: {
-          series: {
-            stacking: "normal",
+          column: {
+            stacking: null,
             dataLabels: {
               enabled: true,
             },
           },
         },
-        series: [
-          {
-            name: "Entregables",
-            data: series,
-          },
-          //   {
-          //     name: "Lionel Messi",
-          //     data: [5, 3, 12, 6, 11],
-          //   },
-          //   {
-          //     name: "Robert Lewandowski",
-          //     data: [5, 15, 8, 5, 8],
-          //   },
-        ],
+        series,
       }}
     />
   );
 };
 
-export default StackedBar;
+export default ColumnChart;
