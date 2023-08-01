@@ -1,30 +1,28 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-const StackedBar = ({ title, categories, series }) => {
+const StackedBar = ({ height, categories, series }) => {
   return (
     <HighchartsReact
       highcharts={Highcharts}
       options={{
         chart: {
           type: "bar",
-        },
-        title: {
-          text: title,
+          height,
           style: {
-            fontWeight: "normal",
-            fontSize: ".9rem",
-            lineHeight: "1.75rem",
+            fontFamily: "Roboto",
           },
         },
+        title: null,
         xAxis: {
           categories,
         },
         yAxis: {
           min: 0,
-          title: {
-            text: "Entregables",
-          },
+          title: null,
+          // title: {
+          //   text: "Entregables",
+          // },
           gridLineWidth: 0,
         },
         legend: {

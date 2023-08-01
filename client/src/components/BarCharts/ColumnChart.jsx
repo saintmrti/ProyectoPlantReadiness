@@ -1,14 +1,14 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-const ColumnChart = ({ title, series }) => {
+const ColumnChart = ({ series, height }) => {
   return (
     <HighchartsReact
       highcharts={Highcharts}
       options={{
         chart: {
           type: "column",
-          height: 200,
+          height,
           style: {
             fontFamily: "Roboto",
           },
@@ -16,16 +16,7 @@ const ColumnChart = ({ title, series }) => {
             timezone: "America/Mexico_City",
           },
         },
-
-        title: {
-          text: title,
-          style: {
-            fontWeight: "normal",
-            fontSize: ".9rem",
-            lineHeight: "1.75rem",
-          },
-        },
-
+        title: null,
         xAxis: {
           type: "datetime",
         },
@@ -33,15 +24,16 @@ const ColumnChart = ({ title, series }) => {
         yAxis: {
           allowDecimals: false,
           min: 0,
-          title: {
-            text: "Count medals",
-          },
+          title: null,
+          // title: {
+          //   text: "Entregables",
+          // },
         },
-        legend: {
-          enabled: false,
-          padding: 0,
-          backgroundColor: "transparent",
-        },
+        // legend: {
+        //   enabled: false,
+        //   padding: 0,
+        //   backgroundColor: "transparent",
+        // },
         accessibility: {
           enabled: false,
         },

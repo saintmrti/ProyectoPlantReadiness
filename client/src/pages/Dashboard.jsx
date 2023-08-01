@@ -1,16 +1,21 @@
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+
 import securityIcon from "../img/securityIcon.png";
 import rhIcon from "../img/rhIcon.png";
 import calidadIcon from "../img/calidadIcon.png";
 import produccionIcon from "../img/produccionIcon.png";
 import matenimientoIcon from "../img/mantenimientoIcon.png";
-
 import GaugeSeries from "../components/GaugeCharts/GaugeSeries";
 import SolidGauge from "../components/GaugeCharts/SolidGauge";
 import StackedBar from "../components/BarCharts/StackedBar";
 import ColumnChart from "../components/BarCharts/ColumnChart";
+import { fetchExpectancyRequest } from "../slices/expectancy";
+import { fetchShippableRequest } from "../slices/shippable";
+import { fetchAdvanceRequest } from "../slices/advance";
+import { getShippableByMonth } from "../selectors/kpis";
+import { useEffect } from "react";
 
 const dataEnergizer = {
   categories: [
@@ -68,245 +73,205 @@ const seriesPerYear = [
   },
 ];
 
-const seriesPerMonth = [
-  {
-    name: "Plan",
-    data: [
-      [moment(`2023-01-01`, "YYYY-MM-DD").valueOf(), 20],
-      [moment(`2023-02-01`, "YYYY-MM-DD").valueOf(), 40],
-      [moment(`2023-03-01`, "YYYY-MM-DD").valueOf(), 50],
-      [moment(`2023-04-01`, "YYYY-MM-DD").valueOf(), 30],
-      [moment(`2023-05-01`, "YYYY-MM-DD").valueOf(), 20],
-      [moment(`2023-06-01`, "YYYY-MM-DD").valueOf(), 28],
-      [moment(`2023-07-01`, "YYYY-MM-DD").valueOf(), 42],
-      [moment(`2023-08-01`, "YYYY-MM-DD").valueOf(), 10],
-      [moment(`2023-09-01`, "YYYY-MM-DD").valueOf(), 79],
-      [moment(`2023-10-01`, "YYYY-MM-DD").valueOf(), 62],
-      [moment(`2023-11-01`, "YYYY-MM-DD").valueOf(), 20],
-      [moment(`2023-12-01`, "YYYY-MM-DD").valueOf(), 24],
-    ],
-  },
-  {
-    name: "Real",
-    data: [
-      [moment(`2023-01-01`, "YYYY-MM-DD").valueOf(), 10],
-      [moment(`2023-02-01`, "YYYY-MM-DD").valueOf(), 36],
-      [moment(`2023-03-01`, "YYYY-MM-DD").valueOf(), 48],
-      [moment(`2023-04-01`, "YYYY-MM-DD").valueOf(), 25],
-      [moment(`2023-05-01`, "YYYY-MM-DD").valueOf(), 18],
-      [moment(`2023-06-01`, "YYYY-MM-DD").valueOf(), 25],
-      [moment(`2023-07-01`, "YYYY-MM-DD").valueOf(), 41],
-      [moment(`2023-08-01`, "YYYY-MM-DD").valueOf(), 15],
-      [moment(`2023-09-01`, "YYYY-MM-DD").valueOf(), 16],
-      [moment(`2023-10-01`, "YYYY-MM-DD").valueOf(), 19],
-      [moment(`2023-11-01`, "YYYY-MM-DD").valueOf(), 20],
-      [moment(`2023-12-01`, "YYYY-MM-DD").valueOf(), 24],
-    ],
-  },
-];
+// const seriesPerMonth = [
+//   {
+//     name: "Plan",
+//     data: [
+//       [moment(`2023-01-01`, "YYYY-MM-DD").valueOf(), 20],
+//       [moment(`2023-02-01`, "YYYY-MM-DD").valueOf(), 40],
+//       [moment(`2023-03-01`, "YYYY-MM-DD").valueOf(), 50],
+//       [moment(`2023-04-01`, "YYYY-MM-DD").valueOf(), 30],
+//       [moment(`2023-05-01`, "YYYY-MM-DD").valueOf(), 20],
+//       [moment(`2023-06-01`, "YYYY-MM-DD").valueOf(), 28],
+//       [moment(`2023-07-01`, "YYYY-MM-DD").valueOf(), 42],
+//       [moment(`2023-08-01`, "YYYY-MM-DD").valueOf(), 10],
+//       [moment(`2023-09-01`, "YYYY-MM-DD").valueOf(), 79],
+//       [moment(`2023-10-01`, "YYYY-MM-DD").valueOf(), 62],
+//       [moment(`2023-11-01`, "YYYY-MM-DD").valueOf(), 20],
+//       [moment(`2023-12-01`, "YYYY-MM-DD").valueOf(), 24],
+//     ],
+//   },
+//   {
+//     name: "Real",
+//     data: [
+//       [moment(`2023-01-01`, "YYYY-MM-DD").valueOf(), 10],
+//       [moment(`2023-02-01`, "YYYY-MM-DD").valueOf(), 36],
+//       [moment(`2023-03-01`, "YYYY-MM-DD").valueOf(), 48],
+//       [moment(`2023-04-01`, "YYYY-MM-DD").valueOf(), 25],
+//       [moment(`2023-05-01`, "YYYY-MM-DD").valueOf(), 18],
+//       [moment(`2023-06-01`, "YYYY-MM-DD").valueOf(), 25],
+//       [moment(`2023-07-01`, "YYYY-MM-DD").valueOf(), 41],
+//       [moment(`2023-08-01`, "YYYY-MM-DD").valueOf(), 15],
+//       [moment(`2023-09-01`, "YYYY-MM-DD").valueOf(), 16],
+//       [moment(`2023-10-01`, "YYYY-MM-DD").valueOf(), 19],
+//       [moment(`2023-11-01`, "YYYY-MM-DD").valueOf(), 20],
+//       [moment(`2023-12-01`, "YYYY-MM-DD").valueOf(), 24],
+//     ],
+//   },
+// ];
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
+  const seriesPerMonth = useSelector(getShippableByMonth);
+  // const seriesPerYear = useSelector(getShippableByYear);
+
+  useEffect(() => {
+    dispatch(fetchExpectancyRequest());
+    dispatch(fetchShippableRequest());
+    dispatch(fetchAdvanceRequest());
+  }, [dispatch]);
   return (
     <>
-      <div className="container mx-auto">
-        {/* <div className="flex flex-col items-center mb-3">
-          <h1 className="text-3xl font-bold">Plant Readiness</h1>
-          <div className="w-2/3 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
-          <h2 className="text-xl">
-            ScoreCard &quot;Incremento a la capacidad BT Energía&quot;
-          </h2>
-        </div> */}
+      {/* {console.log(seriesPerYear)} */}
+      <div className="container m-auto">
         <div className="grid grid-cols-9 gap-4">
           <div className="space-y-4 col-span-2">
-            <Card sx={{ height: "100%" }}>
-              <CardContent>
-                <h2 className="text-xl text-center mb-3">Total Entregables</h2>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="flex justify-around items-center">
-                    <img
-                      src={securityIcon}
-                      alt="icono_seguridad"
-                      className="w-10 h-10 object-contain"
-                    />
-                    <div className="border shadow-md w-24">
-                      <div className="bg-orange-500 text-white">
-                        <h4 className="text-sm text-center py-1">Seguridad</h4>
-                      </div>
-                      <div className="text-center text-lg py-1 font-bold">
-                        110
-                      </div>
+            <Card sx={{ height: "260px" }}>
+              <h2 className="text-base text-center mt-3">Total Entregables</h2>
+              <div className="grid grid-cols-2 gap-2 px-2 mt-3">
+                <div className="flex justify-around items-center">
+                  <img
+                    src={securityIcon}
+                    alt="icono_seguridad"
+                    className="w-10 h-10 object-contain"
+                  />
+                  <div className="border shadow-sm w-24">
+                    <div className="bg-orange-500 text-white">
+                      <h4 className="text-xs text-center py-1">Seguridad</h4>
                     </div>
-                  </div>
-                  <div className="flex justify-around items-center">
-                    <img
-                      src={calidadIcon}
-                      alt="icono_seguridad"
-                      className="w-10 h-10 object-contain"
-                    />
-                    <div className="border shadow-md w-24">
-                      <div className="bg-orange-500 text-white">
-                        <h4 className="text-sm text-center py-1">Calidad</h4>
-                      </div>
-                      <div className="text-center text-lg py-1 font-bold">
-                        78
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-around items-center">
-                    <img
-                      src={rhIcon}
-                      alt="icono_seguridad"
-                      className="w-10 h-10 object-contain"
-                    />
-                    <div className="border shadow-md w-24">
-                      <div className="bg-orange-500 text-white">
-                        <h4 className="text-sm text-center py-1">RH</h4>
-                      </div>
-                      <div className="text-center text-lg py-1 font-bold">
-                        82
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-around items-center">
-                    <img
-                      src={produccionIcon}
-                      alt="icono_seguridad"
-                      className="w-10 h-10 object-contain"
-                    />
-                    <div className="border shadow-md w-24">
-                      <div className="bg-orange-500 text-white">
-                        <h4 className="text-sm text-center py-1">Producción</h4>
-                      </div>
-                      <div className="text-center text-lg py-1 font-bold">
-                        175
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-around items-center">
-                    <img
-                      src={matenimientoIcon}
-                      alt="icono_seguridad"
-                      className="w-10 h-10 object-contain"
-                    />
-                    <div className="border shadow-md w-24">
-                      <div className="bg-orange-500 text-white">
-                        <h4 className="text-sm text-center py-1">Mtto.</h4>
-                      </div>
-                      <div className="text-center text-lg py-1 font-bold">
-                        234
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-around items-center">
-                    <div className="w-10 h-10"></div>
-                    <div className="border shadow-md w-24">
-                      <div className="bg-blue-500 text-white">
-                        <h4 className="text-sm text-center py-1">Total</h4>
-                      </div>
-                      <div className="text-center text-lg py-1 font-bold">
-                        679
-                      </div>
+                    <div className="text-center text-md py-1 font-bold">
+                      110
                     </div>
                   </div>
                 </div>
-              </CardContent>
+                <div className="flex justify-around items-center">
+                  <img
+                    src={calidadIcon}
+                    alt="icono_seguridad"
+                    className="w-10 h-10 object-contain"
+                  />
+                  <div className="border shadow-sm w-24">
+                    <div className="bg-orange-500 text-white">
+                      <h4 className="text-xs text-center py-1">Calidad</h4>
+                    </div>
+                    <div className="text-center text-md py-1 font-bold">78</div>
+                  </div>
+                </div>
+                <div className="flex justify-around items-center">
+                  <img
+                    src={rhIcon}
+                    alt="icono_seguridad"
+                    className="w-10 h-10 object-contain"
+                  />
+                  <div className="border shadow-sm w-24">
+                    <div className="bg-orange-500 text-white">
+                      <h4 className="text-xs text-center py-1">RH</h4>
+                    </div>
+                    <div className="text-center text-md py-1 font-bold">82</div>
+                  </div>
+                </div>
+                <div className="flex justify-around items-center">
+                  <img
+                    src={produccionIcon}
+                    alt="icono_seguridad"
+                    className="w-10 h-10 object-contain"
+                  />
+                  <div className="border shadow-sm w-24">
+                    <div className="bg-orange-500 text-white">
+                      <h4 className="text-xs text-center py-1">Producción</h4>
+                    </div>
+                    <div className="text-center text-md py-1 font-bold">
+                      175
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-around items-center">
+                  <img
+                    src={matenimientoIcon}
+                    alt="icono_seguridad"
+                    className="w-10 h-10 object-contain"
+                  />
+                  <div className="border shadow-sm w-24">
+                    <div className="bg-orange-500 text-white">
+                      <h4 className="text-xs text-center py-1">Mtto.</h4>
+                    </div>
+                    <div className="text-center text-md py-1 font-bold">
+                      234
+                    </div>
+                  </div>
+                </div>
+                <div className="flex justify-around items-center">
+                  <div className="w-10 h-10"></div>
+                  <div className="border shadow-sm w-24">
+                    <div className="bg-blue-500 text-white">
+                      <h4 className="text-xs text-center py-1">Total</h4>
+                    </div>
+                    <div className="text-center text-md py-1 font-bold">
+                      679
+                    </div>
+                  </div>
+                </div>
+              </div>
             </Card>
           </div>
           <div className="space-y-4 col-span-4">
-            <Card sx={{ height: "100%" }}>
-              <CardContent>
-                {/* <h2 className="text-xl text-center">Gauge</h2> */}
-                <div className="grid grid-cols-2 gap-2">
-                  <GaugeSeries height={250} title="Cump Total" />
-                  <GaugeSeries height={250} title="Cump YTD" />
-                </div>
-              </CardContent>
+            <Card sx={{ height: "260px" }}>
+              <div className="grid grid-cols-2 gap-2 mt-3">
+                <GaugeSeries height={250} title="Cumplimiento Total" />
+                <GaugeSeries height={250} title="Cumplimiento YTD" />
+              </div>
             </Card>
-            {/* <Card>
-              <CardContent>
-                <ColumnChart
-                  title="Cumplimiento anual"
-                  series={seriesPerYear}
-                />
-              </CardContent>
-            </Card> */}
           </div>
           <div className="space-y-4 col-span-3">
-            <Card sx={{ height: "100%" }}>
-              <CardContent>
-                <h2 className="text-xl text-center">Cumplimiento Rubros</h2>
-                <div className="grid grid-cols-3 gap-2 gap-y-0">
-                  <SolidGauge value={100} name="Seguridad" height={120} />
-                  <SolidGauge value={20} name="Calidad" height={120} />
-                  <SolidGauge value={100} name="RH" height={120} />
-                  <SolidGauge value={20} name="Producción" height={120} />
-                  <SolidGauge value={20} name="Mantenimiento" height={120} />
-                </div>
-              </CardContent>
-            </Card>
-            {/* <Card>
-              <CardContent>
-                <StackedBar
-                  title="Avance Entregables"
-                  categories={dataAdvance.categories}
-                  series={dataAdvance.series}
-                />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardContent>
-                <ColumnChart
-                  title="Cumplimiento mensual"
-                  series={seriesPerMonth}
-                />
-              </CardContent>
-            </Card> */}
-          </div>
-          <div className="space-y-4 col-span-2">
-            <Card sx={{ height: "100%" }}>
-              <CardContent>
-                <h2 className="text-xl text-center">Champions Pilars</h2>
-              </CardContent>
+            <Card sx={{ height: "260px" }}>
+              <div className="grid grid-cols-3 gap-2 gap-y-0 mt-3">
+                <SolidGauge value={100} name="Seguridad" height={120} />
+                <SolidGauge value={20} name="Calidad" height={120} />
+                <SolidGauge value={100} name="RH" height={120} />
+                <SolidGauge value={20} name="Producción" height={120} />
+                <SolidGauge value={20} name="Mantenimiento" height={120} />
+              </div>
             </Card>
           </div>
           <div className="space-y-4 col-span-2">
-            <Card>
-              <CardContent>
+            <Card sx={{ height: "486px" }}>
+              <h2 className="text-base text-center mt-3">Champions Pilares</h2>
+            </Card>
+          </div>
+          <div className="space-y-4 col-span-2">
+            <Card sx={{ height: "486px" }}>
+              <h2 className="text-base text-center mt-3">
+                Entregables Energizador
+              </h2>
+              <div className="px-2">
                 <StackedBar
-                  title="Entregables Energizador"
+                  height={450}
                   categories={dataEnergizer.categories}
                   series={dataEnergizer.series}
                 />
-              </CardContent>
+              </div>
             </Card>
           </div>
           <div className="space-y-4 col-span-2">
-            <Card>
-              <CardContent>
-                <StackedBar
-                  title="Avance Entregables"
-                  categories={dataAdvance.categories}
-                  series={dataAdvance.series}
-                />
-              </CardContent>
+            <Card sx={{ height: "486px" }}>
+              <h2 className="text-base text-center mt-3">Avance Entregables</h2>
+              <StackedBar
+                height={450}
+                categories={dataAdvance.categories}
+                series={dataAdvance.series}
+              />
             </Card>
           </div>
           <div className="space-y-4 col-span-3">
-            <Card>
-              <CardContent>
-                <ColumnChart
-                  title="Cumplimiento mensual"
-                  series={seriesPerMonth}
-                />
-              </CardContent>
+            <Card sx={{ height: "235px" }}>
+              <h2 className="text-base text-center mt-3">
+                Cumplimiento mensual
+              </h2>
+              <ColumnChart height={200} series={seriesPerMonth} />
             </Card>
-            <Card>
-              <CardContent>
-                <ColumnChart
-                  title="Cumplimiento anual"
-                  series={seriesPerYear}
-                />
-              </CardContent>
+            <Card sx={{ height: "235px" }}>
+              <h2 className="text-base text-center mt-3">Cumplimiento anual</h2>
+              <ColumnChart height={200} series={seriesPerYear} />
             </Card>
           </div>
         </div>

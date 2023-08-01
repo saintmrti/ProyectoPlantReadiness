@@ -28,8 +28,8 @@ const GaugeSeries = ({ height, title }) => {
           text: title,
           style: {
             fontWeight: "normal",
-            fontSize: "1.25rem",
-            lineHeight: "1.75rem",
+            fontSize: "1rem",
+            lineHeight: "1.5rem",
           },
         },
         pane: {
