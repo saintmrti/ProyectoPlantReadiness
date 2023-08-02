@@ -4,6 +4,7 @@ import shippable from "./shippable";
 import machines from "./machines";
 import advance from "./advance";
 import phase from "./phase";
+import kpis from "./kpis";
 
 const reducer = {
   expectancy,
@@ -12,6 +13,7 @@ const reducer = {
   machines,
   advance,
   phase,
+  kpis,
 };
 
 export default reducer;

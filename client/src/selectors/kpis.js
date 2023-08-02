@@ -1,145 +1,171 @@
 import { createSelector } from "@reduxjs/toolkit";
 import _ from "lodash";
-import moment from "moment-timezone";
+// import moment from "moment-timezone";
 
-export const getSummaryShippable = createSelector(
-  ({ expectancy }) => expectancy.data,
-  ({ shippable }) => shippable.data,
+export const getSummaryKpis = createSelector(
+  ({ kpis }) => kpis.data,
 
-  (expectancy, shippable) => {
-    if (_.isEmpty(expectancy)) return {};
+  (kpis) => {
+    if (_.isEmpty(kpis)) return {};
 
-    let security = 0;
-    let quality = 0;
-    let rh = 0;
-    let production = 0;
-    let maintenance = 0;
+    const parseShippable = JSON.parse(kpis["1"]?.entregables_Total);
+    const sumShippable = _.sumBy(parseShippable, "total");
+    const shippable_total = _.keyBy(parseShippable, "Id");
+    shippable_total.total = sumShippable;
 
-    _.forEach(shippable, (value) => {
-      const objFinded = _.find(expectancy, (o) => o.id === value.idExpectativa);
-      switch (objFinded.rubro) {
-        case 1:
-          security += 1;
-          break;
-        case 2:
-          quality += 1;
-          break;
-        case 3:
-          rh += 1;
-          break;
-        case 4:
-          production += 1;
-          break;
-        case "Mantenimiento":
-          maintenance += 1;
-          break;
-        default:
-          break;
-      }
-    });
+    const compliance_total = JSON.parse(kpis["1"]?.cumplimiento_Total);
+    const compliance_YTD = JSON.parse(kpis["1"]?.cumplimiento_YTD);
+    const compliance_headings = JSON.parse(kpis["1"]?.cumplimiento_Rubro);
 
-    let sumHeadings = {
-      security,
-      quality,
-      rh,
-      production,
-      maintenance,
-      total: security + quality + rh + production + maintenance,
+    const data = {
+      shippable_total,
+      compliance_total,
+      compliance_YTD,
+      compliance_headings,
     };
 
-    return sumHeadings;
+    return data;
   }
 );
 
-export const getShippableByMonth = createSelector(
-  ({ advance }) => advance.data,
+// export const getSummaryShippable = createSelector(
+//   ({ expectancy }) => expectancy.data,
+//   ({ shippable }) => shippable.data,
 
-  (advance) => {
-    if (_.isEmpty(advance)) return {};
+//   (expectancy, shippable) => {
+//     if (_.isEmpty(expectancy)) return {};
 
-    const currentYear = moment().year();
+//     let security = 0;
+//     let quality = 0;
+//     let rh = 0;
+//     let production = 0;
+//     let maintenance = 0;
 
-    const filteredDateReal = _.filter(advance, (o) => {
-      return (
-        o.fecha_real !== null && moment(o.fecha_real).year() === currentYear
-      );
-    });
+//     _.forEach(shippable, (value) => {
+//       const objFinded = _.find(expectancy, (o) => o.id === value.idExpectativa);
+//       switch (objFinded.rubro) {
+//         case 1:
+//           security += 1;
+//           break;
+//         case 2:
+//           quality += 1;
+//           break;
+//         case 3:
+//           rh += 1;
+//           break;
+//         case 4:
+//           production += 1;
+//           break;
+//         case "Mantenimiento":
+//           maintenance += 1;
+//           break;
+//         default:
+//           break;
+//       }
+//     });
 
-    const filteredDatePlan = _.filter(advance, (o) => {
-      return (
-        o.fecha_termino !== null &&
-        moment(o.fecha_termino).year() === currentYear
-      );
-    });
+//     let sumHeadings = {
+//       security,
+//       quality,
+//       rh,
+//       production,
+//       maintenance,
+//       total: security + quality + rh + production + maintenance,
+//     };
 
-    const groupedByMonthReal = _.groupBy(filteredDateReal, (value) =>
-      moment.utc(value.fecha_real).startOf("month").format("YYYY-MM")
-    );
+//     return sumHeadings;
+//   }
+// );
 
-    const groupedByMonthPlan = _.groupBy(filteredDatePlan, (value) =>
-      moment.utc(value.fecha_termino).startOf("month").format("YYYY-MM")
-    );
+// export const getShippableByMonth = createSelector(
+//   ({ advance }) => advance.data,
 
-    const dataByMonthReal = _.map(groupedByMonthReal, (value, key) => {
-      return [moment(key).valueOf(), value.length];
-    });
+//   (advance) => {
+//     if (_.isEmpty(advance)) return {};
 
-    const dataByMonthPlan = _.map(groupedByMonthPlan, (value, key) => {
-      return [moment(key).valueOf(), value.length];
-    });
+//     const currentYear = moment().year();
 
-    const seriesPerMonth = [
-      {
-        name: "Plan",
-        data: dataByMonthPlan,
-      },
-      {
-        name: "Real",
-        data: dataByMonthReal,
-      },
-    ];
+//     const filteredDateReal = _.filter(advance, (o) => {
+//       return (
+//         o.fecha_real !== null && moment(o.fecha_real).year() === currentYear
+//       );
+//     });
 
-    return seriesPerMonth;
-  }
-);
+//     const filteredDatePlan = _.filter(advance, (o) => {
+//       return (
+//         o.fecha_termino !== null &&
+//         moment(o.fecha_termino).year() === currentYear
+//       );
+//     });
 
-export const getShippableByYear = createSelector(
-  ({ advance }) => advance.data,
+//     const groupedByMonthReal = _.groupBy(filteredDateReal, (value) =>
+//       moment.utc(value.fecha_real).startOf("month").format("YYYY-MM")
+//     );
 
-  (advance) => {
-    if (_.isEmpty(advance)) return {};
+//     const groupedByMonthPlan = _.groupBy(filteredDatePlan, (value) =>
+//       moment.utc(value.fecha_termino).startOf("month").format("YYYY-MM")
+//     );
 
-    const filteredDateReal = _.filter(advance, (o) => o.fecha_real !== null);
+//     const dataByMonthReal = _.map(groupedByMonthReal, (value, key) => {
+//       return [moment(key).valueOf(), value.length];
+//     });
 
-    const filteredDatePlan = _.filter(advance, (o) => o.fecha_termino !== null);
+//     const dataByMonthPlan = _.map(groupedByMonthPlan, (value, key) => {
+//       return [moment(key).valueOf(), value.length];
+//     });
 
-    const groupedByYearReal = _.groupBy(filteredDateReal, (value) =>
-      moment.utc(value.fecha_real).startOf("year").format("YYYY")
-    );
+//     const seriesPerMonth = [
+//       {
+//         name: "Plan",
+//         data: dataByMonthPlan,
+//       },
+//       {
+//         name: "Real",
+//         data: dataByMonthReal,
+//       },
+//     ];
 
-    const groupedByYearPlan = _.groupBy(filteredDatePlan, (value) =>
-      moment.utc(value.fecha_termino).startOf("year").format("YYYY")
-    );
+//     return seriesPerMonth;
+//   }
+// );
 
-    const dataByYearReal = _.map(groupedByYearReal, (value, key) => {
-      return [moment(key).valueOf(), value.length];
-    });
+// export const getShippableByYear = createSelector(
+//   ({ advance }) => advance.data,
 
-    const dataByYearPlan = _.map(groupedByYearPlan, (value, key) => {
-      return [moment(key).valueOf(), value.length];
-    });
+//   (advance) => {
+//     if (_.isEmpty(advance)) return {};
 
-    const seriesPerYear = [
-      {
-        name: "Plan",
-        data: dataByYearPlan,
-      },
-      {
-        name: "Real",
-        data: dataByYearReal,
-      },
-    ];
+//     const filteredDateReal = _.filter(advance, (o) => o.fecha_real !== null);
 
-    return seriesPerYear;
-  }
-);
+//     const filteredDatePlan = _.filter(advance, (o) => o.fecha_termino !== null);
+
+//     const groupedByYearReal = _.groupBy(filteredDateReal, (value) =>
+//       moment.utc(value.fecha_real).startOf("year").format("YYYY")
+//     );
+
+//     const groupedByYearPlan = _.groupBy(filteredDatePlan, (value) =>
+//       moment.utc(value.fecha_termino).startOf("year").format("YYYY")
+//     );
+
+//     const dataByYearReal = _.map(groupedByYearReal, (value, key) => {
+//       return [moment(key).valueOf(), value.length];
+//     });
+
+//     const dataByYearPlan = _.map(groupedByYearPlan, (value, key) => {
+//       return [moment(key).valueOf(), value.length];
+//     });
+
+//     const seriesPerYear = [
+//       {
+//         name: "Plan",
+//         data: dataByYearPlan,
+//       },
+//       {
+//         name: "Real",
+//         data: dataByYearReal,
+//       },
+//     ];
+
+//     return seriesPerYear;
+//   }
+// );

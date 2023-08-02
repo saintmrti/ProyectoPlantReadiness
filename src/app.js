@@ -9,6 +9,7 @@ import shippableRoutes from "./routes/shippable.routes.js";
 import machinesRoutes from "./routes/machines.routes.js";
 import advanceRoutes from "./routes/advance.routes.js";
 import phaseRoutes from "./routes/phase.routes.js";
+import kpisRoutes from "./routes/kpis.routes.js";
 
 const app = express();
 
@@ -26,5 +27,6 @@ app.use("/api/entregables", shippableRoutes);
 app.use("/api/maquinas", machinesRoutes);
 app.use("/api/avances", advanceRoutes);
 app.use("/api/fases", phaseRoutes);
+app.use("/api/kpis", kpisRoutes);
 
 export default app;
