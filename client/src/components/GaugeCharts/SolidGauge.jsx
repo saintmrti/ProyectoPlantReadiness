@@ -6,7 +6,7 @@ import SolidGaugeUI from "highcharts/modules/solid-gauge";
 HighchartsMore(Highcharts);
 SolidGaugeUI(Highcharts);
 
-const SolidGauge = ({ value, name, height }) => {
+const SolidGauge = ({ value, name, height, total, rate }) => {
   return (
     <HighchartsReact
       highcharts={Highcharts}
@@ -59,7 +59,7 @@ const SolidGauge = ({ value, name, height }) => {
             y: 16,
           },
           min: 0,
-          max: 200,
+          max: total ?? 100,
         },
 
         plotOptions: {
@@ -85,7 +85,9 @@ const SolidGauge = ({ value, name, height }) => {
               format:
                 '<div style="text-align:center">' +
                 '<span style="font-size:25px">{y}</span><br/>' +
-                '<span style="font-size:12px;opacity:0.4">%</span>' +
+                '<span style="font-size:12px;opacity:0.4">' +
+                parseInt(rate) +
+                "%</span>" +
                 "</div>",
             },
             tooltip: {

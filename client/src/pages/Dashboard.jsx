@@ -16,38 +16,38 @@ import { kpisRequest } from "../slices/kpis";
 import { getSummaryKpis } from "../selectors/kpis";
 import { useEffect } from "react";
 
-const dataEnergizer = {
-  categories: [
-    "JLMO",
-    "ABG",
-    "ACAB",
-    "Fatima Elizondo",
-    "O. Argueta",
-    "C. Sánchez",
-    "M. Nuñez",
-    "A. Gaspar",
-    "C. Chapa",
-    "Claudia Chapa",
-    "JACH",
-    "MNN",
-    "Carlos Camacho",
-    "JCM",
-    "OA",
-    "R. Gonzales",
-    "A. Montero",
-    "C. Camacho",
-    "A. Anguiano",
-    "J. Marroquin",
-  ],
-  series: [
-    6, 6, 7, 7, 8, 12, 12, 12, 13, 13, 14, 16, 16, 36, 47, 52, 70, 76, 88, 140,
-  ],
-};
+// const dataEnergizer = {
+//   categories: [
+//     "JLMO",
+//     "ABG",
+//     "ACAB",
+//     "Fatima Elizondo",
+//     "O. Argueta",
+//     "C. Sánchez",
+//     "M. Nuñez",
+//     "A. Gaspar",
+//     "C. Chapa",
+//     "Claudia Chapa",
+//     "JACH",
+//     "MNN",
+//     "Carlos Camacho",
+//     "JCM",
+//     "OA",
+//     "R. Gonzales",
+//     "A. Montero",
+//     "C. Camacho",
+//     "A. Anguiano",
+//     "J. Marroquin",
+//   ],
+//   series: [
+//     6, 6, 7, 7, 8, 12, 12, 12, 13, 13, 14, 16, 16, 36, 47, 52, 70, 76, 88, 140,
+//   ],
+// };
 
-const dataAdvance = {
-  categories: ["100%", "76-99%", "51-75%", "31-50%", "1-30%", "0%"],
-  series: [137, 63, 80, 48, 79, 500],
-};
+// const dataAdvance = {
+//   categories: ["100%", "76-99%", "51-75%", "31-50%", "1-30%", "0%"],
+//   series: [137, 63, 80, 48, 79, 500],
+// };
 
 const seriesPerYear = [
   {
@@ -158,7 +158,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                       </div>
-                      {console.log(summaryKpis?.shippable_total)}
+                      {console.log(summaryKpis)}
                       <div className="flex justify-around items-center">
                         <img
                           src={calidadIcon}
@@ -230,7 +230,7 @@ const Dashboard = () => {
                             <h4 className="text-xs text-center py-1">Total</h4>
                           </div>
                           <div className="text-center text-md py-1 font-bold">
-                            {summaryKpis?.shippable_total?.total ?? 0}
+                            {summaryKpis?.shippable_total["0"]?.total ?? 0}
                           </div>
                         </div>
                       </div>
@@ -240,22 +240,100 @@ const Dashboard = () => {
                 <div className="space-y-4 col-span-4">
                   <Card sx={{ height: "260px" }}>
                     <div className="grid grid-cols-2 gap-2 mt-3">
-                      <GaugeSeries height={250} title="Cumplimiento Total" />
-                      <GaugeSeries height={250} title="Cumplimiento YTD" />
+                      <GaugeSeries
+                        height={250}
+                        title="Cumplimiento Total"
+                        total={summaryKpis?.compliance_total?.totales}
+                        value={summaryKpis?.compliance_total?.completados}
+                        rate={summaryKpis?.compliance_total?.porcentaje}
+                      />
+                      <GaugeSeries
+                        height={250}
+                        title="Cumplimiento YTD"
+                        total={summaryKpis?.compliance_YTD?.totales}
+                        value={summaryKpis?.compliance_YTD?.completados}
+                        rate={summaryKpis?.compliance_YTD?.porcentaje}
+                      />
                     </div>
                   </Card>
                 </div>
                 <div className="space-y-4 col-span-3">
                   <Card sx={{ height: "260px" }}>
                     <div className="grid grid-cols-3 gap-2 gap-y-0 mt-3">
-                      <SolidGauge value={100} name="Seguridad" height={120} />
-                      <SolidGauge value={20} name="Calidad" height={120} />
-                      <SolidGauge value={100} name="RH" height={120} />
-                      <SolidGauge value={20} name="Producción" height={120} />
                       <SolidGauge
-                        value={20}
+                        name="Seguridad"
+                        height={120}
+                        value={
+                          summaryKpis?.compliance_headings["1"]?.datos
+                            ?.completados
+                        }
+                        total={
+                          summaryKpis?.compliance_headings["1"]?.datos?.totales
+                        }
+                        rate={
+                          summaryKpis?.compliance_headings["1"]?.datos
+                            ?.porcentaje
+                        }
+                      />
+                      <SolidGauge
+                        name="Calidad"
+                        height={120}
+                        value={
+                          summaryKpis?.compliance_headings["2"]?.datos
+                            ?.completados
+                        }
+                        total={
+                          summaryKpis?.compliance_headings["2"]?.datos?.totales
+                        }
+                        rate={
+                          summaryKpis?.compliance_headings["2"]?.datos
+                            ?.porcentaje
+                        }
+                      />
+                      <SolidGauge
+                        name="RH"
+                        height={120}
+                        value={
+                          summaryKpis?.compliance_headings["3"]?.datos
+                            ?.completados
+                        }
+                        total={
+                          summaryKpis?.compliance_headings["3"]?.datos?.totales
+                        }
+                        rate={
+                          summaryKpis?.compliance_headings["3"]?.datos
+                            ?.porcentaje
+                        }
+                      />
+                      <SolidGauge
+                        name="Producción"
+                        height={120}
+                        value={
+                          summaryKpis?.compliance_headings["4"]?.datos
+                            ?.completados
+                        }
+                        total={
+                          summaryKpis?.compliance_headings["4"]?.datos?.totales
+                        }
+                        rate={
+                          summaryKpis?.compliance_headings["4"]?.datos
+                            ?.porcentaje
+                        }
+                      />
+                      <SolidGauge
                         name="Mantenimiento"
                         height={120}
+                        value={
+                          summaryKpis?.compliance_headings["5"]?.datos
+                            ?.completados
+                        }
+                        total={
+                          summaryKpis?.compliance_headings["5"]?.datos?.totales
+                        }
+                        rate={
+                          summaryKpis?.compliance_headings["5"]?.datos
+                            ?.porcentaje
+                        }
                       />
                     </div>
                   </Card>
@@ -275,8 +353,10 @@ const Dashboard = () => {
                     <div className="px-2">
                       <StackedBar
                         height={450}
-                        categories={dataEnergizer.categories}
-                        series={dataEnergizer.series}
+                        categories={
+                          summaryKpis?.shippable_energizer?.categories
+                        }
+                        series={summaryKpis?.shippable_energizer?.series}
                       />
                     </div>
                   </Card>
@@ -288,8 +368,8 @@ const Dashboard = () => {
                     </h2>
                     <StackedBar
                       height={450}
-                      categories={dataAdvance.categories}
-                      series={dataAdvance.series}
+                      categories={summaryKpis?.shippable_advance?.categories}
+                      series={summaryKpis?.shippable_advance?.series}
                     />
                   </Card>
                 </div>

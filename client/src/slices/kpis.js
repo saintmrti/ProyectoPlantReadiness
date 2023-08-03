@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import _ from "lodash";
+// import _ from "lodash";
 
 const Slice = createSlice({
   name: "kpis",
   initialState: {
-    data: {},
+    data: [],
     isFetching: false,
     didError: false,
   },
@@ -15,7 +15,7 @@ const Slice = createSlice({
     },
     kpisSuccess: (state, action) => {
       const { data } = action.payload;
-      state.data = _.keyBy(data, "id");
+      state.data = data;
       state.isFetching = false;
     },
     kpisError: (state) => {

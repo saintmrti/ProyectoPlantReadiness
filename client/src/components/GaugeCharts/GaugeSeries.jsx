@@ -6,7 +6,8 @@ import SolidGaugeUI from "highcharts/modules/solid-gauge";
 HighchartsMore(Highcharts);
 SolidGaugeUI(Highcharts);
 
-const GaugeSeries = ({ height, title }) => {
+const GaugeSeries = ({ height, title, total, value, rate }) => {
+  const parts = total / 4;
   return (
     <HighchartsReact
       highcharts={Highcharts}
@@ -41,14 +42,24 @@ const GaugeSeries = ({ height, title }) => {
         },
         yAxis: {
           min: 0,
-          max: 200,
+          max: total,
           tickPixelInterval: 72,
+          // tickPositioner: function () {
+          //   return [
+          //     0,
+          //     parseInt(parts),
+          //     parseInt(parts * 2),
+          //     parseInt(parts * 3),
+          //     total,
+          //   ];
+          // },
           tickPosition: "inside",
           tickColor:
             Highcharts.defaultOptions.chart.backgroundColor || "#FFFFFF",
           tickLength: 20,
           tickWidth: 2,
           minorTickInterval: null,
+          // endOnTick: true,
           labels: {
             distance: 20,
             style: {
@@ -59,33 +70,39 @@ const GaugeSeries = ({ height, title }) => {
           plotBands: [
             {
               from: 0,
-              to: 120,
-              color: "#55BF3B", // green
+              to: parts,
+              color: "#DF5353", // red
               thickness: 20,
             },
             {
-              from: 120,
-              to: 160,
+              from: parts,
+              to: parts * 2,
+              color: "#FFA500", // orange
+              thickness: 20,
+            },
+            {
+              from: parts * 2,
+              to: parts * 3,
               color: "#DDDF0D", // yellow
               thickness: 20,
             },
             {
-              from: 160,
-              to: 200,
-              color: "#DF5353", // red
+              from: parts * 3,
+              to: total,
+              color: "#55BF3B", // green
               thickness: 20,
             },
           ],
         },
         series: [
           {
-            name: "Cumplimiento",
-            data: [80],
-            tooltip: {
-              valueSuffix: " %",
-            },
+            name: "entregables",
+            data: [value],
+            // tooltip: {
+            //   valueSuffix: " %",
+            // },
             dataLabels: {
-              format: "{y} %",
+              format: rate + "%",
               borderWidth: 0,
               color:
                 (Highcharts.defaultOptions.title &&

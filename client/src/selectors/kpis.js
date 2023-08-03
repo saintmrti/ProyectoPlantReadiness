@@ -8,20 +8,42 @@ export const getSummaryKpis = createSelector(
   (kpis) => {
     if (_.isEmpty(kpis)) return {};
 
-    const parseShippable = JSON.parse(kpis["1"]?.entregables_Total);
-    const sumShippable = _.sumBy(parseShippable, "total");
-    const shippable_total = _.keyBy(parseShippable, "Id");
-    shippable_total.total = sumShippable;
+    const parseShippable = JSON.parse(kpis[0]?.entregables_Total);
+    const parseHeadings = JSON.parse(kpis[0]?.cumplimiento_Rubro);
+    const parseEnergizer = JSON.parse(kpis[0]?.entregables_Energizador);
+    const parseAdvance = JSON.parse(kpis[0]?.entregables_Avance);
+    const parsePlanYear = JSON.parse(kpis[0]?.plan_EntregablesAnio);
+    const parsePlanMonth = JSON.parse(kpis[0]?.plan_EntregablesMes);
 
-    const compliance_total = JSON.parse(kpis["1"]?.cumplimiento_Total);
-    const compliance_YTD = JSON.parse(kpis["1"]?.cumplimiento_YTD);
-    const compliance_headings = JSON.parse(kpis["1"]?.cumplimiento_Rubro);
+    const sortedEnergizer = _.orderBy(parseEnergizer, "totales");
+    const energizers = _.map(sortedEnergizer, "energizador");
+    const energizerTotal = _.map(sortedEnergizer, "totales");
+    const reversedAdvance = _.reverse(parseAdvance);
+    const advanceRate = _.map(reversedAdvance, "avance");
+    const advanceTotal = _.map(reversedAdvance, "totales");
+
+    const shippable_energizer = {
+      categories: energizers,
+      series: energizerTotal,
+    };
+    const shippable_advance = {
+      categories: advanceRate,
+      series: advanceTotal,
+    };
+    const shippable_total = _.keyBy(parseShippable, "Id");
+    const compliance_headings = _.keyBy(parseHeadings, "Id");
+    const compliance_total = JSON.parse(kpis[0]?.cumplimiento_Total);
+    const compliance_YTD = JSON.parse(kpis[0]?.cumplimiento_YTD);
 
     const data = {
       shippable_total,
       compliance_total,
       compliance_YTD,
       compliance_headings,
+      shippable_energizer,
+      shippable_advance,
+      parsePlanYear,
+      parsePlanMonth,
     };
 
     return data;
