@@ -8,10 +8,16 @@ import Button from "@mui/material/Button";
 import { useDispatch } from "react-redux";
 
 import { insertShippableRequest } from "../../slices/shippable";
+import { textFieldValidation } from "./validated";
 
 const ShippableForm = ({ setOpen, idExpectancy }) => {
   const dispatch = useDispatch();
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = (values) => {
     values.idExpectativa = idExpectancy;
@@ -35,7 +41,12 @@ const ShippableForm = ({ setOpen, idExpectancy }) => {
               type="text"
               label="Entregable"
               autoComplete="off"
-              {...register("nombre", { required: true })}
+              error={Boolean(errors.nombre)}
+              helperText={errors.nombre?.message}
+              {...register("nombre", {
+                required: true,
+                validate: (value) => textFieldValidation(value, 200),
+              })}
             />
           </div>
           <div className="flex justify-end items-center w-full mb-3">
@@ -45,7 +56,12 @@ const ShippableForm = ({ setOpen, idExpectancy }) => {
               type="text"
               label="Documento"
               autoComplete="off"
-              {...register("evidencia", { required: true })}
+              error={Boolean(errors.evidencia)}
+              helperText={errors.evidencia?.message}
+              {...register("evidencia", {
+                required: true,
+                validate: (value) => textFieldValidation(value, 60),
+              })}
             />
           </div>
           <div className="flex justify-end items-center w-full mb-3">
@@ -94,7 +110,12 @@ const ShippableForm = ({ setOpen, idExpectancy }) => {
               rows={8}
               className="h-60 w-64"
               autoComplete="off"
-              {...register("comentarios", { required: true })}
+              error={Boolean(errors.comentarios)}
+              helperText={errors.comentarios?.message}
+              {...register("comentarios", {
+                required: true,
+                validate: (value) => textFieldValidation(value, 600),
+              })}
             />
           </div>
         </div>

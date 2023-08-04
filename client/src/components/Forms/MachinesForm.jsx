@@ -11,10 +11,16 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import _ from "lodash";
 
 import { insertAdvanceRequest } from "../../slices/advance";
+import { textFieldValidation } from "./validated";
 
 const MachinesForm = ({ idEntregable, fases, isFetching }) => {
   const dispatch = useDispatch();
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
   const [checkboxStates, setCheckboxStates] = useState({});
 
   const handleCheckboxChange = (machine, event) => {
@@ -26,8 +32,23 @@ const MachinesForm = ({ idEntregable, fases, isFetching }) => {
 
   const validateRegister = (name, index) => {
     return checkboxStates[fases[index].maquina]
-      ? register(name, { required: true })
-      : register(name, { required: false });
+      ? register(name, {
+          required: true,
+        })
+      : register(name, {
+          required: false,
+        });
+  };
+
+  const validateTextField = (name, index, maxLength) => {
+    return checkboxStates[fases[index].maquina]
+      ? register(name, {
+          required: true,
+          validate: (value) => textFieldValidation(value, maxLength),
+        })
+      : register(name, {
+          required: false,
+        });
   };
 
   const onSubmit = (values) => {
@@ -102,7 +123,9 @@ const MachinesForm = ({ idEntregable, fases, isFetching }) => {
             label="Responsable"
             autoComplete="off"
             disabled={!checkboxStates[machine.maquina]}
-            {...validateRegister(`responsible_${index}`, index)}
+            error={Boolean(errors[`responsible_${index}`])}
+            helperText={errors[`responsible_${index}`]?.message}
+            {...validateTextField(`responsible_${index}`, index, 30)}
           />
           <TextField
             sx={{ width: "11rem" }}
@@ -127,6 +150,10 @@ const MachinesForm = ({ idEntregable, fases, isFetching }) => {
             type="number"
             label="Avance"
             disabled={!checkboxStates[machine.maquina]}
+            inputProps={{
+              min: 0,
+              max: 100,
+            }}
             {...validateRegister(`advance_${index}`, index)}
           />
           <TextField
@@ -134,6 +161,7 @@ const MachinesForm = ({ idEntregable, fases, isFetching }) => {
             type="text"
             label="Comentarios"
             disabled={!checkboxStates[machine.maquina]}
+            inputProps={{ maxLength: 120 }}
             {...register(`comments_${index}`, { required: false })}
           />
         </div>

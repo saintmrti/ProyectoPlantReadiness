@@ -9,10 +9,15 @@ import { useDispatch } from "react-redux";
 import _ from "lodash";
 
 import { insertExpectancyRequest } from "../../slices/expectancy";
+import { textFieldValidation } from "./validated";
 
 const ExpectationForm = ({ setOpen, data }) => {
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = (values) => {
     dispatch(insertExpectancyRequest(values));
@@ -36,7 +41,12 @@ const ExpectationForm = ({ setOpen, data }) => {
               type="text"
               label="Expectativa"
               autoComplete="off"
-              {...register("expectancy", { required: true })}
+              error={Boolean(errors.expectancy)}
+              helperText={errors.expectancy?.message}
+              {...register("expectancy", {
+                required: true,
+                validate: (value) => textFieldValidation(value, 60),
+              })}
             />
           </div>
           <div className="flex justify-end items-center w-full mb-3">

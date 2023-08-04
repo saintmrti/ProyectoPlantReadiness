@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import _ from "lodash";
-// import moment from "moment-timezone";
+import moment from "moment-timezone";
 
 export const getSummaryKpis = createSelector(
   ({ kpis }) => kpis.data,
@@ -12,8 +12,8 @@ export const getSummaryKpis = createSelector(
     const parseHeadings = JSON.parse(kpis[0]?.cumplimiento_Rubro);
     const parseEnergizer = JSON.parse(kpis[0]?.entregables_Energizador);
     const parseAdvance = JSON.parse(kpis[0]?.entregables_Avance);
-    const parsePlanYear = JSON.parse(kpis[0]?.plan_EntregablesAnio);
-    const parsePlanMonth = JSON.parse(kpis[0]?.plan_EntregablesMes);
+    const parseShippableYear = JSON.parse(kpis[0]?.plan_EntregablesAnio);
+    const parseShippableMonth = JSON.parse(kpis[0]?.plan_EntregablesMes);
 
     const sortedEnergizer = _.orderBy(parseEnergizer, "totales");
     const energizers = _.map(sortedEnergizer, "energizador");
@@ -21,6 +21,24 @@ export const getSummaryKpis = createSelector(
     const reversedAdvance = _.reverse(parseAdvance);
     const advanceRate = _.map(reversedAdvance, "avance");
     const advanceTotal = _.map(reversedAdvance, "totales");
+    const groupedByPlanYear = _.map(parseShippableYear, (value) => {
+      return [moment(`${value.año}-01-01`).valueOf(), value.plan];
+    });
+    const groupedByRealYear = _.map(parseShippableYear, (value) => {
+      return [moment(`${value.año}-01-01`).valueOf(), value.real];
+    });
+    const groupedByPlanMonth = _.map(parseShippableMonth, (value) => {
+      return [
+        moment(`${moment().year()}-${value.mes}-01`).valueOf(),
+        value.plan,
+      ];
+    });
+    const groupedByRealMonth = _.map(parseShippableMonth, (value) => {
+      return [
+        moment(`${moment().year()}-${value.mes}-01`).valueOf(),
+        value.real,
+      ];
+    });
 
     const shippable_energizer = {
       categories: energizers,
@@ -30,6 +48,27 @@ export const getSummaryKpis = createSelector(
       categories: advanceRate,
       series: advanceTotal,
     };
+
+    const shippable_year = [
+      {
+        name: "Plan",
+        data: groupedByPlanYear,
+      },
+      {
+        name: "Real",
+        data: groupedByRealYear,
+      },
+    ];
+    const shippable_month = [
+      {
+        name: "Plan",
+        data: groupedByPlanMonth,
+      },
+      {
+        name: "Real",
+        data: groupedByRealMonth,
+      },
+    ];
     const shippable_total = _.keyBy(parseShippable, "Id");
     const compliance_headings = _.keyBy(parseHeadings, "Id");
     const compliance_total = JSON.parse(kpis[0]?.cumplimiento_Total);
@@ -42,8 +81,8 @@ export const getSummaryKpis = createSelector(
       compliance_headings,
       shippable_energizer,
       shippable_advance,
-      parsePlanYear,
-      parsePlanMonth,
+      shippable_year,
+      shippable_month,
     };
 
     return data;

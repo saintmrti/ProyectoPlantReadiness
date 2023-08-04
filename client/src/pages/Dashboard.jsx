@@ -1,5 +1,4 @@
 import Card from "@mui/material/Card";
-import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
@@ -8,10 +7,18 @@ import rhIcon from "../img/rhIcon.png";
 import calidadIcon from "../img/calidadIcon.png";
 import produccionIcon from "../img/produccionIcon.png";
 import matenimientoIcon from "../img/mantenimientoIcon.png";
+import energizer1 from "../img/energizer1.png";
+import energizer2 from "../img/energizer2.jpg";
+import energizer3 from "../img/energizer3.jpg";
+import energizer4 from "../img/energizer4.jpg";
+import energizer5 from "../img/energizer5.png";
+import energizer6 from "../img/energizer6.jpg";
+import energizer7 from "../img/energizer7.jpg";
 import GaugeSeries from "../components/GaugeCharts/GaugeSeries";
 import SolidGauge from "../components/GaugeCharts/SolidGauge";
 import StackedBar from "../components/BarCharts/StackedBar";
 import ColumnChart from "../components/BarCharts/ColumnChart";
+import ButtonGroup from "../components/FilterButton/ButtonGroup";
 import { kpisRequest } from "../slices/kpis";
 import { getSummaryKpis } from "../selectors/kpis";
 import { useEffect } from "react";
@@ -49,65 +56,65 @@ import { useEffect } from "react";
 //   series: [137, 63, 80, 48, 79, 500],
 // };
 
-const seriesPerYear = [
-  {
-    name: "Plan",
-    data: [
-      [moment(`2021-01-01`, "YYYY-MM-DD").valueOf(), 240],
-      [moment(`2022-01-01`, "YYYY-MM-DD").valueOf(), 305],
-      [moment(`2023-01-01`, "YYYY-MM-DD").valueOf(), 438],
-      [moment(`2024-01-01`, "YYYY-MM-DD").valueOf(), 239],
-      [moment(`2025-01-01`, "YYYY-MM-DD").valueOf(), 150],
-    ],
-  },
-  {
-    name: "Real",
-    data: [
-      [moment(`2021-01-01`, "YYYY-MM-DD").valueOf(), 140],
-      [moment(`2022-01-01`, "YYYY-MM-DD").valueOf(), 290],
-      [moment(`2023-01-01`, "YYYY-MM-DD").valueOf(), 115],
-      [moment(`2024-01-01`, "YYYY-MM-DD").valueOf(), 206],
-      [moment(`2025-01-01`, "YYYY-MM-DD").valueOf(), 200],
-    ],
-  },
-];
+// const seriesPerYear = [
+//   {
+//     name: "Plan",
+//     data: [
+//       [moment(`2021-1-01`, "YYYY-MM-DD").valueOf(), 240],
+//       [moment(`2022-1-01`, "YYYY-MM-DD").valueOf(), 305],
+//       [moment(`2023-1-01`, "YYYY-MM-DD").valueOf(), 438],
+//       [moment(`2024-1-01`, "YYYY-MM-DD").valueOf(), 239],
+//       [moment(`2025-1-01`, "YYYY-MM-DD").valueOf(), 150],
+//     ],
+//   },
+//   {
+//     name: "Real",
+//     data: [
+//       [moment(`2021-1-01`, "YYYY-MM-DD").valueOf(), 140],
+//       [moment(`2022-1-01`, "YYYY-MM-DD").valueOf(), 290],
+//       [moment(`2023-1-01`, "YYYY-MM-DD").valueOf(), 115],
+//       [moment(`2024-1-01`, "YYYY-MM-DD").valueOf(), 206],
+//       [moment(`2025-1-01`, "YYYY-MM-DD").valueOf(), 200],
+//     ],
+//   },
+// ];
 
-const seriesPerMonth = [
-  {
-    name: "Plan",
-    data: [
-      [moment(`2023-01-01`, "YYYY-MM-DD").valueOf(), 20],
-      [moment(`2023-02-01`, "YYYY-MM-DD").valueOf(), 40],
-      [moment(`2023-03-01`, "YYYY-MM-DD").valueOf(), 50],
-      [moment(`2023-04-01`, "YYYY-MM-DD").valueOf(), 30],
-      [moment(`2023-05-01`, "YYYY-MM-DD").valueOf(), 20],
-      [moment(`2023-06-01`, "YYYY-MM-DD").valueOf(), 28],
-      [moment(`2023-07-01`, "YYYY-MM-DD").valueOf(), 42],
-      [moment(`2023-08-01`, "YYYY-MM-DD").valueOf(), 10],
-      [moment(`2023-09-01`, "YYYY-MM-DD").valueOf(), 79],
-      [moment(`2023-10-01`, "YYYY-MM-DD").valueOf(), 62],
-      [moment(`2023-11-01`, "YYYY-MM-DD").valueOf(), 20],
-      [moment(`2023-12-01`, "YYYY-MM-DD").valueOf(), 24],
-    ],
-  },
-  {
-    name: "Real",
-    data: [
-      [moment(`2023-01-01`, "YYYY-MM-DD").valueOf(), 10],
-      [moment(`2023-02-01`, "YYYY-MM-DD").valueOf(), 36],
-      [moment(`2023-03-01`, "YYYY-MM-DD").valueOf(), 48],
-      [moment(`2023-04-01`, "YYYY-MM-DD").valueOf(), 25],
-      [moment(`2023-05-01`, "YYYY-MM-DD").valueOf(), 18],
-      [moment(`2023-06-01`, "YYYY-MM-DD").valueOf(), 25],
-      [moment(`2023-07-01`, "YYYY-MM-DD").valueOf(), 41],
-      [moment(`2023-08-01`, "YYYY-MM-DD").valueOf(), 15],
-      [moment(`2023-09-01`, "YYYY-MM-DD").valueOf(), 16],
-      [moment(`2023-10-01`, "YYYY-MM-DD").valueOf(), 19],
-      [moment(`2023-11-01`, "YYYY-MM-DD").valueOf(), 20],
-      [moment(`2023-12-01`, "YYYY-MM-DD").valueOf(), 24],
-    ],
-  },
-];
+// const seriesPerMonth = [
+//   {
+//     name: "Plan",
+//     data: [
+//       [moment(`2023-01-01`, "YYYY-MM-DD").valueOf(), 20],
+//       [moment(`2023-02-01`, "YYYY-MM-DD").valueOf(), 40],
+//       [moment(`2023-03-01`, "YYYY-MM-DD").valueOf(), 50],
+//       [moment(`2023-04-01`, "YYYY-MM-DD").valueOf(), 30],
+//       [moment(`2023-05-01`, "YYYY-MM-DD").valueOf(), 20],
+//       [moment(`2023-06-01`, "YYYY-MM-DD").valueOf(), 28],
+//       [moment(`2023-07-01`, "YYYY-MM-DD").valueOf(), 42],
+//       [moment(`2023-08-01`, "YYYY-MM-DD").valueOf(), 10],
+//       [moment(`2023-09-01`, "YYYY-MM-DD").valueOf(), 79],
+//       [moment(`2023-10-01`, "YYYY-MM-DD").valueOf(), 62],
+//       [moment(`2023-11-01`, "YYYY-MM-DD").valueOf(), 20],
+//       [moment(`2023-12-01`, "YYYY-MM-DD").valueOf(), 24],
+//     ],
+//   },
+//   {
+//     name: "Real",
+//     data: [
+//       [moment(`2023-01-01`, "YYYY-MM-DD").valueOf(), 10],
+//       [moment(`2023-02-01`, "YYYY-MM-DD").valueOf(), 36],
+//       [moment(`2023-03-01`, "YYYY-MM-DD").valueOf(), 48],
+//       [moment(`2023-04-01`, "YYYY-MM-DD").valueOf(), 25],
+//       [moment(`2023-05-01`, "YYYY-MM-DD").valueOf(), 18],
+//       [moment(`2023-06-01`, "YYYY-MM-DD").valueOf(), 25],
+//       [moment(`2023-07-01`, "YYYY-MM-DD").valueOf(), 41],
+//       [moment(`2023-08-01`, "YYYY-MM-DD").valueOf(), 15],
+//       [moment(`2023-09-01`, "YYYY-MM-DD").valueOf(), 16],
+//       [moment(`2023-10-01`, "YYYY-MM-DD").valueOf(), 19],
+//       [moment(`2023-11-01`, "YYYY-MM-DD").valueOf(), 20],
+//       [moment(`2023-12-01`, "YYYY-MM-DD").valueOf(), 24],
+//     ],
+//   },
+// ];
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -117,7 +124,7 @@ const Dashboard = () => {
   useEffect(() => {
     const setData = {
       phase: 0,
-      priority: "P1",
+      priority: "P0",
       weighting: 0,
     };
     dispatch(kpisRequest(setData));
@@ -134,6 +141,11 @@ const Dashboard = () => {
         ) : (
           <>
             <div className="container m-auto">
+              <div className="flex justify-end items-center mb-4">
+                <ButtonGroup nombre="Fase" quantity={2} />
+                <ButtonGroup nombre="Prioridad" quantity={3} />
+                <ButtonGroup nombre="Ponderación" quantity={3} />
+              </div>
               <div className="grid grid-cols-9 gap-4">
                 <div className="space-y-4 col-span-2">
                   <Card sx={{ height: "260px" }}>
@@ -158,7 +170,6 @@ const Dashboard = () => {
                           </div>
                         </div>
                       </div>
-                      {console.log(summaryKpis)}
                       <div className="flex justify-around items-center">
                         <img
                           src={calidadIcon}
@@ -343,6 +354,87 @@ const Dashboard = () => {
                     <h2 className="text-base text-center mt-3">
                       Champions Pilares
                     </h2>
+                    <div className="grid grid-cols-2 gap-2 gap-y-6 px-2 mt-3">
+                      <div className="flex flex-col items-center justify-center">
+                        <img
+                          src={energizer1}
+                          alt="energizador_1"
+                          className="w-20 h-20 object-contain"
+                        />
+                        <div className="bg-red-600 text-xs text-center py-1 text-white border shadow-sm w-28 mt-1">
+                          <h4 className="font-bold">C. Camacho</h4>
+                          <p>Seguridad</p>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="flex flex-col items-center justify-center">
+                          <img
+                            src={energizer2}
+                            alt="energizador_2"
+                            className="w-20 h-20 object-contain"
+                          />
+                          <div className="bg-red-600 text-xs text-center py-1 text-white border shadow-sm w-28 mt-1">
+                            <h4 className="font-bold">Y. Tadeo</h4>
+                            <p>Calidad</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-center justify-center">
+                        <img
+                          src={energizer3}
+                          alt="energizador_3"
+                          className="w-20 h-20 object-contain"
+                        />
+                        <div className="bg-red-600 text-xs text-center py-1 text-white border shadow-sm w-28 mt-1">
+                          <h4 className="font-bold">R. Parga</h4>
+                          <p>RH</p>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="flex flex-col items-center justify-center">
+                          <div className="flex">
+                            <img
+                              src={energizer4}
+                              alt="energizador_4"
+                              className="w-20 h-20 object-contain"
+                            />
+                            <img
+                              src={energizer5}
+                              alt="energizador_5"
+                              className="w-20 h-20 object-contain"
+                            />
+                          </div>
+                          <div className="bg-red-600 text-xs text-center py-1 text-white border shadow-sm w-28 mt-1">
+                            <h4 className="font-bold">J. Chapa/E. Mtz.</h4>
+                            <p>Producción</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-center justify-center">
+                        <img
+                          src={energizer6}
+                          alt="energizador_6"
+                          className="w-20 h-20 object-contain"
+                        />
+                        <div className="bg-red-600 text-xs text-center py-1 text-white border shadow-sm w-28 mt-1">
+                          <h4 className="font-bold">J. Marroquin</h4>
+                          <p>Mantenimiento</p>
+                        </div>
+                      </div>
+                      <div>
+                        <div className="flex flex-col items-center justify-center">
+                          <img
+                            src={energizer7}
+                            alt="energizador_7"
+                            className="w-20 h-20 object-contain"
+                          />
+                          <div className="bg-red-600 text-xs text-center py-1 text-white border shadow-sm w-28 mt-1">
+                            <h4 className="font-bold">J. J. Diaz</h4>
+                            <p>Champion UEN</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </Card>
                 </div>
                 <div className="space-y-4 col-span-2">
@@ -378,13 +470,19 @@ const Dashboard = () => {
                     <h2 className="text-base text-center mt-3">
                       Cumplimiento mensual
                     </h2>
-                    <ColumnChart height={200} series={seriesPerMonth} />
+                    <ColumnChart
+                      height={200}
+                      series={summaryKpis?.shippable_month}
+                    />
                   </Card>
                   <Card sx={{ height: "235px" }}>
                     <h2 className="text-base text-center mt-3">
                       Cumplimiento anual
                     </h2>
-                    <ColumnChart height={200} series={seriesPerYear} />
+                    <ColumnChart
+                      height={200}
+                      series={summaryKpis?.shippable_year}
+                    />
                   </Card>
                 </div>
               </div>

@@ -10,10 +10,15 @@ import _ from "lodash";
 
 import { insertPhaseRequest } from "../../slices/phase";
 import { insertMachineRequest } from "../../slices/machines";
+import { textFieldValidation } from "./validated";
 
 const PhaseForm = ({ setOpen, data, idGrupo }) => {
   const dispatch = useDispatch();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [selectedMachines, setSelectedMachines] = useState([]);
   const [machine, setMachine] = useState("");
   const { isFetchingInsert } = useSelector((state) => state.machines);
@@ -63,7 +68,12 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
               type="text"
               label="Fase"
               autoComplete="off"
-              {...register("name", { required: true })}
+              error={Boolean(errors.name)}
+              helperText={errors.name?.message}
+              {...register("name", {
+                required: true,
+                validate: (value) => textFieldValidation(value, 20),
+              })}
             />
           </div>
           <div className="grid grid-cols-3 gap-4 mb-5">
@@ -88,6 +98,8 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
               autoComplete="off"
               onChange={(e) => setMachine(e.target.value)}
               value={machine}
+              inputProps={{ maxLength: 20 }}
+              helperText={machine.length === 20 && "Máximo 20 caracteres"}
             />
             <div>
               <Button
