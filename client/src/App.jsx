@@ -27,7 +27,9 @@ const App = () => {
           <Box
             sx={{
               flexGrow: 1,
-              p: 2,
+              px: 2,
+              pt: 1,
+              pb: 2,
               bgcolor: "bgcolor",
               minHeight: "100vh",
               display: "flex",

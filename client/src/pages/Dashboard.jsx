@@ -1,27 +1,30 @@
-import Card from "@mui/material/Card";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Card from "@mui/material/Card";
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
 import _ from "lodash";
 
-import securityIcon from "../img/securityIcon.png";
-import rhIcon from "../img/rhIcon.png";
-import calidadIcon from "../img/calidadIcon.png";
-import produccionIcon from "../img/produccionIcon.png";
-import matenimientoIcon from "../img/mantenimientoIcon.png";
+// import securityIcon from "../img/securityIcon.png";
+// import rhIcon from "../img/rhIcon.png";
+// import calidadIcon from "../img/calidadIcon.png";
+// import produccionIcon from "../img/produccionIcon.png";
+// import matenimientoIcon from "../img/mantenimientoIcon.png";
 import energizer1 from "../img/energizer1.png";
 import energizer2 from "../img/energizer2.jpg";
 import energizer3 from "../img/energizer3.jpg";
 import energizer4 from "../img/energizer4.jpg";
-import energizer5 from "../img/energizer5.png";
+// import energizer5 from "../img/energizer5.png";
 import energizer6 from "../img/energizer6.jpg";
 import energizer7 from "../img/energizer7.jpg";
 import GaugeSeries from "../components/GaugeCharts/GaugeSeries";
 import SolidGauge from "../components/GaugeCharts/SolidGauge";
 import StackedBar from "../components/BarCharts/StackedBar";
 import ColumnChart from "../components/BarCharts/ColumnChart";
-import ButtonGroup from "../components/FilterButton/ButtonGroup";
+import FilterButton from "../components/ButtonGroup/FilterButton";
 import { kpisRequest } from "../slices/kpis";
 import { getSummaryKpis } from "../selectors/kpis";
-import { useEffect } from "react";
+import ProgressBar from "../components/ProgressBar/ProgressBar";
 
 // const dataEnergizer = {
 //   categories: [
@@ -121,6 +124,17 @@ const Dashboard = () => {
   const summaryKpis = useSelector(getSummaryKpis);
   const { isFetching, didError } = useSelector((state) => state.kpis);
 
+  const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false);
+  // const [selectedFilter, setSelectedFilter] = useState({
+  //   phase: 0,
+  //   priority: "P0",
+  //   weighting: 0,
+  // });
+
+  const toggleFilterButton = () => {
+    setIsFilterButtonVisible((prev) => !prev);
+  };
+
   useEffect(() => {
     const setData = {
       phase: 0,
@@ -141,110 +155,86 @@ const Dashboard = () => {
         ) : (
           <>
             <div className="container m-auto">
-              <div className="flex justify-end items-center mb-4">
-                <ButtonGroup nombre="Fase" quantity={2} />
-                <ButtonGroup nombre="Prioridad" quantity={3} />
-                <ButtonGroup nombre="Ponderación" quantity={3} />
-              </div>
+              <button className="ml-2" onClick={toggleFilterButton}>
+                Mostrar / Ocultar
+              </button>
+              {isFilterButtonVisible && <FilterButton />}
+              {console.log(summaryKpis)}
               <div className="grid grid-cols-9 gap-4">
                 <div className="space-y-4 col-span-2">
                   <Card sx={{ height: "260px" }}>
-                    <h2 className="text-base text-center mt-3">
+                    {/* <h2 className="text-base text-center mt-3">
                       Total Entregables
-                    </h2>
-                    <div className="grid grid-cols-2 gap-2 px-2 mt-3">
-                      <div className="flex justify-around items-center">
-                        <img
-                          src={securityIcon}
-                          alt="icono_seguridad"
-                          className="w-10 h-10 object-contain"
-                        />
-                        <div className="border shadow-sm w-24">
-                          <div className="bg-orange-500 text-white">
-                            <h4 className="text-xs text-center py-1">
-                              Seguridad
-                            </h4>
-                          </div>
-                          <div className="text-center text-md py-1 font-bold">
-                            {summaryKpis?.shippable_total["1"]?.total ?? 0}
-                          </div>
-                        </div>
+                    </h2> */}
+                    <div className="mx-4 mt-2">
+                      <div className="flex justify-between pr-2">
+                        <p className="xs">Seguridad</p>
+                        <p className="xs">
+                          {summaryKpis?.shippable_total["1"]?.total}
+                        </p>
                       </div>
-                      <div className="flex justify-around items-center">
-                        <img
-                          src={calidadIcon}
-                          alt="icono_seguridad"
-                          className="w-10 h-10 object-contain"
-                        />
-                        <div className="border shadow-sm w-24">
-                          <div className="bg-orange-500 text-white">
-                            <h4 className="text-xs text-center py-1">
-                              Calidad
-                            </h4>
-                          </div>
-                          <div className="text-center text-md py-1 font-bold">
-                            {summaryKpis?.shippable_total["2"]?.total ?? 0}
-                          </div>
-                        </div>
+                      <ProgressBar
+                        currentProgress={
+                          summaryKpis?.shippable_total["1"]?.total
+                        }
+                        goal={summaryKpis?.shippable_total["0"]?.total}
+                      />
+                    </div>
+                    <div className="mx-4 mt-2">
+                      <div className="flex justify-between pr-2">
+                        <p className="xs">Calidad</p>
+                        <p className="xs">
+                          {summaryKpis?.shippable_total["2"]?.total}
+                        </p>
                       </div>
-                      <div className="flex justify-around items-center">
-                        <img
-                          src={rhIcon}
-                          alt="icono_seguridad"
-                          className="w-10 h-10 object-contain"
-                        />
-                        <div className="border shadow-sm w-24">
-                          <div className="bg-orange-500 text-white">
-                            <h4 className="text-xs text-center py-1">RH</h4>
-                          </div>
-                          <div className="text-center text-md py-1 font-bold">
-                            {summaryKpis?.shippable_total["3"]?.total ?? 0}
-                          </div>
-                        </div>
+                      <ProgressBar
+                        currentProgress={
+                          summaryKpis?.shippable_total["2"]?.total
+                        }
+                        goal={summaryKpis?.shippable_total["0"]?.total}
+                      />
+                    </div>
+                    <div className="mx-4 mt-2">
+                      <div className="flex justify-between pr-2">
+                        <p className="xs">RH</p>
+                        <p className="xs">
+                          {summaryKpis?.shippable_total["3"]?.total ?? 0}
+                        </p>
                       </div>
-                      <div className="flex justify-around items-center">
-                        <img
-                          src={produccionIcon}
-                          alt="icono_seguridad"
-                          className="w-10 h-10 object-contain"
-                        />
-                        <div className="border shadow-sm w-24">
-                          <div className="bg-orange-500 text-white">
-                            <h4 className="text-xs text-center py-1">
-                              Producción
-                            </h4>
-                          </div>
-                          <div className="text-center text-md py-1 font-bold">
-                            {summaryKpis?.shippable_total["4"]?.total ?? 0}
-                          </div>
-                        </div>
+                      <ProgressBar
+                        currentProgress={
+                          summaryKpis?.shippable_total["3"]?.total ?? 0
+                        }
+                        goal={summaryKpis?.shippable_total["0"]?.total}
+                      />
+                    </div>
+                    <div className="mx-4 mt-2">
+                      <div className="flex justify-between pr-2">
+                        <p className="xs">Producción</p>
+                        <p className="xs">
+                          {summaryKpis?.shippable_total["4"]?.total ?? 0}
+                        </p>
                       </div>
-                      <div className="flex justify-around items-center">
-                        <img
-                          src={matenimientoIcon}
-                          alt="icono_seguridad"
-                          className="w-10 h-10 object-contain"
-                        />
-                        <div className="border shadow-sm w-24">
-                          <div className="bg-orange-500 text-white">
-                            <h4 className="text-xs text-center py-1">Mtto.</h4>
-                          </div>
-                          <div className="text-center text-md py-1 font-bold">
-                            {summaryKpis?.shippable_total["5"]?.total ?? 0}
-                          </div>
-                        </div>
+                      <ProgressBar
+                        currentProgress={
+                          summaryKpis?.shippable_total["4"]?.total ?? 0
+                        }
+                        goal={summaryKpis?.shippable_total["0"]?.total}
+                      />
+                    </div>
+                    <div className="mx-4 mt-2">
+                      <div className="flex justify-between pr-2">
+                        <p className="xs">Mantenimiento</p>
+                        <p className="xs">
+                          {summaryKpis?.shippable_total["5"]?.total ?? 0}
+                        </p>
                       </div>
-                      <div className="flex justify-around items-center">
-                        <div className="w-10 h-10"></div>
-                        <div className="border shadow-sm w-24">
-                          <div className="bg-blue-500 text-white">
-                            <h4 className="text-xs text-center py-1">Total</h4>
-                          </div>
-                          <div className="text-center text-md py-1 font-bold">
-                            {summaryKpis?.shippable_total["0"]?.total ?? 0}
-                          </div>
-                        </div>
-                      </div>
+                      <ProgressBar
+                        currentProgress={
+                          summaryKpis?.shippable_total["5"]?.total ?? 0
+                        }
+                        goal={summaryKpis?.shippable_total["0"]?.total}
+                      />
                     </div>
                   </Card>
                 </div>
@@ -354,86 +344,143 @@ const Dashboard = () => {
                     <h2 className="text-base text-center mt-3">
                       Champions Pilares
                     </h2>
-                    <div className="grid grid-cols-2 gap-2 gap-y-6 px-2 mt-3">
-                      <div className="flex flex-col items-center justify-center">
-                        <img
+                    <div className="px-4 mt-1">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          bgcolor: "bgcolor",
+                          padding: "5px",
+                          borderRadius: "8px",
+                          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                        }}
+                      >
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={energizer7}
+                          sx={{ width: 56, height: 56 }}
+                        />
+                        <div className="w-full pl-14">
+                          <p className="text-lg">J. J. Diaz</p>
+                          <p className="text-sm text-gray-600">Champion UEN</p>
+                        </div>
+                      </Box>
+                    </div>
+                    <div className="px-4 mt-2">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          bgcolor: "bgcolor",
+                          padding: "5px",
+                          borderRadius: "8px",
+                          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                        }}
+                      >
+                        <Avatar
+                          alt="Remy Sharp"
                           src={energizer1}
-                          alt="energizador_1"
-                          className="w-20 h-20 object-contain"
+                          sx={{ width: 56, height: 56 }}
                         />
-                        <div className="bg-red-600 text-xs text-center py-1 text-white border shadow-sm w-28 mt-1">
-                          <h4 className="font-bold">C. Camacho</h4>
-                          <p>Seguridad</p>
+                        <div className="w-full pl-14">
+                          <p className="text-lg">C. Camacho</p>
+                          <p className="text-sm text-gray-600">Seguridad</p>
                         </div>
-                      </div>
-                      <div>
-                        <div className="flex flex-col items-center justify-center">
-                          <img
-                            src={energizer2}
-                            alt="energizador_2"
-                            className="w-20 h-20 object-contain"
-                          />
-                          <div className="bg-red-600 text-xs text-center py-1 text-white border shadow-sm w-28 mt-1">
-                            <h4 className="font-bold">Y. Tadeo</h4>
-                            <p>Calidad</p>
-                          </div>
+                      </Box>
+                    </div>
+                    <div className="px-4 mt-2">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          bgcolor: "bgcolor",
+                          padding: "5px",
+                          borderRadius: "8px",
+                          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                        }}
+                      >
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={energizer2}
+                          sx={{ width: 56, height: 56 }}
+                        />
+                        <div className="w-full pl-14">
+                          <p className="text-lg">Y. Tadeo</p>
+                          <p className="text-sm text-gray-600">Calidad</p>
                         </div>
-                      </div>
-                      <div className="flex flex-col items-center justify-center">
-                        <img
+                      </Box>
+                    </div>
+                    <div className="px-4 mt-2">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          bgcolor: "bgcolor",
+                          padding: "5px",
+                          borderRadius: "8px",
+                          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                        }}
+                      >
+                        <Avatar
+                          alt="Remy Sharp"
                           src={energizer3}
-                          alt="energizador_3"
-                          className="w-20 h-20 object-contain"
+                          sx={{ width: 56, height: 56 }}
                         />
-                        <div className="bg-red-600 text-xs text-center py-1 text-white border shadow-sm w-28 mt-1">
-                          <h4 className="font-bold">R. Parga</h4>
-                          <p>RH</p>
+                        <div className="w-full pl-14">
+                          <p className="text-lg">R. Parga</p>
+                          <p className="text-sm text-gray-600">RH</p>
                         </div>
-                      </div>
-                      <div>
-                        <div className="flex flex-col items-center justify-center">
-                          <div className="flex">
-                            <img
-                              src={energizer4}
-                              alt="energizador_4"
-                              className="w-20 h-20 object-contain"
-                            />
-                            <img
-                              src={energizer5}
-                              alt="energizador_5"
-                              className="w-20 h-20 object-contain"
-                            />
-                          </div>
-                          <div className="bg-red-600 text-xs text-center py-1 text-white border shadow-sm w-28 mt-1">
-                            <h4 className="font-bold">J. Chapa/E. Mtz.</h4>
-                            <p>Producción</p>
-                          </div>
+                      </Box>
+                    </div>
+                    <div className="px-4 mt-2">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          bgcolor: "bgcolor",
+                          padding: "5px",
+                          borderRadius: "8px",
+                          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                        }}
+                      >
+                        <Avatar
+                          alt="Remy Sharp"
+                          src={energizer4}
+                          sx={{ width: 56, height: 56 }}
+                        />
+                        <div className="w-full pl-14">
+                          <p className="text-lg">J. Chapa</p>
+                          <p className="text-sm text-gray-600">Producción</p>
                         </div>
-                      </div>
-                      <div className="flex flex-col items-center justify-center">
-                        <img
+                      </Box>
+                    </div>
+                    <div className="px-4 mt-2">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          bgcolor: "bgcolor",
+                          padding: "5px",
+                          borderRadius: "8px",
+                          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                        }}
+                      >
+                        <Avatar
+                          alt="Remy Sharp"
                           src={energizer6}
-                          alt="energizador_6"
-                          className="w-20 h-20 object-contain"
+                          sx={{ width: 56, height: 56 }}
                         />
-                        <div className="bg-red-600 text-xs text-center py-1 text-white border shadow-sm w-28 mt-1">
-                          <h4 className="font-bold">J. Marroquin</h4>
-                          <p>Mantenimiento</p>
+                        <div className="w-full pl-14">
+                          <p className="text-lg">J. Marroquin</p>
+                          <p className="text-sm text-gray-600">Mantenimiento</p>
                         </div>
-                      </div>
-                      <div>
-                        <div className="flex flex-col items-center justify-center">
-                          <img
-                            src={energizer7}
-                            alt="energizador_7"
-                            className="w-20 h-20 object-contain"
-                          />
-                          <div className="bg-red-600 text-xs text-center py-1 text-white border shadow-sm w-28 mt-1">
-                            <h4 className="font-bold">J. J. Diaz</h4>
-                            <p>Champion UEN</p>
-                          </div>
-                        </div>
-                      </div>
+                      </Box>
                     </div>
                   </Card>
                 </div>

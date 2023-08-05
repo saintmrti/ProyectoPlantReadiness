@@ -58,6 +58,7 @@ const StackedBar = ({ height, categories, series }) => {
           //     data: [5, 15, 8, 5, 8],
           //   },
         ],
+        colors: ["#303F9F", "#FFA000", "#EF6C00", "#E64A19"],
       }}
     />
   );

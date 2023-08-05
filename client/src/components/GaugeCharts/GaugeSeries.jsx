@@ -71,13 +71,13 @@ const GaugeSeries = ({ height, title, total, value, rate }) => {
             {
               from: 0,
               to: parts,
-              color: "#DF5353", // red
+              color: "#f44336", // red
               thickness: 20,
             },
             {
               from: parts,
               to: parts * 2,
-              color: "#FFA500", // orange
+              color: "#ffa726", // orange
               thickness: 20,
             },
             {
@@ -89,7 +89,7 @@ const GaugeSeries = ({ height, title, total, value, rate }) => {
             {
               from: parts * 3,
               to: total,
-              color: "#55BF3B", // green
+              color: "#66bb6a", // green
               thickness: 20,
             },
           ],

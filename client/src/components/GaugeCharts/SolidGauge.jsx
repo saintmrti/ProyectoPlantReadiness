@@ -43,9 +43,9 @@ const SolidGauge = ({ value, name, height, total, rate }) => {
         },
         yAxis: {
           stops: [
-            [0.1, "#55BF3B"], // green
-            [0.5, "#DDDF0D"], // yellow
-            [0.9, "#DF5353"], // red
+            [0.9, "#66bb6a"], // green
+            [0.5, "#ffa726"], // yellow
+            [0.1, "#f44336"], // red
           ],
           lineWidth: 0,
           tickWidth: 0,

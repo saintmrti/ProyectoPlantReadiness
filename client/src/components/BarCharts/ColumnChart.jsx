@@ -55,6 +55,23 @@ const ColumnChart = ({ series, height }) => {
           },
         },
         series,
+        colors: [
+          "#303F9F",
+          "#f44336",
+          "#64B5F6",
+          "#2E7D32",
+          "#43A047",
+          "#8BC34A",
+          "#CDDC39",
+          "#FFEB3B",
+          "#FFA000",
+          "#EF6C00",
+          "#E64A19",
+          "#F48FB1",
+          "#D81B60",
+          "#BA68C8",
+          "#7B1FA2",
+        ],
       }}
     />
   );
