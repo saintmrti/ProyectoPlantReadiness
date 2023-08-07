@@ -21,10 +21,12 @@ import GaugeSeries from "../components/GaugeCharts/GaugeSeries";
 import SolidGauge from "../components/GaugeCharts/SolidGauge";
 import StackedBar from "../components/BarCharts/StackedBar";
 import ColumnChart from "../components/BarCharts/ColumnChart";
-import FilterButton from "../components/ButtonGroup/FilterButton";
+import FilterButton from "../components/ButtonGroup";
 import { kpisRequest } from "../slices/kpis";
 import { getSummaryKpis } from "../selectors/kpis";
-import ProgressBar from "../components/ProgressBar/ProgressBar";
+import ProgressBar from "../components/ProgressBar";
+import { Spinner } from '../components/Spinner';
+import { Error } from '../components/Error';
 
 // const dataEnergizer = {
 //   categories: [
@@ -125,41 +127,46 @@ const Dashboard = () => {
   const { isFetching, didError } = useSelector((state) => state.kpis);
 
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false);
-  // const [selectedFilter, setSelectedFilter] = useState({
-  //   phase: 0,
-  //   priority: "P0",
-  //   weighting: 0,
-  // });
+  const [selectedFilter, setSelectedFilter] = useState({
+    phase: 0,
+    priority: "P0",
+    weighting: 0,
+  });
 
   const toggleFilterButton = () => {
     setIsFilterButtonVisible((prev) => !prev);
   };
 
+  const handleBtnClickFiler = () => {
+    dispatch(kpisRequest(selectedFilter));
+  }
+
   useEffect(() => {
-    const setData = {
-      phase: 0,
-      priority: "P0",
-      weighting: 0,
-    };
-    dispatch(kpisRequest(setData));
-  }, [dispatch]);
+    dispatch(kpisRequest(selectedFilter));
+  }, []);
   return (
     <>
-      <div>
+      <div className="container mx-auto">
         {isFetching ? (
-          <div>Cargando...</div>
+          <Spinner />
         ) : didError ? (
-          <div>Error</div>
+          <Error />
         ) : _.isEmpty(summaryKpis) ? (
-          <div></div>
+          <>
+            {isFilterButtonVisible && <FilterButton setSelectedFilter={setSelectedFilter} selectedFilter={selectedFilter} handleBtnClickFiler={handleBtnClickFiler}/>}
+            <div className="h-80 flex items-end justify-center">
+               <p className="text-lg text-center">
+                 Lo sentimos, no tenemos datos para mostrar
+               </p>
+            </div>
+          </>
         ) : (
           <>
-            <div className="container m-auto">
               <button className="ml-2" onClick={toggleFilterButton}>
                 Mostrar / Ocultar
               </button>
-              {isFilterButtonVisible && <FilterButton />}
-              {console.log(summaryKpis)}
+              {isFilterButtonVisible && <FilterButton setSelectedFilter={setSelectedFilter} selectedFilter={selectedFilter} handleBtnClickFiler={handleBtnClickFiler}/>}
+              {/* {console.log(selectedFilter)} */}
               <div className="grid grid-cols-9 gap-4">
                 <div className="space-y-4 col-span-2">
                   <Card sx={{ height: "260px" }}>
@@ -175,7 +182,7 @@ const Dashboard = () => {
                       </div>
                       <ProgressBar
                         currentProgress={
-                          summaryKpis?.shippable_total["1"]?.total
+                          summaryKpis?.shippable_total["1"]?.total ?? 0
                         }
                         goal={summaryKpis?.shippable_total["0"]?.total}
                       />
@@ -184,12 +191,12 @@ const Dashboard = () => {
                       <div className="flex justify-between pr-2">
                         <p className="xs">Calidad</p>
                         <p className="xs">
-                          {summaryKpis?.shippable_total["2"]?.total}
+                          {summaryKpis?.shippable_total["2"]?.total ?? 0}
                         </p>
                       </div>
                       <ProgressBar
                         currentProgress={
-                          summaryKpis?.shippable_total["2"]?.total
+                          summaryKpis?.shippable_total["2"]?.total ?? 0
                         }
                         goal={summaryKpis?.shippable_total["0"]?.total}
                       />
@@ -533,7 +540,6 @@ const Dashboard = () => {
                   </Card>
                 </div>
               </div>
-            </div>
           </>
         )}
       </div>

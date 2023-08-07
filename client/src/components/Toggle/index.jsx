@@ -1,0 +1,39 @@
+import { useState } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+
+export const Toggle = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const initialValue = location.pathname === '/dashboard' ? 'dashboard' : 'register';
+  const [toggleValue, setToggleValue] = useState(initialValue);
+
+  const handleToggleChange = (event, newValue) => {
+    if (newValue !== null) {
+      setToggleValue(newValue);
+    }
+  };
+
+  const handleClickDashboard = () => {
+    navigate('/dashboard');
+  };
+
+  const handleClickRegister = () => {
+    navigate('/');
+  };
+
+  return (
+    <ToggleButtonGroup value={toggleValue} exclusive onChange={handleToggleChange}>
+      <ToggleButton value="register" onClick={handleClickRegister}>
+        <AssignmentIcon fontSize="small"/>
+      </ToggleButton>
+      <ToggleButton value="dashboard" onClick={handleClickDashboard}>
+        <DashboardIcon fontSize="small"/>
+      </ToggleButton>
+    </ToggleButtonGroup>
+  );
+}

@@ -35,6 +35,9 @@ import { fetchPhaseRequest } from "../slices/phase";
 import { groupedByIdExpectancy } from "../selectors/expectancy";
 import { summaryAdvanced } from "../selectors/advance";
 import { CustomTabPanel, a11yProps } from "../components/Tabs/CustomTabPanel";
+import { Spinner } from '../components/Spinner';
+import { Error }from '../components/Error';
+import { Toggle } from "../components/Toggle";
 
 const style = {
   position: "absolute",
@@ -112,11 +115,11 @@ const Register = () => {
   }, [dispatch]);
   return (
     <>
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto">
         {isFetching ? (
-          <div>Cargando...</div>
+          <Spinner />
         ) : didError ? (
-          <div>Error</div>
+          <Error />
         ) : (
           <>
             <div className="flex flex-col items-center mb-6">
@@ -125,15 +128,20 @@ const Register = () => {
               </h1>
               <div className="w-2/3 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
             </div>
-            <div className="flex mb-3">
-              <div className="mr-2">
-                <Button variant="contained" onClick={() => setOpenExp(true)}>
-                  Agregar expectativa
-                </Button>
+            <div className="flex mb-3 justify-between">
+              <div className="flex">
+                <div className="mr-2">
+                  <Button variant="contained" onClick={() => setOpenExp(true)}>
+                    Agregar expectativa
+                  </Button>
+                </div>
+                <div>
+                  <Button variant="contained" onClick={() => setOpenPha(true)}>
+                    Agregar fase
+                  </Button>
+                </div>
               </div>
-              <Button variant="contained" onClick={() => setOpenPha(true)}>
-                Agregar fase
-              </Button>
+              <Toggle />
             </div>
             <Box sx={{ width: "100%" }}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
