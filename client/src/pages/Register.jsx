@@ -12,12 +12,7 @@ import Tab from "@mui/material/Tab";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CommentIcon from "@mui/icons-material/Comment";
-import CommentsDisabledIcon from "@mui/icons-material/CommentsDisabled";
-import AddchartIcon from "@mui/icons-material/Addchart";
+import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 
@@ -35,8 +30,8 @@ import { fetchPhaseRequest } from "../slices/phase";
 import { groupedByIdExpectancy } from "../selectors/expectancy";
 import { summaryAdvanced } from "../selectors/advance";
 import { CustomTabPanel, a11yProps } from "../components/Tabs/CustomTabPanel";
-import { Spinner } from '../components/Spinner';
-import { Error }from '../components/Error';
+import { Spinner } from "../components/Spinner";
+import { Error } from "../components/Error";
 import { Toggle } from "../components/Toggle";
 
 const style = {
@@ -58,37 +53,31 @@ const Register = () => {
   const [openPha, setOpenPha] = useState(false);
   const [openAdv, setOpenAdv] = useState(false);
   const [idExpectancy, setIdExpectancy] = useState(null);
-  const [activeIndex, setActiveIndex] = useState(1);
   const [activeComment, setActiveComment] = useState(true);
-  const [changeShi, setChangeShi] = useState([]);
+  const [changeShi, setChangeShi] = useState(null);
 
   const expectancy = useSelector(groupedByIdExpectancy);
   const advance = useSelector(summaryAdvanced);
   const { list: headings } = useSelector((state) => state.headings);
   const { list: machines } = useSelector((state) => state.machines);
-  const { data: shippables } = useSelector((state) => state.shippable);
+  // const { data: shippables } = useSelector((state) => state.shippable);
   const { list: fases } = useSelector((state) => state.phase);
   const { isFetching, didError } = useSelector((state) => state.expectancy);
 
   const fasesByidGrupo = _.uniqBy(_.values(fases), "idGrupo");
   const maxIdGrupo = _.maxBy(_.values(fases), "idGrupo");
+  const usedMachines = _.uniqBy(_.values(fases), "idMaquina");
+  const updatedMachines = _.filter(machines, (machine) => {
+    return !_.some(
+      usedMachines,
+      (usedMachine) => usedMachine.idMaquina === machine.id
+    );
+  });
 
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prevIndex) =>
-      prevIndex === _.size(fases) ? 1 : prevIndex + 1
-    );
-  };
-
-  const handlePrev = () => {
-    setActiveIndex((prevIndex) =>
-      prevIndex === 1 ? _.size(fases) : prevIndex - 1
-    );
   };
 
   const handleOnClickShi = (id) => {
@@ -97,11 +86,7 @@ const Register = () => {
   };
 
   const handleOnClickAdv = (id) => {
-    const arrayShippable = _.filter(
-      shippables,
-      (item) => item.idExpectativa === id
-    );
-    setChangeShi(arrayShippable);
+    setChangeShi(id);
     setOpenAdv(true);
   };
 
@@ -115,7 +100,7 @@ const Register = () => {
   }, [dispatch]);
   return (
     <>
-      <div className="container mx-auto">
+      <div className="">
         {isFetching ? (
           <Spinner />
         ) : didError ? (
@@ -172,25 +157,44 @@ const Register = () => {
                           <Typography>{item.expectativa}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                          <div className="flex">
-                            <IconButton
+                          <div className="flex justify-end mb-3">
+                            {/* <IconButton
                               aria-label="add"
                               size="small"
                               onClick={() => handleOnClickShi(item.id)}
                             >
                               <AddCircleOutlineIcon />
-                            </IconButton>
+                            </IconButton> */}
+                            <Button
+                              variant="contained"
+                              size="small"
+                              onClick={() => handleOnClickShi(item.id)}
+                              sx={{ mr: 1 }}
+                            >
+                              Agregar Entregable
+                            </Button>
                             {item.shippables && item.shippables.length > 0 && (
                               <>
-                                <IconButton
+                                {/* <IconButton
                                   aria-label="addAdvance"
                                   size="small"
                                   onClick={() => handleOnClickAdv(item.id)}
                                 >
                                   <AddchartIcon />
-                                </IconButton>
-                                <div className="flex ml-auto">
-                                  <IconButton
+                                </IconButton> */}
+
+                                <Button
+                                  variant="text"
+                                  size="small"
+                                  onClick={() =>
+                                    setActiveComment(!activeComment)
+                                  }
+                                >
+                                  {activeComment
+                                    ? "Mostrar Avances"
+                                    : "Ocultar Avances"}
+                                </Button>
+                                {/* <IconButton
                                     aria-label="comment"
                                     size="small"
                                     onClick={() =>
@@ -202,33 +206,37 @@ const Register = () => {
                                     ) : (
                                       <CommentsDisabledIcon />
                                     )}
-                                  </IconButton>
-                                  <IconButton
-                                    aria-label="back"
-                                    size="small"
-                                    onClick={() => handlePrev(item.id)}
-                                  >
-                                    <ArrowBackIcon />
-                                  </IconButton>
-                                  <IconButton
-                                    aria-label="forward"
-                                    size="small"
-                                    onClick={() => handleNext(item.id)}
-                                  >
-                                    <ArrowForwardIcon />
-                                  </IconButton>
-                                </div>
+                                  </IconButton> */}
+                                {/* {!activeComment && (
+                                  <>
+                                    <IconButton
+                                      aria-label="back"
+                                      size="small"
+                                      onClick={() => handlePrev(item.id)}
+                                    >
+                                      <ArrowBackIcon />
+                                    </IconButton>
+                                    <IconButton
+                                      aria-label="forward"
+                                      size="small"
+                                      onClick={() => handleNext(item.id)}
+                                    >
+                                      <ArrowForwardIcon />
+                                    </IconButton>
+                                  </>
+                                )} */}
                               </>
                             )}
                           </div>
                           {item.shippables && item.shippables.length > 0 && (
-                            <div className="mb-5">
+                            <div className="mb-3">
                               <ShippableTable
                                 data={item.shippables}
+                                idExpectancy={item.id}
                                 fases={fases}
-                                activeIndex={activeIndex}
                                 advance={advance[item?.id]}
                                 activeComment={activeComment}
+                                handleOnClickAdv={handleOnClickAdv}
                               />
                             </div>
                           )}
@@ -241,20 +249,56 @@ const Register = () => {
             </Box>
             <Modal open={openExp} onClose={() => setOpenExp(false)}>
               <Box sx={style}>
+                <IconButton
+                  aria-label="close"
+                  size="small"
+                  onClick={() => setOpenExp(false)}
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: 8,
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
                 <ExpectationForm data={headings} setOpen={setOpenExp} />
               </Box>
             </Modal>
             <Modal open={openPha} onClose={() => setOpenPha(false)}>
               <Box sx={style}>
+                <IconButton
+                  aria-label="close"
+                  size="small"
+                  onClick={() => setOpenPha(false)}
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: 8,
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
                 <PhaseForm
                   setOpen={setOpenPha}
-                  data={machines}
+                  data={updatedMachines}
                   idGrupo={maxIdGrupo?.idGrupo + 1}
                 />
               </Box>
             </Modal>
             <Modal open={openShi} onClose={() => setOpenShi(false)}>
               <Box sx={style}>
+                <IconButton
+                  aria-label="close"
+                  size="small"
+                  onClick={() => setOpenShi(false)}
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: 8,
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
                 <ShippableForm
                   setOpen={setOpenShi}
                   idExpectancy={idExpectancy}
@@ -263,9 +307,21 @@ const Register = () => {
             </Modal>
             <Modal open={openAdv} onClose={() => setOpenAdv(false)}>
               <Box sx={style}>
+                <IconButton
+                  aria-label="close"
+                  size="small"
+                  onClick={() => setOpenAdv(false)}
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: 8,
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
                 <AdvanceForm
                   setOpen={setOpenAdv}
-                  data={changeShi}
+                  idEntregable={changeShi}
                   fases={fasesByidGrupo}
                 />
               </Box>

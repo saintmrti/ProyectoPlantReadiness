@@ -18,7 +18,10 @@ module.exports.insertPhase = async (conn, modifiedArray) => {
     `);
 
     const { data } = await conn.query(`
-      SELECT * FROM vki40_fases WHERE id = ${insertId};
+      SELECT f.id, f.idMaquina, f.idGrupo, f.fase, m.maquina
+      FROM vki40_fases AS f
+      INNER JOIN vki40_maquinas_PR AS m ON f.idMaquina = m.id
+      WHERE f.id= ${insertId};
     `);
 
     return data[0];

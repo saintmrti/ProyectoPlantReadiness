@@ -1,31 +1,57 @@
+import _ from "lodash";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import _ from "lodash";
+import { textFieldValidation } from "./validated";
+import { changeAdvance } from "../../slices/setAdvance";
 
-const AdvanceForm = ({ setOpen, fases, data }) => {
-  const { register, handleSubmit, reset } = useForm();
+const AdvanceForm = ({ setOpen, fases, idEntregable }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
   const onSubmit = (values) => {
-    const { idEntregable, idGrupo } = values;
+    const {
+      responsable,
+      idGrupo,
+      fecha_inicio,
+      fecha_termino,
+      fecha_real,
+      comentarios,
+    } = values;
     setOpen(false);
     reset();
+    const saveAdvance = {
+      responsable,
+      fecha_inicio,
+      fecha_termino,
+      fecha_real,
+      comentarios,
+    };
+    dispatch(changeAdvance(saveAdvance));
+
     navigate(`/avances/${idEntregable}/${idGrupo}`);
   };
 
   return (
     <div className="max-w-lg">
       <form
-        className="flex justify-center items-center flex-wrap h-80"
+        className="flex justify-center items-center flex-wrap"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="text-3xl mb-5 w-full text-center">Agregar avances</h1>
-        <div>
+        <div className="mb-10">
           {/* <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4 py-2 w-40">Responsable</label>
             <Input
@@ -36,29 +62,23 @@ const AdvanceForm = ({ setOpen, fases, data }) => {
             />
           </div> */}
           <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4">Entregable</label>
-            <FormControl sx={{ width: "15rem" }}>
-              <InputLabel id="entregable">Seleccionar entregable</InputLabel>
-              <Select
-                labelId="entregable"
-                id="select-entregable"
-                label="Seleccionar entregable"
-                autoComplete="off"
-                defaultValue=""
-                {...register("idEntregable", { required: true })}
-              >
-                <MenuItem value="">Seleccione un entregable</MenuItem>
-                {_.map(data, (item) => (
-                  <MenuItem key={item.id} value={item.id}>
-                    {item.nombre}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <label className="px-4">Nombre</label>
+            <TextField
+              sx={{ width: "16rem" }}
+              type="text"
+              label="Responsable"
+              autoComplete="off"
+              error={Boolean(errors.responsable)}
+              helperText={errors.responsable?.message}
+              {...register("responsable", {
+                required: true,
+                validate: (value) => textFieldValidation(value, 30),
+              })}
+            />
           </div>
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4">Fase</label>
-            <FormControl sx={{ width: "15rem" }}>
+            <FormControl sx={{ width: "16rem" }}>
               <InputLabel id="fase">Seleccionar fase</InputLabel>
               <Select
                 labelId="fase"
@@ -78,6 +98,42 @@ const AdvanceForm = ({ setOpen, fases, data }) => {
                 ))}
               </Select>
             </FormControl>
+          </div>
+          <div className="flex justify-end items-center w-full mb-3">
+            <label className="px-4">Fecha Inicio</label>
+            <TextField
+              sx={{ width: "16rem" }}
+              type="date"
+              {...register("fecha_inicio", { required: true })}
+            />
+          </div>
+          <div className="flex justify-end items-center w-full mb-3">
+            <label className="px-4">Fecha Termino</label>
+            <TextField
+              sx={{ width: "16rem" }}
+              type="date"
+              {...register("fecha_termino", { required: true })}
+            />
+          </div>
+          <div className="flex justify-end items-center w-full mb-3">
+            <label className="px-4">Fecha Real</label>
+            <TextField
+              sx={{ width: "16rem" }}
+              type="date"
+              {...register("fecha_real", { required: false })}
+            />
+          </div>
+          <div className="flex justify-end w-full">
+            <label className="px-4">Comentarios</label>
+            <TextField
+              label="Ingresar comentarios..."
+              multiline
+              rows={3}
+              className="w-64"
+              autoComplete="off"
+              inputProps={{ maxLength: 120 }}
+              {...register("comentarios", { required: false })}
+            />
           </div>
         </div>
         <div className="w-full flex justify-center">

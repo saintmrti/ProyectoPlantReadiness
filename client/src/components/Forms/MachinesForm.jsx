@@ -13,7 +13,7 @@ import _ from "lodash";
 import { insertAdvanceRequest } from "../../slices/advance";
 import { textFieldValidation } from "./validated";
 
-const MachinesForm = ({ idEntregable, fases, isFetching }) => {
+const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
   const dispatch = useDispatch();
   const {
     register,
@@ -59,14 +59,16 @@ const MachinesForm = ({ idEntregable, fases, isFetching }) => {
         const fieldName = parts[0];
         const index = parts[1];
 
-        if (!result[index]) {
-          result[index] = {};
-        }
+        if (checkboxStates[fases[index].maquina] && values[key] !== undefined) {
+          if (!result[index]) {
+            result[index] = {};
+          }
 
-        const value = values[key] || "";
-        result[index][fieldName] = value;
-        result[index]["idFase"] = fases[index].id;
-        result[index]["idEntregable"] = idEntregable;
+          const value = values[key] || "";
+          result[index][fieldName] = value;
+          result[index]["idFase"] = fases[index].id;
+          result[index]["idEntregable"] = idEntregable;
+        }
 
         return result;
       },
@@ -75,7 +77,9 @@ const MachinesForm = ({ idEntregable, fases, isFetching }) => {
 
     const filteredArray = _.values(groupedValues);
 
-    dispatch(insertAdvanceRequest({ filteredArray }));
+    console.log({ filteredArray });
+
+    // dispatch(insertAdvanceRequest({ filteredArray }));
     reset();
   };
 
@@ -97,9 +101,9 @@ const MachinesForm = ({ idEntregable, fases, isFetching }) => {
       >
         <Chip sx={{ width: "11rem" }} label="Maquina" color="primary" />
         <Chip sx={{ width: "11rem" }} label="Responsable" color="primary" />
-        <Chip sx={{ width: "11rem" }} label="Fecha de inicio" color="primary" />
-        <Chip sx={{ width: "11rem" }} label="Fecha de fin" color="primary" />
-        <Chip sx={{ width: "11rem" }} label="Fecha real" color="primary" />
+        <Chip sx={{ width: "11rem" }} label="Fecha Inicio" color="primary" />
+        <Chip sx={{ width: "11rem" }} label="Fecha Termino" color="primary" />
+        <Chip sx={{ width: "11rem" }} label="Fecha Real" color="primary" />
         <Chip sx={{ width: "11rem" }} label="Avance" color="primary" />
         <Chip sx={{ width: "11rem" }} label="Comentarios" color="primary" />
       </Stack>

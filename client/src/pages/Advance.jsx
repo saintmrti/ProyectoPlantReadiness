@@ -8,6 +8,7 @@ const Advance = () => {
   const { idEntregable, idGrupo } = useParams();
   const { list: fases } = useSelector((state) => state.phase);
   const isFetching = useSelector((state) => state.advance.isFetchingInsert);
+  const advanceState = useSelector((state) => state.setAdvance);
 
   const filterFases = _.filter(
     fases,
@@ -19,6 +20,7 @@ const Advance = () => {
         idEntregable={idEntregable}
         fases={filterFases}
         isFetching={isFetching}
+        advanceState={advanceState}
       />
     </div>
   );

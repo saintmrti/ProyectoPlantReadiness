@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
+import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import _ from "lodash";
 
@@ -60,7 +61,7 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="text-3xl mb-5 w-full text-center">Nueva fase</h1>
-        <div className="mb-5">
+        <div className="mb-10">
           <div className="flex justify-center items-center mb-5">
             <label className="px-4">Nombre</label>
             <TextField
@@ -76,30 +77,42 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
               })}
             />
           </div>
-          <div className="grid grid-cols-3 gap-4 mb-5">
-            {_.map(data, (item) => (
-              <FormGroup
-                key={item.id}
-                sx={{ display: "flex", itemsAlign: "center" }}
-              >
-                <FormControlLabel
-                  control={
-                    <Checkbox value={item.id} onChange={handleCheckboxChange} />
-                  }
-                  label={item.maquina}
-                />
-              </FormGroup>
-            ))}
-          </div>
-          <div className="flex justify-evenly items-center">
+          {_.isEmpty(data) ? (
+            <Typography
+              sx={{ textAlign: "center", mb: 2 }}
+              color="primary.main"
+            >
+              No tienes maquinas disponibles
+            </Typography>
+          ) : (
+            <div className="grid grid-cols-3 gap-4 mb-5">
+              {_.map(data, (item) => (
+                <FormGroup
+                  key={item.id}
+                  sx={{ display: "flex", itemsAlign: "center" }}
+                >
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        value={item.id}
+                        onChange={handleCheckboxChange}
+                      />
+                    }
+                    label={item.maquina}
+                  />
+                </FormGroup>
+              ))}
+            </div>
+          )}
+          <div className="flex justify-center items-center">
             <TextField
-              sx={{ width: "15rem" }}
               label="Maquina"
               autoComplete="off"
               onChange={(e) => setMachine(e.target.value)}
               value={machine}
               inputProps={{ maxLength: 20 }}
               helperText={machine.length === 20 && "Máximo 20 caracteres"}
+              sx={{ width: "15rem", mr: 2 }}
             />
             <div>
               <Button

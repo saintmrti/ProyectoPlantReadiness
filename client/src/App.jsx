@@ -1,7 +1,8 @@
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material/styles";
-// import DarkUnica from 'highcharts/themes/dark-unica';
+import { useSelector } from "react-redux";
+import DarkUnica from "highcharts/themes/dark-unica";
 import Highcharts from "highcharts";
 import moment from "moment";
 
@@ -17,7 +18,8 @@ Highcharts.setOptions({
 });
 
 const App = () => {
-  // if(theme !== 'light') DarkUnica(Highcharts);
+  const { theme } = useSelector((state) => state.settings);
+  if (theme !== "light") DarkUnica(Highcharts);
 
   return (
     <>

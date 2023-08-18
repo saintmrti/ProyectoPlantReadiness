@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -7,8 +8,15 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import _ from "lodash";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
+const StyledTableCell = styled(TableCell)(() => ({
   // [`&.${tableCellClasses.head}`]: {
   //   backgroundColor: theme.palette.common.black,
   //   color: theme.palette.common.white,
@@ -30,10 +38,36 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const ShippableTable = ({
   data,
   fases,
-  activeIndex,
   advance,
   activeComment,
+  idExpectancy,
+  handleOnClickAdv,
 }) => {
+  const [activeIndex, setActiveIndex] = useState(1);
+  const handleNext = () => {
+    setActiveIndex(
+      (prevIndex) => {
+        const ids = Object.keys(fases);
+        const currentIndex = ids.indexOf(String(prevIndex));
+        const nextIndex = (currentIndex + 1) % ids.length;
+        return parseInt(ids[nextIndex]);
+      }
+      // prevIndex === _.size(fases) ? 1 : prevIndex + 1
+    );
+  };
+
+  const handlePrev = () => {
+    setActiveIndex(
+      (prevIndex) => {
+        const ids = Object.keys(fases);
+        const currentIndex = _.findIndex(ids, (id) => id === String(prevIndex));
+        const backIndex =
+          currentIndex === 0 ? ids.length - 1 : currentIndex - 1;
+        return parseInt(ids[backIndex]);
+      }
+      // prevIndex === 1 ? _.size(fases) : prevIndex - 1
+    );
+  };
   return (
     <>
       <TableContainer
@@ -44,31 +78,55 @@ const ShippableTable = ({
           <TableHead>
             {!activeComment && (
               <TableRow>
-                <StyledTableCell colSpan={5}></StyledTableCell>
+                <StyledTableCell colSpan={2}></StyledTableCell>
                 <StyledTableCell colSpan={6} sx={{ textAlign: "center" }}>
-                  {`${fases[activeIndex]?.fase} - ${fases[activeIndex]?.maquina}`}
-                  {/* {fases[activeIndex]?.fase}
-                  <br />
-                  {fases[activeIndex]?.maquina} */}
+                  <div className="flex items-center">
+                    <div className="mx-auto">
+                      {`${fases[activeIndex]?.fase} - ${fases[activeIndex]?.maquina}`}
+                    </div>
+                    <div>
+                      <IconButton
+                        aria-label="back"
+                        size="small"
+                        onClick={() => handlePrev(idExpectancy.id)}
+                      >
+                        <ArrowBackIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="forward"
+                        size="small"
+                        onClick={() => handleNext(idExpectancy.id)}
+                      >
+                        <ArrowForwardIcon />
+                      </IconButton>
+                    </div>
+                  </div>
                 </StyledTableCell>
               </TableRow>
             )}
             <TableRow>
               <StyledTableCell sx={{ width: "2.5rem" }}>#</StyledTableCell>
-              <StyledTableCell align="left">Entregable</StyledTableCell>
-              <StyledTableCell align="left">Evidencia</StyledTableCell>
-              <StyledTableCell>Prioridad</StyledTableCell>
-              <StyledTableCell>Ponderación</StyledTableCell>
+              <StyledTableCell>Entregable</StyledTableCell>
               {activeComment ? (
-                <StyledTableCell align="center">Comentarios</StyledTableCell>
+                <>
+                  <StyledTableCell>Evidencia</StyledTableCell>
+                  <StyledTableCell align="center">Prioridad</StyledTableCell>
+                  <StyledTableCell align="center">Ponderación</StyledTableCell>
+                  <StyledTableCell align="center">Comentarios</StyledTableCell>
+                  <StyledTableCell align="center"></StyledTableCell>
+                </>
               ) : (
                 <>
                   <StyledTableCell>Responsable</StyledTableCell>
-                  <StyledTableCell>Fecha Inicio</StyledTableCell>
-                  <StyledTableCell>Fecha Termino</StyledTableCell>
-                  <StyledTableCell>Fecha Real</StyledTableCell>
-                  <StyledTableCell>Avance</StyledTableCell>
-                  <StyledTableCell>Comentarios</StyledTableCell>
+                  <StyledTableCell align="center">Fecha Inicio</StyledTableCell>
+                  <StyledTableCell align="center">
+                    Fecha Termino
+                  </StyledTableCell>
+                  <StyledTableCell align="center">Fecha Real</StyledTableCell>
+                  <StyledTableCell align="center">Avance</StyledTableCell>
+                  <StyledTableCell align="center" sx={{ minWidth: "300px" }}>
+                    Comentarios
+                  </StyledTableCell>
                 </>
               )}
             </TableRow>
@@ -85,15 +143,34 @@ const ShippableTable = ({
                   {index + 1}
                 </StyledTableCell>
                 <StyledTableCell>{item.nombre}</StyledTableCell>
-                <StyledTableCell>{item.evidencia}</StyledTableCell>
-                <StyledTableCell align="center">
-                  {item.prioridad}
-                </StyledTableCell>
-                <StyledTableCell align="center">
-                  {item.ponderacion}
-                </StyledTableCell>
                 {activeComment ? (
-                  <StyledTableCell>{item.comentarios}</StyledTableCell>
+                  <>
+                    <StyledTableCell>{item.evidencia}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.prioridad}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.ponderacion}
+                    </StyledTableCell>
+                    <StyledTableCell>{item.comentarios}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Box sx={{ display: "flex" }}>
+                        <IconButton
+                          aria-label="edit"
+                          size="small"
+                          onClick={() => handleOnClickAdv(item.id)}
+                        >
+                          <AddCircleOutlineIcon />
+                        </IconButton>
+                        <IconButton aria-label="edit" size="small">
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton aria-label="delete" size="small">
+                          <DeleteIcon />
+                        </IconButton>
+                      </Box>
+                    </StyledTableCell>
+                  </>
                 ) : (
                   <>
                     {advance &&

@@ -17,9 +17,10 @@ module.exports.createPhase = (req, res) => {
 
     const modifiedArray = _.map(newPhases, (item) => {
       return {
-        idMaquina: parseInt(item.idMaquina),
+        idMaquina: item.idMaquina,
         idGrupo: item.idGrupo,
         fase: item.fase,
+        maquina: item.maquina,
       };
     });
     response(res, null, insertPhase, modifiedArray);

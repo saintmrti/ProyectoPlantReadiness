@@ -13,7 +13,7 @@ const phaseRoutes = require("./routes/phase.routes");
 const kpisRoutes = require("./routes/kpis.routes");
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 
 // Settings
 app.set("port", port);

@@ -33,7 +33,7 @@ const ShippableForm = ({ setOpen, idExpectancy }) => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="text-3xl mb-5 w-full text-center">Nuevo entregable</h1>
-        <div>
+        <div className="mb-10">
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4">Nombre</label>
             <TextField
@@ -102,13 +102,13 @@ const ShippableForm = ({ setOpen, idExpectancy }) => {
               </Select>
             </FormControl>
           </div>
-          <div className="flex justify-end w-full mb-3">
+          <div className="flex justify-end w-full">
             <label className="px-4">Comentarios</label>
             <TextField
               label="Ingresar comentarios..."
               multiline
               rows={8}
-              className="h-60 w-64"
+              className="w-64"
               autoComplete="off"
               error={Boolean(errors.comentarios)}
               helperText={errors.comentarios?.message}
