@@ -11,7 +11,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import _ from "lodash";
 
 import { insertAdvanceRequest } from "../../slices/advance";
-import { textFieldValidation } from "./validated";
+import {
+  textFieldValidation,
+  dateFieldValidation,
+  numberFieldValidation,
+} from "./validated";
 
 const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
   const dispatch = useDispatch();
@@ -19,21 +23,37 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm();
   const [checkboxStates, setCheckboxStates] = useState({});
 
-  const handleCheckboxChange = (machine, event) => {
+  const handleCheckboxChange = (machine, index, event) => {
     setCheckboxStates({
       ...checkboxStates,
       [machine.maquina]: event.target.checked,
     });
+
+    if (event.target.checked) {
+      const responsibleFieldName = `responsible_${index}`;
+      const startDateFieldName = `startDate_${index}`;
+      const endDateFieldName = `endDate_${index}`;
+      const realDateFieldName = `realDate_${index}`;
+      const advanceFieldName = `advance_${index}`;
+      const commentsFieldName = `comments_${index}`;
+      setValue(responsibleFieldName, advanceState.responsable);
+      setValue(startDateFieldName, advanceState.fecha_inicio);
+      setValue(endDateFieldName, advanceState.fecha_termino);
+      setValue(realDateFieldName, advanceState.fecha_real);
+      setValue(advanceFieldName, advanceState.avance);
+      setValue(commentsFieldName, advanceState.comentarios);
+    }
   };
 
-  const validateRegister = (name, index) => {
+  const validateDateField = (name, index) => {
     return checkboxStates[fases[index].maquina]
       ? register(name, {
-          required: true,
+          validate: (value) => dateFieldValidation(value),
         })
       : register(name, {
           required: false,
@@ -43,8 +63,17 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
   const validateTextField = (name, index, maxLength) => {
     return checkboxStates[fases[index].maquina]
       ? register(name, {
-          required: true,
           validate: (value) => textFieldValidation(value, maxLength),
+        })
+      : register(name, {
+          required: false,
+        });
+  };
+
+  const validateNumberField = (name, index) => {
+    return checkboxStates[fases[index].maquina]
+      ? register(name, {
+          validate: (value) => numberFieldValidation(value),
         })
       : register(name, {
           required: false,
@@ -59,12 +88,12 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
         const fieldName = parts[0];
         const index = parts[1];
 
-        if (checkboxStates[fases[index].maquina] && values[key] !== undefined) {
+        if (checkboxStates[fases[index].maquina]) {
           if (!result[index]) {
             result[index] = {};
           }
 
-          const value = values[key] || "";
+          const value = values[key] !== undefined ? values[key] : "";
           result[index][fieldName] = value;
           result[index]["idFase"] = fases[index].id;
           result[index]["idEntregable"] = idEntregable;
@@ -77,9 +106,7 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
 
     const filteredArray = _.values(groupedValues);
 
-    console.log({ filteredArray });
-
-    // dispatch(insertAdvanceRequest({ filteredArray }));
+    dispatch(insertAdvanceRequest({ filteredArray }));
     reset();
   };
 
@@ -108,14 +135,19 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
         <Chip sx={{ width: "11rem" }} label="Comentarios" color="primary" />
       </Stack>
       {_.map(fases, (machine, index) => (
-        <div className="flex justify-between items-center mb-2" key={index}>
+        <div
+          className="flex justify-between items-center mb-2"
+          key={machine.id}
+        >
           <FormGroup
             sx={{ display: "flex", itemsAlign: "center", width: "11rem" }}
           >
             <FormControlLabel
               control={
                 <Checkbox
-                  onChange={(event) => handleCheckboxChange(machine, event)}
+                  onChange={(event) =>
+                    handleCheckboxChange(machine, index, event)
+                  }
                 />
               }
               label={machine.maquina}
@@ -128,6 +160,7 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
             autoComplete="off"
             disabled={!checkboxStates[machine.maquina]}
             error={Boolean(errors[`responsible_${index}`])}
+            defaultValue={advanceState.responsable}
             helperText={errors[`responsible_${index}`]?.message}
             {...validateTextField(`responsible_${index}`, index, 30)}
           />
@@ -135,18 +168,25 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
             sx={{ width: "11rem" }}
             type="date"
             disabled={!checkboxStates[machine.maquina]}
-            {...validateRegister(`startDate_${index}`, index)}
+            error={Boolean(errors[`startDate_${index}`])}
+            defaultValue={advanceState.fecha_inicio}
+            helperText={errors[`startDate_${index}`]?.message}
+            {...validateDateField(`startDate_${index}`, index)}
+          />
+          <TextField
+            sx={{ width: "11rem" }}
+            type="date"
+            error={Boolean(errors[`endDate_${index}`])}
+            defaultValue={advanceState.fecha_termino}
+            disabled={!checkboxStates[machine.maquina]}
+            helperText={errors[`endDate_${index}`]?.message}
+            {...validateDateField(`endDate_${index}`, index)}
           />
           <TextField
             sx={{ width: "11rem" }}
             type="date"
             disabled={!checkboxStates[machine.maquina]}
-            {...validateRegister(`endDate_${index}`, index)}
-          />
-          <TextField
-            sx={{ width: "11rem" }}
-            type="date"
-            disabled={!checkboxStates[machine.maquina]}
+            defaultValue={advanceState.fecha_real}
             {...register(`realDate_${index}`, { required: false })}
           />
           <TextField
@@ -154,16 +194,20 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
             type="number"
             label="Avance"
             disabled={!checkboxStates[machine.maquina]}
+            error={Boolean(errors[`advance_${index}`])}
+            defaultValue={advanceState.avance}
+            helperText={errors[`advance_${index}`]?.message}
             inputProps={{
               min: 0,
               max: 100,
             }}
-            {...validateRegister(`advance_${index}`, index)}
+            {...validateNumberField(`advance_${index}`, index)}
           />
           <TextField
             sx={{ width: "11rem" }}
             type="text"
             label="Comentarios"
+            defaultValue={advanceState.comentarios}
             disabled={!checkboxStates[machine.maquina]}
             inputProps={{ maxLength: 120 }}
             {...register(`comments_${index}`, { required: false })}
@@ -171,7 +215,14 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
         </div>
       ))}
       <div className="flex justify-center mt-5">
-        <Button type="submit" variant="contained" disabled={isFetching}>
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={
+            isFetching ||
+            !Object.values(checkboxStates).some((checked) => checked)
+          }
+        >
           {isFetching ? "Cargando..." : "Agregar"}
         </Button>
       </div>

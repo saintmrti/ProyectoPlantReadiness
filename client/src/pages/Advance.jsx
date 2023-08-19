@@ -1,27 +1,46 @@
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import _ from "lodash";
 
 import MachinesForm from "../components/Forms/MachinesForm";
+import { fetchPhaseRequest } from "../slices/phase";
+import { Spinner } from "../components/Spinner";
+import { Error } from "../components/Error";
 
 const Advance = () => {
+  const dispatch = useDispatch();
   const { idEntregable, idGrupo } = useParams();
   const { list: fases } = useSelector((state) => state.phase);
-  const isFetching = useSelector((state) => state.advance.isFetchingInsert);
+  const isFetchingInsert = useSelector(
+    (state) => state.advance.isFetchingInsert
+  );
+  const { isFetching, didError } = useSelector((state) => state.phase);
   const advanceState = useSelector((state) => state.setAdvance);
 
   const filterFases = _.filter(
     fases,
     (item) => item.idGrupo === parseInt(idGrupo)
   );
+
+  useEffect(() => {
+    dispatch(fetchPhaseRequest());
+  }, [dispatch]);
+
   return (
     <div className="w-full">
-      <MachinesForm
-        idEntregable={idEntregable}
-        fases={filterFases}
-        isFetching={isFetching}
-        advanceState={advanceState}
-      />
+      {isFetching ? (
+        <Spinner />
+      ) : didError ? (
+        <Error />
+      ) : (
+        <MachinesForm
+          idEntregable={idEntregable}
+          fases={filterFases}
+          isFetching={isFetchingInsert}
+          advanceState={advanceState}
+        />
+      )}
     </div>
   );
 };

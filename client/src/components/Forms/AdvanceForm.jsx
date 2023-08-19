@@ -8,7 +8,11 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import { textFieldValidation } from "./validated";
+import {
+  textFieldValidation,
+  dateFieldValidation,
+  numberFieldValidation,
+} from "./validated";
 import { changeAdvance } from "../../slices/setAdvance";
 
 const AdvanceForm = ({ setOpen, fases, idEntregable }) => {
@@ -28,6 +32,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable }) => {
       fecha_inicio,
       fecha_termino,
       fecha_real,
+      avance,
       comentarios,
     } = values;
     setOpen(false);
@@ -37,6 +42,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable }) => {
       fecha_inicio,
       fecha_termino,
       fecha_real,
+      avance,
       comentarios,
     };
     dispatch(changeAdvance(saveAdvance));
@@ -52,15 +58,6 @@ const AdvanceForm = ({ setOpen, fases, idEntregable }) => {
       >
         <h1 className="text-3xl mb-5 w-full text-center">Agregar avances</h1>
         <div className="mb-10">
-          {/* <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4 py-2 w-40">Responsable</label>
-            <Input
-              type="text"
-              placeholder="Nombre del responsable"
-              autoComplete="off"
-              {...register("responsable", { required: true })}
-            />
-          </div> */}
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4">Nombre</label>
             <TextField
@@ -104,7 +101,12 @@ const AdvanceForm = ({ setOpen, fases, idEntregable }) => {
             <TextField
               sx={{ width: "16rem" }}
               type="date"
-              {...register("fecha_inicio", { required: true })}
+              error={Boolean(errors.fecha_inicio)}
+              helperText={errors.fecha_inicio?.message}
+              {...register("fecha_inicio", {
+                required: true,
+                validate: (value) => dateFieldValidation(value),
+              })}
             />
           </div>
           <div className="flex justify-end items-center w-full mb-3">
@@ -112,7 +114,12 @@ const AdvanceForm = ({ setOpen, fases, idEntregable }) => {
             <TextField
               sx={{ width: "16rem" }}
               type="date"
-              {...register("fecha_termino", { required: true })}
+              error={Boolean(errors.fecha_termino)}
+              helperText={errors.fecha_termino?.message}
+              {...register("fecha_termino", {
+                required: true,
+                validate: (value) => dateFieldValidation(value),
+              })}
             />
           </div>
           <div className="flex justify-end items-center w-full mb-3">
@@ -121,6 +128,22 @@ const AdvanceForm = ({ setOpen, fases, idEntregable }) => {
               sx={{ width: "16rem" }}
               type="date"
               {...register("fecha_real", { required: false })}
+            />
+          </div>
+          <div className="flex justify-end items-center w-full mb-3">
+            <label className="px-4">Avance</label>
+            <TextField
+              sx={{ width: "16rem" }}
+              type="number"
+              label="Avance"
+              inputProps={{
+                min: 0,
+                max: 100,
+              }}
+              {...register("avance", {
+                required: true,
+                validate: (value) => numberFieldValidation(value),
+              })}
             />
           </div>
           <div className="flex justify-end w-full">
