@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -5,13 +6,18 @@ import TextField from "@mui/material/TextField";
 import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { insertShippableRequest } from "../../slices/shippable";
+import {
+  insertShippableRequest,
+  updateShippableRequest,
+} from "../../slices/shippable";
 import { textFieldValidation } from "./validated";
+import { getShippable } from "../../selectors/shippable";
 
-const ShippableForm = ({ setOpen, idExpectancy }) => {
+const ShippableForm = ({ setOpen, idExpectancy, editShi }) => {
   const dispatch = useDispatch();
+  const shippable = useSelector((state) => getShippable(state, editShi));
   const {
     register,
     handleSubmit,
@@ -21,10 +27,16 @@ const ShippableForm = ({ setOpen, idExpectancy }) => {
 
   const onSubmit = (values) => {
     values.idExpectativa = idExpectancy;
-    dispatch(insertShippableRequest(values));
+    editShi
+      ? dispatch(updateShippableRequest(values))
+      : dispatch(insertShippableRequest(values));
     setOpen(false);
     reset();
   };
+
+  useEffect(() => {
+    shippable && reset(shippable);
+  }, [shippable, reset]);
 
   return (
     <div className="max-w-lg">
@@ -73,7 +85,7 @@ const ShippableForm = ({ setOpen, idExpectancy }) => {
                 id="select-priority"
                 label="Seleccionar prioridad"
                 autoComplete="off"
-                defaultValue=""
+                defaultValue={shippable?.prioridad || ""}
                 {...register("prioridad", { required: true })}
               >
                 <MenuItem value="">Seleccionar prioridad</MenuItem>
@@ -92,7 +104,7 @@ const ShippableForm = ({ setOpen, idExpectancy }) => {
                 id="select-ponderation"
                 label="Seleccionar ponderación"
                 autoComplete="off"
-                defaultValue=""
+                defaultValue={shippable?.ponderacion || ""}
                 {...register("ponderacion", { required: true })}
               >
                 <MenuItem value="">Seleccionar ponderación</MenuItem>

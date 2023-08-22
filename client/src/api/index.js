@@ -1,5 +1,9 @@
 export { insertExpectancyApi, fetchExpectancyApi } from "./expectency";
-export { insertShippableApi, fetchShippableApi } from "./shippable";
+export {
+  insertShippableApi,
+  fetchShippableApi,
+  updateShippableApi,
+} from "./shippable";
 export { fetchHeadingsApi } from "./headings";
 export { fetchMachinesApi, insertMachineApi } from "./machines";
 export { fetchAdvanceApi, insertAdvanceApi } from "./advance";

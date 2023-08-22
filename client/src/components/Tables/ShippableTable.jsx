@@ -42,8 +42,10 @@ const ShippableTable = ({
   activeComment,
   idExpectancy,
   handleOnClickAdv,
+  handleOnClickEdit,
 }) => {
   const [activeIndex, setActiveIndex] = useState(1);
+
   const handleNext = () => {
     setActiveIndex(
       (prevIndex) => {
@@ -68,6 +70,7 @@ const ShippableTable = ({
       // prevIndex === 1 ? _.size(fases) : prevIndex - 1
     );
   };
+
   return (
     <>
       <TableContainer
@@ -162,7 +165,11 @@ const ShippableTable = ({
                         >
                           <AddCircleOutlineIcon />
                         </IconButton>
-                        <IconButton aria-label="edit" size="small">
+                        <IconButton
+                          aria-label="edit"
+                          size="small"
+                          onClick={() => handleOnClickEdit(item.id)}
+                        >
                           <EditIcon />
                         </IconButton>
                         <IconButton aria-label="delete" size="small">

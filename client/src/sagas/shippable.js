@@ -1,6 +1,10 @@
 import { takeLatest, call, put, cancelled } from "redux-saga/effects";
 
-import { insertShippableApi, fetchShippableApi } from "../api";
+import {
+  insertShippableApi,
+  fetchShippableApi,
+  updateShippableApi,
+} from "../api";
 import {
   insertShippableRequest,
   insertShippableSuccess,
@@ -8,6 +12,9 @@ import {
   fetchShippableRequest,
   fetchShippableSuccess,
   fetchShippableError,
+  updateShippableRequest,
+  updateShippableSuccess,
+  updateShippableError,
 } from "../slices/shippable";
 
 function* fetchShippable() {
@@ -33,7 +40,6 @@ function* insertShippable({ payload }) {
     const { data, isError } = yield call(insertShippableApi.run, payload);
     if (isError) throw new Error();
     yield put(insertShippableSuccess({ data }));
-    // yield put(fetchShippableRequest());
   } catch (e) {
     yield put(insertShippableError());
   } finally {
@@ -45,4 +51,22 @@ function* insertShippable({ payload }) {
 
 export function* insertShippableSaga() {
   yield takeLatest(insertShippableRequest.toString(), insertShippable);
+}
+
+function* updateShippable({ payload }) {
+  try {
+    const { data, isError } = yield call(updateShippableApi.run, payload);
+    if (isError) throw new Error();
+    yield put(updateShippableSuccess({ data }));
+  } catch (e) {
+    yield put(updateShippableError());
+  } finally {
+    if (yield cancelled()) {
+      yield call(updateShippableApi.cancel);
+    }
+  }
+}
+
+export function* updateShippableSaga() {
+  yield takeLatest(updateShippableRequest.toString(), updateShippable);
 }

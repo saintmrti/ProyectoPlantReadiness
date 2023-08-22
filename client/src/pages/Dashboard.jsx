@@ -10,13 +10,12 @@ import _ from "lodash";
 // import calidadIcon from "../img/calidadIcon.png";
 // import produccionIcon from "../img/produccionIcon.png";
 // import matenimientoIcon from "../img/mantenimientoIcon.png";
-import energizer1 from "../img/energizer1.png";
-import energizer2 from "../img/energizer2.jpg";
-import energizer3 from "../img/energizer3.jpg";
-import energizer4 from "../img/energizer4.jpg";
-// import energizer5 from "../img/energizer5.png";
-import energizer6 from "../img/energizer6.jpg";
-import energizer7 from "../img/energizer7.jpg";
+import energizer1 from "../assets/img/energizer1.png";
+import energizer2 from "../assets/img/energizer2.jpg";
+import energizer3 from "../assets/img/energizer3.jpg";
+import energizer4 from "../assets/img/energizer4.jpg";
+import energizer6 from "../assets/img/energizer6.jpg";
+import energizer7 from "../assets/img/energizer7.jpg";
 import GaugeSeries from "../components/GaugeCharts/GaugeSeries";
 import SolidGauge from "../components/GaugeCharts/SolidGauge";
 import StackedBar from "../components/BarCharts/StackedBar";
@@ -178,7 +177,7 @@ const Dashboard = () => {
                 handleBtnClickFiler={handleBtnClickFiler}
               />
             )}
-            {/* {console.log(selectedFilter)} */}
+            {/* {console.log(summaryKpis?.shippable_total)} */}
             <div className="grid grid-cols-9 gap-4">
               <div className="space-y-4 col-span-2">
                 <Card sx={{ height: "260px" }}>
@@ -189,7 +188,8 @@ const Dashboard = () => {
                     <div className="flex justify-between pr-2">
                       <p className="xs">Seguridad</p>
                       <p className="xs">
-                        {summaryKpis?.shippable_total["1"]?.total}
+                        {summaryKpis?.shippable_total["1"]?.total} /{" "}
+                        {summaryKpis?.shippable_total["0"]?.total}
                       </p>
                     </div>
                     <ProgressBar
@@ -203,7 +203,8 @@ const Dashboard = () => {
                     <div className="flex justify-between pr-2">
                       <p className="xs">Calidad</p>
                       <p className="xs">
-                        {summaryKpis?.shippable_total["2"]?.total ?? 0}
+                        {summaryKpis?.shippable_total["2"]?.total ?? 0} /{" "}
+                        {summaryKpis?.shippable_total["0"]?.total}
                       </p>
                     </div>
                     <ProgressBar
@@ -217,7 +218,8 @@ const Dashboard = () => {
                     <div className="flex justify-between pr-2">
                       <p className="xs">RH</p>
                       <p className="xs">
-                        {summaryKpis?.shippable_total["3"]?.total ?? 0}
+                        {summaryKpis?.shippable_total["3"]?.total ?? 0} /{" "}
+                        {summaryKpis?.shippable_total["0"]?.total}
                       </p>
                     </div>
                     <ProgressBar
@@ -231,7 +233,8 @@ const Dashboard = () => {
                     <div className="flex justify-between pr-2">
                       <p className="xs">Producción</p>
                       <p className="xs">
-                        {summaryKpis?.shippable_total["4"]?.total ?? 0}
+                        {summaryKpis?.shippable_total["4"]?.total ?? 0} /{" "}
+                        {summaryKpis?.shippable_total["0"]?.total}
                       </p>
                     </div>
                     <ProgressBar
@@ -245,7 +248,8 @@ const Dashboard = () => {
                     <div className="flex justify-between pr-2">
                       <p className="xs">Mantenimiento</p>
                       <p className="xs">
-                        {summaryKpis?.shippable_total["5"]?.total ?? 0}
+                        {summaryKpis?.shippable_total["5"]?.total ?? 0} /{" "}
+                        {summaryKpis?.shippable_total["0"]?.total}
                       </p>
                     </div>
                     <ProgressBar

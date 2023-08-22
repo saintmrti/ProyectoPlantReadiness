@@ -1,5 +1,9 @@
 export { insertExpectancySaga, fetchExpectancySaga } from "./expectancy";
-export { insertShippableSaga, fetchShippableSaga } from "./shippable";
+export {
+  insertShippableSaga,
+  fetchShippableSaga,
+  updateShippableSaga,
+} from "./shippable";
 export { fetchHeadingsSaga } from "./headings";
 export { fetchMachinesSaga, insertMachineSaga } from "./machines";
 export { fetchAdvanceSaga, insertAdvanceSaga } from "./advance";

@@ -21,3 +21,25 @@ module.exports.insertShippable = async (
 
   return data[0];
 };
+module.exports.updateShippable = async (
+  conn,
+  { nombre, evidencia, prioridad, ponderacion, comentarios, idEntregable }
+) => {
+  await conn.query(`
+      UPDATE vki40_entregables
+      SET
+        fecha = GETDATE(),
+        nombre = '${nombre}',
+        evidencia = '${evidencia}',
+        prioridad = '${prioridad}',
+        ponderacion = ${ponderacion},
+        comentarios = '${comentarios}'
+      WHERE id= ${idEntregable};
+    `);
+
+  const { data } = await conn.query(`
+      SELECT * FROM vki40_entregables WHERE id = ${idEntregable};
+    `);
+
+  return data[0];
+};

@@ -19,3 +19,13 @@ export const fetchShippableApi = {
       })
       .then(({ data }) => data),
 };
+
+export const updateShippableApi = {
+  cancel: null,
+  run: (ship) =>
+    axios
+      .put("/api/entregables", ship, {
+        cancelToken: new CancelToken((c) => (updateShippableApi.cancel = c)),
+      })
+      .then(({ data }) => data),
+};

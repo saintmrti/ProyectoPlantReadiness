@@ -9,6 +9,8 @@ const Slice = createSlice({
     didError: false,
     isFetchingInsert: false,
     didErrorInsert: false,
+    isFetchingUpdate: false,
+    didErrorUpdate: false,
   },
   reducers: {
     fetchShippableRequest: (state) => {
@@ -36,6 +38,18 @@ const Slice = createSlice({
       state.isFetchingInsert = false;
       state.didErrorInsert = true;
     },
+    updateShippableRequest: (state) => {
+      state.isFetchingUpdate = true;
+      state.didErrorUpdate = false;
+    },
+    updateShippableSuccess: (state, { payload: { data } }) => {
+      state.data[data.id] = data;
+      state.isFetchingUpdate = false;
+    },
+    updateShippableError: (state) => {
+      state.isFetchingUpdate = false;
+      state.didErrorUpdate = true;
+    },
   },
 });
 
@@ -46,5 +60,8 @@ export const {
   insertShippableRequest,
   insertShippableSuccess,
   insertShippableError,
+  updateShippableRequest,
+  updateShippableSuccess,
+  updateShippableError,
 } = Slice.actions;
 export default Slice.reducer;

@@ -15,7 +15,7 @@ export const getSummaryKpis = createSelector(
     const parseShippableYear = JSON.parse(kpis[0]?.plan_EntregablesAnio);
     const parseShippableMonth = JSON.parse(kpis[0]?.plan_EntregablesMes);
 
-    const sortedEnergizer = _.orderBy(parseEnergizer, "totales");
+    const sortedEnergizer = _.orderBy(parseEnergizer, "totales", "desc");
     const energizers = _.map(sortedEnergizer, "energizador");
     const energizerTotal = _.map(sortedEnergizer, "totales");
     const reversedAdvance = _.reverse(parseAdvance);

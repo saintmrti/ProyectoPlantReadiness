@@ -55,6 +55,7 @@ const Register = () => {
   const [idExpectancy, setIdExpectancy] = useState(null);
   const [activeComment, setActiveComment] = useState(true);
   const [changeShi, setChangeShi] = useState(null);
+  const [editShi, setEditShip] = useState(null);
 
   const expectancy = useSelector(groupedByIdExpectancy);
   const advance = useSelector(summaryAdvanced);
@@ -82,12 +83,18 @@ const Register = () => {
 
   const handleOnClickShi = (id) => {
     setIdExpectancy(id);
+    setEditShip(null);
     setOpenShi(true);
   };
 
   const handleOnClickAdv = (id) => {
     setChangeShi(id);
     setOpenAdv(true);
+  };
+
+  const handleOnClickEdit = (id) => {
+    setEditShip(id);
+    setOpenShi(true);
   };
 
   useEffect(() => {
@@ -237,6 +244,7 @@ const Register = () => {
                                 advance={advance[item?.id]}
                                 activeComment={activeComment}
                                 handleOnClickAdv={handleOnClickAdv}
+                                handleOnClickEdit={handleOnClickEdit}
                               />
                             </div>
                           )}
@@ -302,6 +310,7 @@ const Register = () => {
                 <ShippableForm
                   setOpen={setOpenShi}
                   idExpectancy={idExpectancy}
+                  editShi={editShi}
                 />
               </Box>
             </Modal>
