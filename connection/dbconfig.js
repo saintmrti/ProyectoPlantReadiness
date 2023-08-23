@@ -1,8 +1,8 @@
 const dbconfig = {
-  user: 'nuvahubadmin',
-  password: 'Pastiseta2018',
-  database: 'nuvahubdemo',
-  server: 'nuvahubserver.database.windows.net',
+  user: "*********",
+  password: "*********",
+  database: "*********",
+  server: "*********",
 };
 
 module.exports = dbconfig;
