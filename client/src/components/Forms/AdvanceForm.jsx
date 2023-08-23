@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import _ from "lodash";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TextField from "@mui/material/TextField";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
@@ -14,10 +15,14 @@ import {
   numberFieldValidation,
 } from "./validated";
 import { changeAdvance } from "../../slices/setAdvance";
+import { getAdvance } from "../../selectors/advance";
+import { updateAdvanceRequest } from "../../slices/advance";
 
-const AdvanceForm = ({ setOpen, fases, idEntregable }) => {
+const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const advance = useSelector((state) => getAdvance(state, editAdv));
   const {
     register,
     handleSubmit,
@@ -44,11 +49,18 @@ const AdvanceForm = ({ setOpen, fases, idEntregable }) => {
       fecha_real,
       avance,
       comentarios,
+      idAvance: editAdv,
     };
-    dispatch(changeAdvance(saveAdvance));
 
-    navigate(`/avances/${idEntregable}/${idGrupo}`);
+    editAdv
+      ? dispatch(updateAdvanceRequest(saveAdvance))
+      : (dispatch(changeAdvance(saveAdvance)),
+        navigate(`/avances/${idEntregable}/${idGrupo}`));
   };
+
+  useEffect(() => {
+    advance && reset(advance);
+  }, [advance, reset]);
 
   return (
     <div className="max-w-lg">
@@ -73,29 +85,31 @@ const AdvanceForm = ({ setOpen, fases, idEntregable }) => {
               })}
             />
           </div>
-          <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4">Fase</label>
-            <FormControl sx={{ width: "16rem" }}>
-              <InputLabel id="fase">Seleccionar fase</InputLabel>
-              <Select
-                labelId="fase"
-                id="select-phase"
-                label="Seleccionar fase"
-                autoComplete="off"
-                defaultValue=""
-                {...register("idGrupo", { required: true })}
-              >
-                <MenuItem value="">
-                  <em>Seleccionar fase</em>
-                </MenuItem>
-                {_.map(fases, (item) => (
-                  <MenuItem key={item.id} value={item.idGrupo}>
-                    {item.fase}
+          {!editAdv && (
+            <div className="flex justify-end items-center w-full mb-3">
+              <label className="px-4">Fase</label>
+              <FormControl sx={{ width: "16rem" }}>
+                <InputLabel id="fase">Seleccionar fase</InputLabel>
+                <Select
+                  labelId="fase"
+                  id="select-phase"
+                  label="Seleccionar fase"
+                  autoComplete="off"
+                  defaultValue=""
+                  {...register("idGrupo", { required: true })}
+                >
+                  <MenuItem value="">
+                    <em>Seleccionar fase</em>
                   </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
+                  {_.map(fases, (item) => (
+                    <MenuItem key={item.id} value={item.idGrupo}>
+                      {item.fase}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+          )}
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4">Fecha Inicio</label>
             <TextField
@@ -161,7 +175,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable }) => {
         </div>
         <div className="w-full flex justify-center">
           <Button variant="contained" type="submit">
-            Enviar
+            Agregar
           </Button>
         </div>
       </form>

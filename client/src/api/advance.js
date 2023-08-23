@@ -19,3 +19,13 @@ export const fetchAdvanceApi = {
       })
       .then(({ data }) => data),
 };
+
+export const updateAdvanceApi = {
+  cancel: null,
+  run: (adv) =>
+    axios
+      .put("/api/avances", adv, {
+        cancelToken: new CancelToken((c) => (updateAdvanceApi.cancel = c)),
+      })
+      .then(({ data }) => data),
+};

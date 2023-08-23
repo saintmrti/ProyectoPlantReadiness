@@ -3,6 +3,7 @@ const {
   getSummary,
   insertShippable,
   updateShippable,
+  deleteShippable,
 } = require("../models/shippable.model");
 
 module.exports.getShippables = (req, res) => {
@@ -54,6 +55,19 @@ module.exports.modifyShippable = (req, res) => {
       idEntregable: parseInt(id),
     };
     response(res, null, updateShippable, newRegister);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports.eliminateShippable = (req, res) => {
+  try {
+    const { id } = req.body;
+    const deleteRegister = {
+      idEntregable: parseInt(id),
+    };
+    response(res, null, deleteShippable, deleteRegister);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

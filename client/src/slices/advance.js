@@ -9,6 +9,8 @@ const Slice = createSlice({
     didError: false,
     isFetchingInsert: false,
     didErrorInsert: false,
+    isFetchingUpdate: false,
+    didErrorUpdate: false,
   },
   reducers: {
     fetchAdvanceRequest: (state) => {
@@ -38,6 +40,18 @@ const Slice = createSlice({
       state.isFetchingInsert = false;
       state.didErrorInsert = true;
     },
+    updateAdvanceRequest: (state) => {
+      state.isFetchingUpdate = true;
+      state.didErrorUpdate = false;
+    },
+    updateAdvanceSuccess: (state, { payload: { data } }) => {
+      state.data[data.id] = data;
+      state.isFetchingUpdate = false;
+    },
+    updateAdvanceError: (state) => {
+      state.isFetchingUpdate = false;
+      state.didErrorUpdate = true;
+    },
   },
 });
 
@@ -48,5 +62,8 @@ export const {
   insertAdvanceRequest,
   insertAdvanceSuccess,
   insertAdvanceError,
+  updateAdvanceRequest,
+  updateAdvanceSuccess,
+  updateAdvanceError,
 } = Slice.actions;
 export default Slice.reducer;

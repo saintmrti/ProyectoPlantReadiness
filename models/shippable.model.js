@@ -43,3 +43,10 @@ module.exports.updateShippable = async (
 
   return data[0];
 };
+
+module.exports.deleteShippable = async (conn, { idEntregable }) => {
+  await conn.query(`
+      DELETE FROM vki40_entregables WHERE id = ${idEntregable};
+    `);
+  return { id: idEntregable };
+};

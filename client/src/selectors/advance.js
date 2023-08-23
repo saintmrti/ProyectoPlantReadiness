@@ -2,8 +2,11 @@ import { createSelector } from "@reduxjs/toolkit";
 import _ from "lodash";
 import moment from "moment-timezone";
 
-const formatearFecha = (fechaCompleta) =>
-  fechaCompleta === null ? null : moment.utc(fechaCompleta).format("DD-MMM");
+const formatearFecha = (fecha) =>
+  fecha === null ? null : moment.utc(fecha).format("DD-MMM");
+
+const formatoFechaCompleta = (fecha) =>
+  fecha === null ? null : moment.utc(fecha).format("YYYY-MM-DD");
 
 export const summaryAdvanced = createSelector(
   ({ advance }) => advance.data,
@@ -29,5 +32,19 @@ export const summaryAdvanced = createSelector(
     });
 
     return groupedByIdShippable;
+  }
+);
+
+export const getAdvance = createSelector(
+  ({ advance }, idAdvance) => advance.data[idAdvance],
+  (advance) => {
+    if (!advance) return {};
+    const modifiedAdvance = {
+      ...advance,
+      fecha_inicio: formatoFechaCompleta(advance.fecha_inicio),
+      fecha_termino: formatoFechaCompleta(advance.fecha_termino),
+      fecha_real: formatoFechaCompleta(advance.fecha_real),
+    };
+    return modifiedAdvance;
   }
 );

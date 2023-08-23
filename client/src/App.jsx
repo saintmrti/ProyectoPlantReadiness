@@ -1,5 +1,5 @@
-import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
 import { ThemeProvider } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import DarkUnica from "highcharts/themes/dark-unica";

@@ -1,7 +1,11 @@
 const _ = require("lodash");
 
 const response = require("../helpers/response");
-const { getSummary, insertAdvance } = require("../models/advance.model");
+const {
+  getSummary,
+  insertAdvance,
+  updateAdvance,
+} = require("../models/advance.model");
 
 module.exports.getAdvances = (req, res) => {
   try {
@@ -29,6 +33,34 @@ module.exports.createAdvance = (req, res) => {
       };
     });
     response(res, null, insertAdvance, modifiedArray);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports.modifyAdvance = (req, res) => {
+  try {
+    const {
+      responsable,
+      fecha_inicio,
+      fecha_termino,
+      fecha_real,
+      avance,
+      comentarios,
+      idAvance,
+    } = req.body;
+    const modifiedRegister = {
+      idAvance,
+      responsable: responsable === "" ? null : `'${responsable}'`,
+      fecha_inicio: fecha_inicio === "" ? null : `'${fecha_inicio}'`,
+      fecha_termino: fecha_termino === "" ? null : `'${fecha_termino}'`,
+      fecha_real: fecha_real === "" ? null : `'${fecha_real}'`,
+      avance: avance === "" ? null : avance,
+      comentarios: comentarios === "" ? null : `'${comentarios}'`,
+    };
+
+    response(res, null, updateAdvance, modifiedRegister);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

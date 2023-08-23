@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
-
+import _ from "lodash";
 import Button from "@mui/material/Button";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -14,7 +14,6 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch, useSelector } from "react-redux";
-import _ from "lodash";
 
 import ExpectationForm from "../components/Forms/ExpectationForm";
 import ShippableForm from "../components/Forms/ShippableForm";
@@ -33,6 +32,7 @@ import { CustomTabPanel, a11yProps } from "../components/Tabs/CustomTabPanel";
 import { Spinner } from "../components/Spinner";
 import { Error } from "../components/Error";
 import { Toggle } from "../components/Toggle";
+import { ShippableAlert } from "../components/Alert/ShippableAlert";
 
 const style = {
   position: "absolute",
@@ -56,6 +56,9 @@ const Register = () => {
   const [activeComment, setActiveComment] = useState(true);
   const [changeShi, setChangeShi] = useState(null);
   const [editShi, setEditShip] = useState(null);
+  const [editAdv, setEditAdv] = useState(null);
+  const [deleteShi, setDeleteShi] = useState(null);
+  const [alertShi, setAlertShi] = useState(false);
 
   const expectancy = useSelector(groupedByIdExpectancy);
   const advance = useSelector(summaryAdvanced);
@@ -89,12 +92,23 @@ const Register = () => {
 
   const handleOnClickAdv = (id) => {
     setChangeShi(id);
+    setEditAdv(null);
     setOpenAdv(true);
   };
 
-  const handleOnClickEdit = (id) => {
+  const handleOnClickEditShi = (id) => {
     setEditShip(id);
     setOpenShi(true);
+  };
+
+  const handleOnClickEditAdv = (id) => {
+    setEditAdv(id);
+    setOpenAdv(true);
+  };
+
+  const handleOnClickDeleteShi = (id) => {
+    setDeleteShi(id);
+    setAlertShi(true);
   };
 
   useEffect(() => {
@@ -244,7 +258,9 @@ const Register = () => {
                                 advance={advance[item?.id]}
                                 activeComment={activeComment}
                                 handleOnClickAdv={handleOnClickAdv}
-                                handleOnClickEdit={handleOnClickEdit}
+                                handleOnClickEditShi={handleOnClickEditShi}
+                                handleOnClickEditAdv={handleOnClickEditAdv}
+                                handleOnClickDeleteShi={handleOnClickDeleteShi}
                               />
                             </div>
                           )}
@@ -332,9 +348,16 @@ const Register = () => {
                   setOpen={setOpenAdv}
                   idEntregable={changeShi}
                   fases={fasesByidGrupo}
+                  editAdv={editAdv}
                 />
               </Box>
             </Modal>
+            <ShippableAlert
+              open={alertShi}
+              onClose={() => setAlertShi(false)}
+              onConfirm={() => setDeleteShi(null)}
+              deleteShi={deleteShi}
+            />
           </>
         )}
       </div>

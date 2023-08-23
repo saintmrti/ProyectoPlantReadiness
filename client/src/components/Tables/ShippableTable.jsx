@@ -42,7 +42,9 @@ const ShippableTable = ({
   activeComment,
   idExpectancy,
   handleOnClickAdv,
-  handleOnClickEdit,
+  handleOnClickEditShi,
+  handleOnClickEditAdv,
+  handleOnClickDeleteShi,
 }) => {
   const [activeIndex, setActiveIndex] = useState(1);
 
@@ -82,7 +84,7 @@ const ShippableTable = ({
             {!activeComment && (
               <TableRow>
                 <StyledTableCell colSpan={2}></StyledTableCell>
-                <StyledTableCell colSpan={6} sx={{ textAlign: "center" }}>
+                <StyledTableCell colSpan={7} sx={{ textAlign: "center" }}>
                   <div className="flex items-center">
                     <div className="mx-auto">
                       {`${fases[activeIndex]?.fase} - ${fases[activeIndex]?.maquina}`}
@@ -130,6 +132,7 @@ const ShippableTable = ({
                   <StyledTableCell align="center" sx={{ minWidth: "300px" }}>
                     Comentarios
                   </StyledTableCell>
+                  <StyledTableCell></StyledTableCell>
                 </>
               )}
             </TableRow>
@@ -156,8 +159,8 @@ const ShippableTable = ({
                       {item.ponderacion}
                     </StyledTableCell>
                     <StyledTableCell>{item.comentarios}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      <Box sx={{ display: "flex" }}>
+                    <StyledTableCell>
+                      <Box sx={{ display: "flex", justifyContent: "end" }}>
                         <IconButton
                           aria-label="edit"
                           size="small"
@@ -168,11 +171,15 @@ const ShippableTable = ({
                         <IconButton
                           aria-label="edit"
                           size="small"
-                          onClick={() => handleOnClickEdit(item.id)}
+                          onClick={() => handleOnClickEditShi(item.id)}
                         >
                           <EditIcon />
                         </IconButton>
-                        <IconButton aria-label="delete" size="small">
+                        <IconButton
+                          aria-label="delete"
+                          size="small"
+                          onClick={() => handleOnClickDeleteShi(item.id)}
+                        >
                           <DeleteIcon />
                         </IconButton>
                       </Box>
@@ -232,9 +239,27 @@ const ShippableTable = ({
                             )?.comentarios
                           }
                         </StyledTableCell>
+                        <StyledTableCell align="right">
+                          <IconButton
+                            aria-label="edit"
+                            size="small"
+                            onClick={() =>
+                              handleOnClickEditAdv(
+                                advance[item.id].find(
+                                  (obj) =>
+                                    obj.idMaquina ===
+                                    fases[activeIndex]?.idMaquina
+                                )?.id
+                              )
+                            }
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </StyledTableCell>
                       </>
                     ) : (
                       <>
+                        <StyledTableCell></StyledTableCell>
                         <StyledTableCell></StyledTableCell>
                         <StyledTableCell></StyledTableCell>
                         <StyledTableCell></StyledTableCell>
