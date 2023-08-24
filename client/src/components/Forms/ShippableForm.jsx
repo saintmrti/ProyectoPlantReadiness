@@ -95,7 +95,7 @@ const ShippableForm = ({ setOpen, idExpectancy, editShi }) => {
               </Select>
             </FormControl>
           </div>
-          <div className="flex justify-end items-center w-full mb-3">
+          {/* <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4">Ponderación</label>
             <FormControl sx={{ width: "16rem" }}>
               <InputLabel id="ponderacion">Seleccionar ponderación</InputLabel>
@@ -113,7 +113,7 @@ const ShippableForm = ({ setOpen, idExpectancy, editShi }) => {
                 <MenuItem value="3">3</MenuItem>
               </Select>
             </FormControl>
-          </div>
+          </div> */}
           <div className="flex justify-end w-full">
             <label className="px-4">Comentarios</label>
             <TextField

@@ -116,7 +116,7 @@ const ShippableTable = ({
                 <>
                   <StyledTableCell>Evidencia</StyledTableCell>
                   <StyledTableCell align="center">Prioridad</StyledTableCell>
-                  <StyledTableCell align="center">Ponderación</StyledTableCell>
+                  {/* <StyledTableCell align="center">Ponderación</StyledTableCell> */}
                   <StyledTableCell align="center">Comentarios</StyledTableCell>
                   <StyledTableCell align="center"></StyledTableCell>
                 </>
@@ -155,9 +155,9 @@ const ShippableTable = ({
                     <StyledTableCell align="center">
                       {item.prioridad}
                     </StyledTableCell>
-                    <StyledTableCell align="center">
+                    {/* <StyledTableCell align="center">
                       {item.ponderacion}
-                    </StyledTableCell>
+                    </StyledTableCell> */}
                     <StyledTableCell>{item.comentarios}</StyledTableCell>
                     <StyledTableCell>
                       <Box sx={{ display: "flex", justifyContent: "end" }}>

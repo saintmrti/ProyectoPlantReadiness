@@ -21,7 +21,6 @@ module.exports.createShippable = (req, res) => {
       nombre,
       evidencia,
       prioridad,
-      ponderacion,
       comentarios,
       idExpectativa,
     } = req.body;
@@ -30,7 +29,7 @@ module.exports.createShippable = (req, res) => {
       nombre,
       evidencia,
       prioridad,
-      ponderacion: parseInt(ponderacion),
+      // ponderacion: parseInt(ponderacion),
       comentarios,
       idExpectativa: parseInt(idExpectativa),
     };
@@ -43,14 +42,14 @@ module.exports.createShippable = (req, res) => {
 
 module.exports.modifyShippable = (req, res) => {
   try {
-    const { nombre, evidencia, prioridad, ponderacion, comentarios, id } =
+    const { nombre, evidencia, prioridad, comentarios, id } =
       req.body;
 
     const newRegister = {
       nombre,
       evidencia,
       prioridad,
-      ponderacion: parseInt(ponderacion),
+      // ponderacion: parseInt(ponderacion),
       comentarios,
       idEntregable: parseInt(id),
     };

@@ -6,13 +6,13 @@ module.exports.getSummary = async (conn) => {
 };
 module.exports.insertShippable = async (
   conn,
-  { nombre, evidencia, prioridad, ponderacion, comentarios, idExpectativa }
+  { nombre, evidencia, prioridad, comentarios, idExpectativa }
 ) => {
   const {
     info: { insertId },
   } = await conn.query(`
-      INSERT INTO vki40_entregables (fecha, nombre, evidencia, prioridad, ponderacion, comentarios, idExpectativa)
-      VALUES (GETDATE(), '${nombre}', '${evidencia}', '${prioridad}', ${ponderacion},'${comentarios}', ${idExpectativa});
+      INSERT INTO vki40_entregables (fecha, nombre, evidencia, prioridad, comentarios, idExpectativa)
+      VALUES (GETDATE(), '${nombre}', '${evidencia}', '${prioridad}','${comentarios}', ${idExpectativa});
     `);
 
   const { data } = await conn.query(`
@@ -23,7 +23,7 @@ module.exports.insertShippable = async (
 };
 module.exports.updateShippable = async (
   conn,
-  { nombre, evidencia, prioridad, ponderacion, comentarios, idEntregable }
+  { nombre, evidencia, prioridad, comentarios, idEntregable }
 ) => {
   await conn.query(`
       UPDATE vki40_entregables
@@ -32,7 +32,6 @@ module.exports.updateShippable = async (
         nombre = '${nombre}',
         evidencia = '${evidencia}',
         prioridad = '${prioridad}',
-        ponderacion = ${ponderacion},
         comentarios = '${comentarios}'
       WHERE id= ${idEntregable};
     `);

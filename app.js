@@ -3,7 +3,6 @@ const morgan = require("morgan");
 const cors = require("cors");
 const path = require("path");
 
-// import config from "./config.js";
 const expectancyRoutes = require("./routes/expectancy.routes");
 const headingsRoutes = require("./routes/headings.routes");
 const shippableRoutes = require("./routes/shippable.routes");
