@@ -63,9 +63,9 @@ module.exports.modifyShippable = (req, res) => {
 
 module.exports.eliminateShippable = (req, res) => {
   try {
-    const { id } = req.body;
+    const { idEntregable } = req.query;
     const deleteRegister = {
-      idEntregable: parseInt(id),
+      idEntregable: parseInt(idEntregable),
     };
     response(res, null, deleteShippable, deleteRegister);
   } catch (error) {

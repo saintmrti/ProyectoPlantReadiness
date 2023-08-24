@@ -3,6 +3,7 @@ export {
   insertShippableApi,
   fetchShippableApi,
   updateShippableApi,
+  deleteShippableApi,
 } from "./shippable";
 export { fetchHeadingsApi } from "./headings";
 export { fetchMachinesApi, insertMachineApi } from "./machines";

@@ -4,6 +4,7 @@ import {
   insertShippableApi,
   fetchShippableApi,
   updateShippableApi,
+  deleteShippableApi,
 } from "../api";
 import {
   insertShippableRequest,
@@ -15,6 +16,9 @@ import {
   updateShippableRequest,
   updateShippableSuccess,
   updateShippableError,
+  deleteShippableRequest,
+  deleteShippableSuccess,
+  deleteShippableError,
 } from "../slices/shippable";
 
 function* fetchShippable() {
@@ -69,4 +73,22 @@ function* updateShippable({ payload }) {
 
 export function* updateShippableSaga() {
   yield takeLatest(updateShippableRequest.toString(), updateShippable);
+}
+
+function* deleteShippable({ payload: { idEntregable } }) {
+  try {
+    const { data, isError } = yield call(deleteShippableApi.run, idEntregable);
+    if (isError) throw new Error();
+    yield put(deleteShippableSuccess({ idEntregable: data }));
+  } catch (e) {
+    yield put(deleteShippableError());
+  } finally {
+    if (yield cancelled()) {
+      yield call(deleteShippableApi.cancel);
+    }
+  }
+}
+
+export function* deleteShippableSaga() {
+  yield takeLatest(deleteShippableRequest.toString(), deleteShippable);
 }

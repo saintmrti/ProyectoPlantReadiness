@@ -3,6 +3,7 @@ export {
   insertShippableSaga,
   fetchShippableSaga,
   updateShippableSaga,
+  deleteShippableSaga,
 } from "./shippable";
 export { fetchHeadingsSaga } from "./headings";
 export { fetchMachinesSaga, insertMachineSaga } from "./machines";

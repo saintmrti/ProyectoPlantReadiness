@@ -11,6 +11,8 @@ const Slice = createSlice({
     didErrorInsert: false,
     isFetchingUpdate: false,
     didErrorUpdate: false,
+    isFetchingDelete: false,
+    didErrorDelete: false,
   },
   reducers: {
     fetchShippableRequest: (state) => {
@@ -50,6 +52,18 @@ const Slice = createSlice({
       state.isFetchingUpdate = false;
       state.didErrorUpdate = true;
     },
+    deleteShippableRequest: (state) => {
+      state.isFetchingDelete = true;
+      state.didErrorDelete = false;
+    },
+    deleteShippableSuccess: (state, { payload: { idEntregable } }) => {
+      delete state.data[idEntregable];
+      state.isFetchingDelete = false;
+    },
+    deleteShippableError: (state) => {
+      state.isFetchingDelete = false;
+      state.didErrorDelete = true;
+    },
   },
 });
 
@@ -63,5 +77,8 @@ export const {
   updateShippableRequest,
   updateShippableSuccess,
   updateShippableError,
+  deleteShippableRequest,
+  deleteShippableSuccess,
+  deleteShippableError,
 } = Slice.actions;
 export default Slice.reducer;

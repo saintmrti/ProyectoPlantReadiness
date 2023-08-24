@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import _ from "lodash";
 import Button from "@mui/material/Button";
 import Accordion from "@mui/material/Accordion";
@@ -355,8 +354,8 @@ const Register = () => {
             <ShippableAlert
               open={alertShi}
               onClose={() => setAlertShi(false)}
-              onConfirm={() => setDeleteShi(null)}
               deleteShi={deleteShi}
+              setDeleteShi={setDeleteShi}
             />
           </>
         )}

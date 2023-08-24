@@ -23,7 +23,7 @@ const App = () => {
 
   return (
     <>
-      <ThemeProvider theme={getTheme("light")}>
+      <ThemeProvider theme={getTheme(theme)}>
         <Box sx={{ flexGrow: 1 }}>
           <CssBaseline />
           <Box
