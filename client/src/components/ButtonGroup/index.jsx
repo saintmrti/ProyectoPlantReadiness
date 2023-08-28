@@ -1,33 +1,27 @@
-// import { useState } from "react";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { Toggle } from "../Toggle";
-// import _ from "lodash";
 
-export default function FilterButton({setSelectedFilter, selectedFilter, handleBtnClickFiler}) {
-  // const [selectedBtnPhase, setselectedBtnPhase] = useState(0);
-  // const [selectedBtnPriority, setselectedBtnPriority] = useState(0);
-  // const [selectedBtnWeight, setselectedBtnWeight] = useState(0);
+export default function FilterButton({
+  setSelectedFilter,
+  selectedFilter,
+  handleBtnClickFilter,
+}) {
+  const handleBtnClick = (button, key) => {
+    setSelectedFilter((prevFilter) => {
+      const updatedValues = new Set(prevFilter[key]);
 
-  const handleBtnClickPhase = (button) => {
-    setSelectedFilter((prevFilter) => ({
-      ...prevFilter,
-      phase: prevFilter.phase === button ? 0 : button
-    }));
-  };
+      if (updatedValues.has(button)) {
+        updatedValues.delete(button);
+      } else {
+        updatedValues.add(button);
+      }
 
-  const handleBtnClickPriority = (button) => {
-    setSelectedFilter((prevFilter) => ({
-      ...prevFilter,
-      priority: prevFilter.priority === button ? "P0" : button
-    }));
-  };
-
-  const handleBtnClickWeight = (button) => {
-    setSelectedFilter((prevFilter) => ({
-      ...prevFilter,
-      weighting: prevFilter.weighting === button ? 0 : button
-    }));
+      return {
+        ...prevFilter,
+        [key]: Array.from(updatedValues),
+      };
+    });
   };
 
   return (
@@ -39,14 +33,18 @@ export default function FilterButton({setSelectedFilter, selectedFilter, handleB
           aria-label="outlined primary button group"
         >
           <Button
-            variant={selectedFilter.phase === 1 ? "contained" : "outlined"}
-            onClick={() => handleBtnClickPhase(1)}
+            variant={
+              selectedFilter.phase.includes("1") ? "contained" : "outlined"
+            }
+            onClick={() => handleBtnClick("1", "phase")}
           >
             1
           </Button>
           <Button
-            variant={selectedFilter.phase === 2 ? "contained" : "outlined"}
-            onClick={() => handleBtnClickPhase(2)}
+            variant={
+              selectedFilter.phase.includes("2") ? "contained" : "outlined"
+            }
+            onClick={() => handleBtnClick("2", "phase")}
           >
             2
           </Button>
@@ -58,54 +56,27 @@ export default function FilterButton({setSelectedFilter, selectedFilter, handleB
           variant="outlined"
           aria-label="outlined primary button group"
         >
-          <Button
-            variant={selectedFilter.priority === "P1" ? "contained" : "outlined"}
-            onClick={() => handleBtnClickPriority("P1")}
-          >
-            1
-          </Button>
-          <Button
-            variant={selectedFilter.priority === "P2" ? "contained" : "outlined"}
-            onClick={() => handleBtnClickPriority("P2")}
-          >
-            2
-          </Button>
-          <Button
-            variant={selectedFilter.priority === "P3" ? "contained" : "outlined"}
-            onClick={() => handleBtnClickPriority("P3")}
-          >
-            3
-          </Button>
-        </ButtonGroup>
-      </div>
-      <div className="flex items-center mx-3">
-        <p className="xs mr-3">Ponderación</p>
-        <ButtonGroup
-          variant="outlined"
-          aria-label="outlined primary button group"
-        >
-          <Button
-            variant={selectedFilter.weighting === 1 ? "contained" : "outlined"}
-            onClick={() => handleBtnClickWeight(1)}
-          >
-            1
-          </Button>
-          <Button
-            variant={selectedFilter.weighting === 2 ? "contained" : "outlined"}
-            onClick={() => handleBtnClickWeight(2)}
-          >
-            2
-          </Button>
-          <Button
-            variant={selectedFilter.weighting === 3 ? "contained" : "outlined"}
-            onClick={() => handleBtnClickWeight(3)}
-          >
-            3
-          </Button>
+          {[1, 2, 3].map((priority) => (
+            <Button
+              key={priority}
+              variant={
+                selectedFilter.priority.includes(`P${priority}`)
+                  ? "contained"
+                  : "outlined"
+              }
+              onClick={() => handleBtnClick(`P${priority}`, "priority")}
+            >
+              {priority}
+            </Button>
+          ))}
         </ButtonGroup>
       </div>
       <div className="ml-3">
-        <Button variant="contained" className="bg-primary text-white" onClick={handleBtnClickFiler}>
+        <Button
+          variant="contained"
+          className="bg-primary text-white"
+          onClick={handleBtnClickFilter}
+        >
           Filtrar
         </Button>
       </div>

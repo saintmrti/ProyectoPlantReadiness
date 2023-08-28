@@ -1,8 +1,6 @@
-module.exports.getSummary = async (conn, { phase, priority, weighting }) => {
+module.exports.getSummary = async (conn, { phase, priority }) => {
   const { data } = await conn.query(`
-    SELECT * FROM vki40_Readiness_scoreCard
-    WHERE fecha= (SELECT MAX(fecha) FROM vki40_Readiness_scoreCard)
-    AND fase=${phase} AND prioridad='${priority}' AND ponderacion=${weighting};
+    exec dbo.sp_vki40_Readiness_scoreCard '${phase}','${priority}';
     `);
   return data;
 };

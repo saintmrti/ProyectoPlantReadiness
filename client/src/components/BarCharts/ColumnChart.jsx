@@ -1,7 +1,7 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-const ColumnChart = ({ series, height }) => {
+const ColumnChart = ({ series, height, categories }) => {
   return (
     <HighchartsReact
       highcharts={Highcharts}
@@ -17,9 +17,7 @@ const ColumnChart = ({ series, height }) => {
           },
         },
         title: null,
-        xAxis: {
-          type: "datetime",
-        },
+        xAxis: categories ? { categories } : { type: "datetime" },
 
         yAxis: {
           allowDecimals: false,

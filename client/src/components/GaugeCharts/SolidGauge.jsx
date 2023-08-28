@@ -6,7 +6,7 @@ import SolidGaugeUI from "highcharts/modules/solid-gauge";
 HighchartsMore(Highcharts);
 SolidGaugeUI(Highcharts);
 
-const SolidGauge = ({ value, name, height, total, rate }) => {
+const SolidGauge = ({ value, name, height, rate }) => {
   return (
     <HighchartsReact
       highcharts={Highcharts}
@@ -16,7 +16,7 @@ const SolidGauge = ({ value, name, height, total, rate }) => {
           height,
           backgroundColor: "transparent",
           style: {
-            fontFamily: "Roboto",
+            fontFamily: "montserrat",
           },
         },
 
@@ -43,8 +43,8 @@ const SolidGauge = ({ value, name, height, total, rate }) => {
         },
         yAxis: {
           // stops: [
-          //   [0.9, "#66bb6a"], 
-          //   [0.5, "#ffa726"], 
+          //   [0.9, "#66bb6a"],
+          //   [0.5, "#ffa726"],
           //   [0.1, "#f44336"],
           // ],
           lineWidth: 0,
@@ -59,7 +59,7 @@ const SolidGauge = ({ value, name, height, total, rate }) => {
             y: 16,
           },
           min: 0,
-          max: total ?? 100,
+          max: 175,
         },
 
         plotOptions: {

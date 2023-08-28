@@ -7,6 +7,8 @@ const Slice = createSlice({
     list: {},
     isFetching: false,
     didError: false,
+    isFetchingInsert: false,
+    didErrorInsert: false,
   },
   reducers: {
     headingsRequest: (state) => {
@@ -22,9 +24,27 @@ const Slice = createSlice({
       state.isFetching = false;
       state.didError = true;
     },
+    headingsInsertRequest: (state) => {
+      state.isFetchingInsert = true;
+      state.didErrorInsert = false;
+    },
+    headingsInsertSuccess: (state, { payload: { data } }) => {
+      state.list[data.id] = data;
+      state.isFetchingInsert = false;
+    },
+    headingsInsertError: (state) => {
+      state.isFetchingInsert = false;
+      state.didErrorInsert = true;
+    },
   },
 });
 
-export const { headingsRequest, headingsSuccess, headingsError } =
-  Slice.actions;
+export const {
+  headingsRequest,
+  headingsSuccess,
+  headingsError,
+  headingsInsertError,
+  headingsInsertRequest,
+  headingsInsertSuccess,
+} = Slice.actions;
 export default Slice.reducer;

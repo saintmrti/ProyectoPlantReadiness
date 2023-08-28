@@ -21,6 +21,9 @@ export const getTheme = (theme) => {
           yellow: "#F9A825",
         },
       },
+      typography: {
+        fontFamily: "'Montserrat', sans-serif",
+      },
     });
   return createTheme({
     palette: {

@@ -27,98 +27,45 @@ import ProgressBar from "../components/ProgressBar";
 import { Spinner } from "../components/Spinner";
 import { Error } from "../components/Error";
 
-// const dataEnergizer = {
-//   categories: [
-//     "JLMO",
-//     "ABG",
-//     "ACAB",
-//     "Fatima Elizondo",
-//     "O. Argueta",
-//     "C. Sánchez",
-//     "M. Nuñez",
-//     "A. Gaspar",
-//     "C. Chapa",
-//     "Claudia Chapa",
-//     "JACH",
-//     "MNN",
-//     "Carlos Camacho",
-//     "JCM",
-//     "OA",
-//     "R. Gonzales",
-//     "A. Montero",
-//     "C. Camacho",
-//     "A. Anguiano",
-//     "J. Marroquin",
-//   ],
-//   series: [
-//     6, 6, 7, 7, 8, 12, 12, 12, 13, 13, 14, 16, 16, 36, 47, 52, 70, 76, 88, 140,
-//   ],
-// };
-
-// const dataAdvance = {
-//   categories: ["100%", "76-99%", "51-75%", "31-50%", "1-30%", "0%"],
-//   series: [137, 63, 80, 48, 79, 500],
-// };
-
-// const seriesPerYear = [
+// const cumplimientoGral = [
 //   {
 //     name: "Plan",
 //     data: [
-//       [moment(`2021-1-01`, "YYYY-MM-DD").valueOf(), 240],
-//       [moment(`2022-1-01`, "YYYY-MM-DD").valueOf(), 305],
-//       [moment(`2023-1-01`, "YYYY-MM-DD").valueOf(), 438],
-//       [moment(`2024-1-01`, "YYYY-MM-DD").valueOf(), 239],
-//       [moment(`2025-1-01`, "YYYY-MM-DD").valueOf(), 150],
+//       ["Fase 1", 46],
+//       ["Fase 2", 38],
+//       ["Gral", 43],
 //     ],
 //   },
 //   {
 //     name: "Real",
 //     data: [
-//       [moment(`2021-1-01`, "YYYY-MM-DD").valueOf(), 140],
-//       [moment(`2022-1-01`, "YYYY-MM-DD").valueOf(), 290],
-//       [moment(`2023-1-01`, "YYYY-MM-DD").valueOf(), 115],
-//       [moment(`2024-1-01`, "YYYY-MM-DD").valueOf(), 206],
-//       [moment(`2025-1-01`, "YYYY-MM-DD").valueOf(), 200],
+//       ["Fase 1", 54],
+//       ["Fase 2", 31],
+//       ["Gral", 44],
 //     ],
 //   },
 // ];
 
-// const seriesPerMonth = [
+// const cumplimientoYTD = [
 //   {
 //     name: "Plan",
 //     data: [
-//       [moment(`2023-01-01`, "YYYY-MM-DD").valueOf(), 20],
-//       [moment(`2023-02-01`, "YYYY-MM-DD").valueOf(), 40],
-//       [moment(`2023-03-01`, "YYYY-MM-DD").valueOf(), 50],
-//       [moment(`2023-04-01`, "YYYY-MM-DD").valueOf(), 30],
-//       [moment(`2023-05-01`, "YYYY-MM-DD").valueOf(), 20],
-//       [moment(`2023-06-01`, "YYYY-MM-DD").valueOf(), 28],
-//       [moment(`2023-07-01`, "YYYY-MM-DD").valueOf(), 42],
-//       [moment(`2023-08-01`, "YYYY-MM-DD").valueOf(), 10],
-//       [moment(`2023-09-01`, "YYYY-MM-DD").valueOf(), 79],
-//       [moment(`2023-10-01`, "YYYY-MM-DD").valueOf(), 62],
-//       [moment(`2023-11-01`, "YYYY-MM-DD").valueOf(), 20],
-//       [moment(`2023-12-01`, "YYYY-MM-DD").valueOf(), 24],
+//       ["Fase 1", 100],
+//       ["Fase 2", 100],
+//       ["Gral", 100],
 //     ],
 //   },
 //   {
 //     name: "Real",
 //     data: [
-//       [moment(`2023-01-01`, "YYYY-MM-DD").valueOf(), 10],
-//       [moment(`2023-02-01`, "YYYY-MM-DD").valueOf(), 36],
-//       [moment(`2023-03-01`, "YYYY-MM-DD").valueOf(), 48],
-//       [moment(`2023-04-01`, "YYYY-MM-DD").valueOf(), 25],
-//       [moment(`2023-05-01`, "YYYY-MM-DD").valueOf(), 18],
-//       [moment(`2023-06-01`, "YYYY-MM-DD").valueOf(), 25],
-//       [moment(`2023-07-01`, "YYYY-MM-DD").valueOf(), 41],
-//       [moment(`2023-08-01`, "YYYY-MM-DD").valueOf(), 15],
-//       [moment(`2023-09-01`, "YYYY-MM-DD").valueOf(), 16],
-//       [moment(`2023-10-01`, "YYYY-MM-DD").valueOf(), 19],
-//       [moment(`2023-11-01`, "YYYY-MM-DD").valueOf(), 20],
-//       [moment(`2023-12-01`, "YYYY-MM-DD").valueOf(), 24],
+//       ["Fase 1", 116],
+//       ["Fase 2", 81],
+//       ["Gral", 103],
 //     ],
 //   },
 // ];
+
+// const categories = ["Fase 1", "Fase 2", "Gral."];
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -127,21 +74,33 @@ const Dashboard = () => {
 
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState({
-    phase: 0,
-    priority: "P0",
-    weighting: 0,
+    phase: [],
+    priority: [],
   });
 
   const toggleFilterButton = () => {
     setIsFilterButtonVisible((prev) => !prev);
   };
 
-  const handleBtnClickFiler = () => {
-    dispatch(kpisRequest(selectedFilter));
+  const handleBtnClickFilter = () => {
+    const phaseString = _.join(selectedFilter.phase, ",");
+    const priorityString = _.join(selectedFilter.priority, ",");
+    const newFilter = {
+      phase: phaseString,
+      priority: priorityString,
+    };
+
+    dispatch(kpisRequest(newFilter));
   };
 
   useEffect(() => {
-    dispatch(kpisRequest(selectedFilter));
+    const phaseString = _.join(selectedFilter.phase, ",");
+    const priorityString = _.join(selectedFilter.priority, ",");
+    const newFilter = {
+      phase: phaseString,
+      priority: priorityString,
+    };
+    dispatch(kpisRequest(newFilter));
   }, []);
   return (
     <>
@@ -156,7 +115,7 @@ const Dashboard = () => {
               <FilterButton
                 setSelectedFilter={setSelectedFilter}
                 selectedFilter={selectedFilter}
-                handleBtnClickFiler={handleBtnClickFiler}
+                handleBtnClickFilter={handleBtnClickFilter}
               />
             )}
             <div className="h-80 flex items-end justify-center">
@@ -174,190 +133,120 @@ const Dashboard = () => {
               <FilterButton
                 setSelectedFilter={setSelectedFilter}
                 selectedFilter={selectedFilter}
-                handleBtnClickFiler={handleBtnClickFiler}
+                handleBtnClickFilter={handleBtnClickFilter}
               />
             )}
-            {/* {console.log(summaryKpis?.shippable_total)} */}
-            <div className="grid grid-cols-9 gap-4">
-              <div className="space-y-4 col-span-2">
+            {console.log(summaryKpis)}
+            <div className="grid grid-cols-9 gap-2">
+              <div className="col-span-2">
                 <Card sx={{ height: "260px" }}>
                   {/* <h2 className="text-base text-center mt-3">
                       Total Entregables
                     </h2> */}
-                  <div className="mx-4 mt-2">
-                    <div className="flex justify-between pr-2">
-                      <p className="xs">Seguridad</p>
-                      <p className="xs">
-                        {summaryKpis?.shippable_total["1"]?.total} /{" "}
-                        {summaryKpis?.shippable_total["0"]?.total}
-                      </p>
-                    </div>
+                  <div className="mx-4 mt-1">
                     <ProgressBar
-                      currentProgress={
-                        summaryKpis?.shippable_total["1"]?.total ?? 0
-                      }
-                      goal={summaryKpis?.shippable_total["0"]?.total}
+                      rubro={summaryKpis?.shippable_total["1"]?.rubro}
+                      real={summaryKpis?.shippable_total["1"]?.reales}
+                      plan={summaryKpis?.shippable_total["1"]?.planes}
+                      total={summaryKpis?.shippable_total["1"]?.totales}
                     />
                   </div>
-                  <div className="mx-4 mt-2">
-                    <div className="flex justify-between pr-2">
-                      <p className="xs">Calidad</p>
-                      <p className="xs">
-                        {summaryKpis?.shippable_total["2"]?.total ?? 0} /{" "}
-                        {summaryKpis?.shippable_total["0"]?.total}
-                      </p>
-                    </div>
+                  <div className="mx-4 mt-1">
                     <ProgressBar
-                      currentProgress={
-                        summaryKpis?.shippable_total["2"]?.total ?? 0
-                      }
-                      goal={summaryKpis?.shippable_total["0"]?.total}
+                      rubro={summaryKpis?.shippable_total["2"]?.rubro}
+                      real={summaryKpis?.shippable_total["2"]?.reales}
+                      plan={summaryKpis?.shippable_total["2"]?.planes}
+                      total={summaryKpis?.shippable_total["2"]?.totales}
                     />
                   </div>
-                  <div className="mx-4 mt-2">
-                    <div className="flex justify-between pr-2">
-                      <p className="xs">RH</p>
-                      <p className="xs">
-                        {summaryKpis?.shippable_total["3"]?.total ?? 0} /{" "}
-                        {summaryKpis?.shippable_total["0"]?.total}
-                      </p>
-                    </div>
+                  <div className="mx-4 mt-1">
                     <ProgressBar
-                      currentProgress={
-                        summaryKpis?.shippable_total["3"]?.total ?? 0
-                      }
-                      goal={summaryKpis?.shippable_total["0"]?.total}
+                      rubro="RH"
+                      real={summaryKpis?.shippable_total["3"]?.reales}
+                      plan={summaryKpis?.shippable_total["3"]?.planes}
+                      total={summaryKpis?.shippable_total["3"]?.totales}
                     />
                   </div>
-                  <div className="mx-4 mt-2">
-                    <div className="flex justify-between pr-2">
-                      <p className="xs">Producción</p>
-                      <p className="xs">
-                        {summaryKpis?.shippable_total["4"]?.total ?? 0} /{" "}
-                        {summaryKpis?.shippable_total["0"]?.total}
-                      </p>
-                    </div>
+                  <div className="mx-4 mt-1">
                     <ProgressBar
-                      currentProgress={
-                        summaryKpis?.shippable_total["4"]?.total ?? 0
-                      }
-                      goal={summaryKpis?.shippable_total["0"]?.total}
+                      rubro="Producción"
+                      real={summaryKpis?.shippable_total["4"]?.reales}
+                      plan={summaryKpis?.shippable_total["4"]?.planes}
+                      total={summaryKpis?.shippable_total["4"]?.totales}
                     />
                   </div>
-                  <div className="mx-4 mt-2">
-                    <div className="flex justify-between pr-2">
-                      <p className="xs">Mantenimiento</p>
-                      <p className="xs">
-                        {summaryKpis?.shippable_total["5"]?.total ?? 0} /{" "}
-                        {summaryKpis?.shippable_total["0"]?.total}
-                      </p>
-                    </div>
+                  <div className="mx-4 mt-1">
                     <ProgressBar
-                      currentProgress={
-                        summaryKpis?.shippable_total["5"]?.total ?? 0
-                      }
-                      goal={summaryKpis?.shippable_total["0"]?.total}
+                      rubro="Mantenimiento"
+                      real={summaryKpis?.shippable_total["5"]?.reales}
+                      plan={summaryKpis?.shippable_total["5"]?.planes}
+                      total={summaryKpis?.shippable_total["5"]?.totales}
                     />
                   </div>
                 </Card>
               </div>
-              <div className="space-y-4 col-span-4">
+              <div className="col-span-4">
                 <Card sx={{ height: "260px" }}>
                   <div className="grid grid-cols-2 gap-2 mt-3">
                     <GaugeSeries
                       height={250}
                       title="Cumplimiento Total"
-                      total={summaryKpis?.compliance_total?.totales}
-                      value={summaryKpis?.compliance_total?.completados}
-                      rate={summaryKpis?.compliance_total?.porcentaje}
+                      total={summaryKpis?.compliance_total[0]?.totales}
+                      value={summaryKpis?.compliance_total[0]?.completados}
+                      rate={summaryKpis?.compliance_total[0]?.porcentaje}
                     />
                     <GaugeSeries
                       height={250}
                       title="Cumplimiento YTD"
-                      total={summaryKpis?.compliance_YTD?.totales}
-                      value={summaryKpis?.compliance_YTD?.completados}
-                      rate={summaryKpis?.compliance_YTD?.porcentaje}
+                      total={summaryKpis?.compliance_YTD[0]?.totales}
+                      value={summaryKpis?.compliance_YTD[0]?.completados}
+                      rate={summaryKpis?.compliance_YTD[0]?.porcentaje}
                     />
                   </div>
                 </Card>
               </div>
-              <div className="space-y-4 col-span-3">
+              <div className="col-span-3">
                 <Card sx={{ height: "260px" }}>
                   <div className="grid grid-cols-3 gap-2 gap-y-0 mt-3">
                     <SolidGauge
                       name="Seguridad"
                       height={120}
-                      value={
-                        summaryKpis?.compliance_headings["1"]?.datos
-                          ?.completados
-                      }
-                      total={
-                        summaryKpis?.compliance_headings["1"]?.datos?.totales
-                      }
-                      rate={
-                        summaryKpis?.compliance_headings["1"]?.datos?.porcentaje
-                      }
+                      value={summaryKpis?.compliance_headings["1"]?.completados}
+                      total={summaryKpis?.compliance_headings["1"]?.totales}
+                      rate={summaryKpis?.compliance_headings["1"]?.porcentaje}
                     />
                     <SolidGauge
                       name="Calidad"
                       height={120}
-                      value={
-                        summaryKpis?.compliance_headings["2"]?.datos
-                          ?.completados
-                      }
-                      total={
-                        summaryKpis?.compliance_headings["2"]?.datos?.totales
-                      }
-                      rate={
-                        summaryKpis?.compliance_headings["2"]?.datos?.porcentaje
-                      }
+                      value={summaryKpis?.compliance_headings["2"]?.completados}
+                      total={summaryKpis?.compliance_headings["2"]?.totales}
+                      rate={summaryKpis?.compliance_headings["2"]?.porcentaje}
                     />
                     <SolidGauge
                       name="RH"
                       height={120}
-                      value={
-                        summaryKpis?.compliance_headings["3"]?.datos
-                          ?.completados
-                      }
-                      total={
-                        summaryKpis?.compliance_headings["3"]?.datos?.totales
-                      }
-                      rate={
-                        summaryKpis?.compliance_headings["3"]?.datos?.porcentaje
-                      }
+                      value={summaryKpis?.compliance_headings["3"]?.completados}
+                      total={summaryKpis?.compliance_headings["3"]?.totales}
+                      rate={summaryKpis?.compliance_headings["3"]?.porcentaje}
                     />
                     <SolidGauge
                       name="Producción"
                       height={120}
-                      value={
-                        summaryKpis?.compliance_headings["4"]?.datos
-                          ?.completados
-                      }
-                      total={
-                        summaryKpis?.compliance_headings["4"]?.datos?.totales
-                      }
-                      rate={
-                        summaryKpis?.compliance_headings["4"]?.datos?.porcentaje
-                      }
+                      value={summaryKpis?.compliance_headings["4"]?.completados}
+                      total={summaryKpis?.compliance_headings["4"]?.totales}
+                      rate={summaryKpis?.compliance_headings["4"]?.porcentaje}
                     />
                     <SolidGauge
                       name="Mantenimiento"
                       height={120}
-                      value={
-                        summaryKpis?.compliance_headings["5"]?.datos
-                          ?.completados
-                      }
-                      total={
-                        summaryKpis?.compliance_headings["5"]?.datos?.totales
-                      }
-                      rate={
-                        summaryKpis?.compliance_headings["5"]?.datos?.porcentaje
-                      }
+                      value={summaryKpis?.compliance_headings["5"]?.completados}
+                      total={summaryKpis?.compliance_headings["5"]?.totales}
+                      rate={summaryKpis?.compliance_headings["5"]?.porcentaje}
                     />
                   </div>
                 </Card>
               </div>
-              <div className="space-y-4 col-span-2">
+              <div className="col-span-2">
                 <Card sx={{ height: "486px" }}>
                   <h2 className="text-base text-center mt-3">
                     Champions Pilares
@@ -502,7 +391,7 @@ const Dashboard = () => {
                   </div>
                 </Card>
               </div>
-              <div className="space-y-4 col-span-2">
+              <div className="col-span-2">
                 <Card sx={{ height: "486px" }}>
                   <h2 className="text-base text-center mt-3">
                     Entregables Energizador
@@ -516,7 +405,7 @@ const Dashboard = () => {
                   </div>
                 </Card>
               </div>
-              <div className="space-y-4 col-span-2">
+              <div className="col-span-2">
                 <Card sx={{ height: "486px" }}>
                   <h2 className="text-base text-center mt-3">
                     Avance Entregables
@@ -528,8 +417,8 @@ const Dashboard = () => {
                   />
                 </Card>
               </div>
-              <div className="space-y-4 col-span-3">
-                <Card sx={{ height: "235px" }}>
+              <div className="space-y-2 col-span-3">
+                <Card sx={{ height: "239px" }}>
                   <h2 className="text-base text-center mt-3">
                     Cumplimiento mensual
                   </h2>
@@ -538,7 +427,7 @@ const Dashboard = () => {
                     series={summaryKpis?.shippable_month}
                   />
                 </Card>
-                <Card sx={{ height: "235px" }}>
+                <Card sx={{ height: "239px" }}>
                   <h2 className="text-base text-center mt-3">
                     Cumplimiento anual
                   </h2>
@@ -548,6 +437,33 @@ const Dashboard = () => {
                   />
                 </Card>
               </div>
+              {/* <div className="col-span-3">
+                <Card sx={{ height: "235px" }}>
+                  <h2 className="text-base text-center mt-3">
+                    Cumplimiento por fase total
+                  </h2>
+                  <ColumnChart
+                    height={200}
+                    series={cumplimientoGral}
+                    categories={categories}
+                  />
+                </Card>
+              </div>
+              <div className="col-span-3">
+                <Card sx={{ height: "235px" }}>
+                  <h2 className="text-base text-center mt-3">
+                    Cumplimiento por fase YTD
+                  </h2>
+                  <ColumnChart
+                    height={200}
+                    series={cumplimientoYTD}
+                    categories={categories}
+                  />
+                </Card>
+              </div>
+              <div className="col-span-3">
+                <Card sx={{ height: "235px" }}></Card>
+              </div> */}
             </div>
           </>
         )}

@@ -5,7 +5,7 @@ export {
   updateShippableApi,
   deleteShippableApi,
 } from "./shippable";
-export { fetchHeadingsApi } from "./headings";
+export { fetchHeadingsApi, insertHeadingsApi } from "./headings";
 export { fetchMachinesApi, insertMachineApi } from "./machines";
 export { fetchAdvanceApi, insertAdvanceApi, updateAdvanceApi } from "./advance";
 export { fetchPhaseApi, insertPhaseApi } from "./phase";

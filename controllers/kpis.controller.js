@@ -3,11 +3,10 @@ const { getSummary } = require("../models/kpis.model");
 
 module.exports.getKpis = (req, res) => {
   try {
-    const { phase, priority, weighting } = req.body;
+    const { phase, priority } = req.body;
     const newRegister = {
       phase,
       priority,
-      weighting,
     };
     response(res, null, getSummary, newRegister);
   } catch (error) {

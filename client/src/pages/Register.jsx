@@ -18,6 +18,7 @@ import ExpectationForm from "../components/Forms/ExpectationForm";
 import ShippableForm from "../components/Forms/ShippableForm";
 import PhaseForm from "../components/Forms/PhaseForm";
 import AdvanceForm from "../components/Forms/AdvanceForm";
+import HeadingForm from "../components/Forms/HeadingForm";
 import ShippableTable from "../components/Tables/ShippableTable";
 import { fetchExpectancyRequest } from "../slices/expectancy";
 import { fetchShippableRequest } from "../slices/shippable";
@@ -51,6 +52,7 @@ const Register = () => {
   const [openShi, setOpenShi] = useState(false);
   const [openPha, setOpenPha] = useState(false);
   const [openAdv, setOpenAdv] = useState(false);
+  const [openHead, setOpenHead] = useState(false);
   const [idExpectancy, setIdExpectancy] = useState(null);
   const [activeComment, setActiveComment] = useState(true);
   const [changeShi, setChangeShi] = useState(null);
@@ -135,6 +137,11 @@ const Register = () => {
             </div>
             <div className="flex mb-3 justify-between">
               <div className="flex">
+                <div className="mr-2">
+                  <Button variant="contained" onClick={() => setOpenHead(true)}>
+                    Agregar rubro
+                  </Button>
+                </div>
                 <div className="mr-2">
                   <Button variant="contained" onClick={() => setOpenExp(true)}>
                     Agregar expectativa
@@ -270,6 +277,23 @@ const Register = () => {
                 </CustomTabPanel>
               ))}
             </Box>
+            <Modal open={openHead} onClose={() => setOpenHead(false)}>
+              <Box sx={style}>
+                <IconButton
+                  aria-label="close"
+                  size="small"
+                  onClick={() => setOpenHead(false)}
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: 8,
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+                <HeadingForm setOpen={setOpenHead} />
+              </Box>
+            </Modal>
             <Modal open={openExp} onClose={() => setOpenExp(false)}>
               <Box sx={style}>
                 <IconButton
