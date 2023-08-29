@@ -9,6 +9,8 @@ const Slice = createSlice({
     didError: false,
     isFetchingInsert: false,
     didErrorInsert: false,
+    isFetchingDelete: false,
+    didErrorDelete: false,
   },
   reducers: {
     machinesRequest: (state) => {
@@ -36,6 +38,18 @@ const Slice = createSlice({
       state.isFetchingInsert = false;
       state.didErrorInsert = true;
     },
+    deleteMachineRequest: (state) => {
+      state.isFetchingDelete = true;
+      state.didErrorDelete = false;
+    },
+    deleteMachineSuccess: (state, { payload: { idMaquina } }) => {
+      delete state.list[idMaquina];
+      state.isFetchingDelete = false;
+    },
+    deleteMachineError: (state) => {
+      state.isFetchingDelete = false;
+      state.didErrorDelete = true;
+    },
   },
 });
 
@@ -46,5 +60,8 @@ export const {
   insertMachineRequest,
   insertMachineSuccess,
   insertMachineError,
+  deleteMachineRequest,
+  deleteMachineSuccess,
+  deleteMachineError,
 } = Slice.actions;
 export default Slice.reducer;

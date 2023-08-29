@@ -1,6 +1,6 @@
 import { takeLatest, call, put, cancelled } from "redux-saga/effects";
 
-import { fetchMachinesApi, insertMachineApi } from "../api";
+import { fetchMachinesApi, insertMachineApi, deleteMachineApi } from "../api";
 import {
   machinesRequest,
   machinesSuccess,
@@ -8,6 +8,9 @@ import {
   insertMachineRequest,
   insertMachineSuccess,
   insertMachineError,
+  deleteMachineRequest,
+  deleteMachineSuccess,
+  deleteMachineError,
 } from "../slices/machines";
 
 function* fetchMachines() {
@@ -44,4 +47,22 @@ function* insertMachine({ payload }) {
 
 export function* insertMachineSaga() {
   yield takeLatest(insertMachineRequest.toString(), insertMachine);
+}
+
+function* deleteMachine({ payload: { idMaquina } }) {
+  try {
+    const { data, isError } = yield call(deleteMachineApi.run, idMaquina);
+    if (isError) throw new Error();
+    yield put(deleteMachineSuccess({ idMaquina: data }));
+  } catch (e) {
+    yield put(deleteMachineError());
+  } finally {
+    if (yield cancelled()) {
+      yield call(deleteMachineApi.cancel);
+    }
+  }
+}
+
+export function* deleteMachineSaga() {
+  yield takeLatest(deleteMachineRequest.toString(), deleteMachine);
 }

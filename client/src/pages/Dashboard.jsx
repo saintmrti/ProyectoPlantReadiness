@@ -20,52 +20,54 @@ import GaugeSeries from "../components/GaugeCharts/GaugeSeries";
 import SolidGauge from "../components/GaugeCharts/SolidGauge";
 import StackedBar from "../components/BarCharts/StackedBar";
 import ColumnChart from "../components/BarCharts/ColumnChart";
+import MachineTable from "../components/Tables/MachineTable";
 import FilterButton from "../components/ButtonGroup";
 import { kpisRequest } from "../slices/kpis";
 import { getSummaryKpis } from "../selectors/kpis";
 import ProgressBar from "../components/ProgressBar";
 import { Spinner } from "../components/Spinner";
 import { Error } from "../components/Error";
+import { maquinas } from "../components/Tables/data";
 
-// const cumplimientoGral = [
-//   {
-//     name: "Plan",
-//     data: [
-//       ["Fase 1", 46],
-//       ["Fase 2", 38],
-//       ["Gral", 43],
-//     ],
-//   },
-//   {
-//     name: "Real",
-//     data: [
-//       ["Fase 1", 54],
-//       ["Fase 2", 31],
-//       ["Gral", 44],
-//     ],
-//   },
-// ];
+const cumplimientoGral = [
+  {
+    name: "Plan",
+    data: [
+      ["Fase 1", 46],
+      ["Fase 2", 38],
+      ["Gral", 43],
+    ],
+  },
+  {
+    name: "Real",
+    data: [
+      ["Fase 1", 54],
+      ["Fase 2", 31],
+      ["Gral", 44],
+    ],
+  },
+];
 
-// const cumplimientoYTD = [
-//   {
-//     name: "Plan",
-//     data: [
-//       ["Fase 1", 100],
-//       ["Fase 2", 100],
-//       ["Gral", 100],
-//     ],
-//   },
-//   {
-//     name: "Real",
-//     data: [
-//       ["Fase 1", 116],
-//       ["Fase 2", 81],
-//       ["Gral", 103],
-//     ],
-//   },
-// ];
+const cumplimientoYTD = [
+  {
+    name: "Plan",
+    data: [
+      ["Fase 1", 100],
+      ["Fase 2", 100],
+      ["Gral", 100],
+    ],
+  },
+  {
+    name: "Real",
+    data: [
+      ["Fase 1", 116],
+      ["Fase 2", 81],
+      ["Gral", 103],
+    ],
+  },
+];
 
-// const categories = ["Fase 1", "Fase 2", "Gral."];
+const categories = ["Fase 1", "Fase 2", "Gral."];
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -136,7 +138,7 @@ const Dashboard = () => {
                 handleBtnClickFilter={handleBtnClickFilter}
               />
             )}
-            {console.log(summaryKpis)}
+            {/* {console.log(summaryKpis)} */}
             <div className="grid grid-cols-9 gap-2">
               <div className="col-span-2">
                 <Card sx={{ height: "260px" }}>
@@ -437,33 +439,38 @@ const Dashboard = () => {
                   />
                 </Card>
               </div>
-              {/* <div className="col-span-3">
-                <Card sx={{ height: "235px" }}>
+              <div className="col-span-3">
+                <Card sx={{ height: "300px" }}>
                   <h2 className="text-base text-center mt-3">
                     Cumplimiento por fase total
                   </h2>
                   <ColumnChart
-                    height={200}
+                    height={250}
                     series={cumplimientoGral}
                     categories={categories}
                   />
                 </Card>
               </div>
               <div className="col-span-3">
-                <Card sx={{ height: "235px" }}>
+                <Card sx={{ height: "300px" }}>
                   <h2 className="text-base text-center mt-3">
                     Cumplimiento por fase YTD
                   </h2>
                   <ColumnChart
-                    height={200}
+                    height={250}
                     series={cumplimientoYTD}
                     categories={categories}
                   />
                 </Card>
               </div>
               <div className="col-span-3">
-                <Card sx={{ height: "235px" }}></Card>
-              </div> */}
+                <Card sx={{ height: "300px" }}>
+                  <h2 className="text-base text-center mt-3">
+                    Avance por máquina
+                  </h2>
+                  <MachineTable tableValues={maquinas} />
+                </Card>
+              </div>
             </div>
           </>
         )}

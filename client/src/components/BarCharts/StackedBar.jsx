@@ -12,6 +12,7 @@ const StackedBar = ({ height, categories, series }) => {
           style: {
             fontFamily: "Roboto",
           },
+          backgroundColor: "transparent",
         },
         title: null,
         xAxis: {

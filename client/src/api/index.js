@@ -6,7 +6,11 @@ export {
   deleteShippableApi,
 } from "./shippable";
 export { fetchHeadingsApi, insertHeadingsApi } from "./headings";
-export { fetchMachinesApi, insertMachineApi } from "./machines";
+export {
+  fetchMachinesApi,
+  insertMachineApi,
+  deleteMachineApi,
+} from "./machines";
 export { fetchAdvanceApi, insertAdvanceApi, updateAdvanceApi } from "./advance";
 export { fetchPhaseApi, insertPhaseApi } from "./phase";
 export { fetchKpisApi } from "./kpis";

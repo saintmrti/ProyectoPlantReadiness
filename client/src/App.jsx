@@ -1,13 +1,15 @@
-import CssBaseline from "@mui/material/CssBaseline";
-import Box from "@mui/material/Box";
+// import { useDispatch } from "react-redux";
 import { ThemeProvider } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 import DarkUnica from "highcharts/themes/dark-unica";
 import Highcharts from "highcharts";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
 import moment from "moment";
 
 import { Root } from "./components/routes";
 import { getTheme } from "./utilities/getTheme";
+// import { changeTheme } from "./slices/settings";
 
 Highcharts.setOptions({
   time: {
@@ -18,6 +20,7 @@ Highcharts.setOptions({
 });
 
 const App = () => {
+  // const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.settings);
   if (theme !== "light") DarkUnica(Highcharts);
 

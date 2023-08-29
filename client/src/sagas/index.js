@@ -6,7 +6,11 @@ export {
   deleteShippableSaga,
 } from "./shippable";
 export { fetchHeadingsSaga, insertHeadingSaga } from "./headings";
-export { fetchMachinesSaga, insertMachineSaga } from "./machines";
+export {
+  fetchMachinesSaga,
+  insertMachineSaga,
+  deleteMachineSaga,
+} from "./machines";
 export {
   fetchAdvanceSaga,
   insertAdvanceSaga,

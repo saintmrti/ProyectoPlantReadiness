@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
+import _ from "lodash";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import FormGroup from "@mui/material/FormGroup";
 import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import _ from "lodash";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import { insertPhaseRequest } from "../../slices/phase";
-import { insertMachineRequest } from "../../slices/machines";
+import {
+  insertMachineRequest,
+  deleteMachineRequest,
+} from "../../slices/machines";
 import { textFieldValidation } from "./validated";
 
 const PhaseForm = ({ setOpen, data, idGrupo }) => {
@@ -22,7 +27,9 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
   } = useForm();
   const [selectedMachines, setSelectedMachines] = useState([]);
   const [machine, setMachine] = useState("");
-  const { isFetchingInsert } = useSelector((state) => state.machines);
+  const { isFetchingInsert, isFetchingDelete } = useSelector(
+    (state) => state.machines
+  );
 
   const handleCheckboxChange = (event) => {
     const { value, checked } = event.target;
@@ -56,6 +63,7 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
 
   return (
     <div>
+      {console.log(isFetchingDelete)}
       <form
         className="flex justify-center items-center flex-wrap"
         onSubmit={handleSubmit(onSubmit)}
@@ -85,13 +93,19 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
               No tienes maquinas disponibles
             </Typography>
           ) : (
-            <div className="grid grid-cols-3 gap-4 mb-5">
+            <div className="grid grid-cols-3 gap-2 space-x-2 mb-5">
               {_.map(data, (item) => (
                 <FormGroup
                   key={item.id}
-                  sx={{ display: "flex", itemsAlign: "center" }}
+                  sx={{
+                    display: "flex",
+                    itemsAlign: "center",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                  }}
                 >
                   <FormControlLabel
+                    sx={{ mr: 0 }}
                     control={
                       <Checkbox
                         value={item.id}
@@ -100,6 +114,15 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
                     }
                     label={item.maquina}
                   />
+                  <IconButton
+                    aria-label="delete"
+                    disabled={isFetchingDelete}
+                    onClick={() =>
+                      dispatch(deleteMachineRequest({ idMaquina: item.id }))
+                    }
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </FormGroup>
               ))}
             </div>

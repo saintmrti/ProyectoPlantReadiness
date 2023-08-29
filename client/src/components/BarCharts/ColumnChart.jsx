@@ -15,10 +15,10 @@ const ColumnChart = ({ series, height, categories }) => {
           time: {
             timezone: "America/Mexico_City",
           },
+          backgroundColor: "transparent",
         },
         title: null,
         xAxis: categories ? { categories } : { type: "datetime" },
-
         yAxis: {
           allowDecimals: false,
           min: 0,
@@ -27,11 +27,6 @@ const ColumnChart = ({ series, height, categories }) => {
           //   text: "Entregables",
           // },
         },
-        // legend: {
-        //   enabled: false,
-        //   padding: 0,
-        //   backgroundColor: "transparent",
-        // },
         accessibility: {
           enabled: false,
         },

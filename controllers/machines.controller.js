@@ -1,5 +1,9 @@
 const response = require("../helpers/response");
-const { insertMachine, getSummary } = require("../models/machines.model");
+const {
+  insertMachine,
+  getSummary,
+  deleteMachine,
+} = require("../models/machines.model");
 
 module.exports.getMachines = (req, res) => {
   try {
@@ -17,6 +21,19 @@ module.exports.createMachine = (req, res) => {
       machine,
     };
     response(res, null, insertMachine, newRegister);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports.eliminateMachine = (req, res) => {
+  try {
+    const { idMaquina } = req.query;
+    const deleteRegister = {
+      idMaquina: parseInt(idMaquina),
+    };
+    response(res, null, deleteMachine, deleteRegister);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

@@ -19,3 +19,14 @@ export const fetchMachinesApi = {
       })
       .then(({ data }) => data),
 };
+
+export const deleteMachineApi = {
+  cancel: null,
+  run: (idMaquina) =>
+    axios
+      .delete("/api/maquinas", {
+        cancelToken: new CancelToken((c) => (deleteMachineApi.cancel = c)),
+        params: { idMaquina },
+      })
+      .then(({ data }) => data),
+};

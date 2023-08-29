@@ -134,3 +134,318 @@ export const fases = [
     maquina: "Caballe",
   },
 ];
+
+export const maquinas = [
+  {
+    id: 1,
+    name: "General",
+    seguridad: {
+      real: 38,
+      plan: 29,
+    },
+    calidad: {
+      real: 38,
+      plan: 45,
+    },
+    rh: {
+      real: 63,
+      plan: 43,
+    },
+    produccion: {
+      real: 33,
+      plan: 45,
+    },
+    mantenimiento: {
+      real: 47,
+      plan: 50,
+    },
+  },
+  {
+    id: 2,
+    name: "Fase 1",
+    seguridad: {
+      real: 46,
+      plan: 42,
+    },
+    calidad: {
+      real: 50,
+      plan: 54,
+    },
+    rh: {
+      real: 55,
+      plan: 61,
+    },
+    produccion: {
+      real: 41,
+      plan: 53,
+    },
+    mantenimiento: {
+      real: 45,
+      plan: 57,
+    },
+  },
+  {
+    id: 3,
+    name: "BT 3+1",
+    seguridad: {
+      real: 18,
+      plan: 18,
+    },
+    calidad: {
+      real: 31,
+      plan: 0,
+    },
+    rh: {
+      real: 61,
+      plan: 55,
+    },
+    produccion: {
+      real: 41,
+      plan: 53,
+    },
+    mantenimiento: {
+      real: 45,
+      plan: 57,
+    },
+  },
+  {
+    id: 4,
+    name: "Buncher 1800",
+    seguridad: {
+      real: 18,
+      plan: 18,
+    },
+    calidad: {
+      real: 31,
+      plan: 0,
+    },
+    rh: {
+      real: 61,
+      plan: 55,
+    },
+    produccion: {
+      real: 41,
+      plan: 53,
+    },
+    mantenimiento: {
+      real: 45,
+      plan: 57,
+    },
+  },
+  {
+    id: 5,
+    name: "Extruder 4.5",
+    seguridad: {
+      real: 18,
+      plan: 18,
+    },
+    calidad: {
+      real: 31,
+      plan: 0,
+    },
+    rh: {
+      real: 61,
+      plan: 55,
+    },
+    produccion: {
+      real: 41,
+      plan: 53,
+    },
+    mantenimiento: {
+      real: 45,
+      plan: 57,
+    },
+  },
+  {
+    id: 6,
+    name: "MSM86",
+    seguridad: {
+      real: 18,
+      plan: 18,
+    },
+    calidad: {
+      real: 31,
+      plan: 0,
+    },
+    rh: {
+      real: 61,
+      plan: 55,
+    },
+    produccion: {
+      real: 41,
+      plan: 53,
+    },
+    mantenimiento: {
+      real: 45,
+      plan: 57,
+    },
+  },
+  {
+    id: 7,
+    name: "Cableadora C.",
+    seguridad: {
+      real: 18,
+      plan: 18,
+    },
+    calidad: {
+      real: 31,
+      plan: 0,
+    },
+    rh: {
+      real: 61,
+      plan: 55,
+    },
+    produccion: {
+      real: 41,
+      plan: 53,
+    },
+    mantenimiento: {
+      real: 45,
+      plan: 57,
+    },
+  },
+  {
+    id: 8,
+    name: "X Compound",
+    seguridad: {
+      real: 18,
+      plan: 18,
+    },
+    calidad: {
+      real: 31,
+      plan: 0,
+    },
+    rh: {
+      real: 61,
+      plan: 55,
+    },
+    produccion: {
+      real: 41,
+      plan: 53,
+    },
+    mantenimiento: {
+      real: 45,
+      plan: 57,
+    },
+  },
+  {
+    id: 9,
+    name: "P. Electricas",
+    seguridad: {
+      real: 18,
+      plan: 18,
+    },
+    calidad: {
+      real: 31,
+      plan: 0,
+    },
+    rh: {
+      real: 61,
+      plan: 55,
+    },
+    produccion: {
+      real: 41,
+      plan: 53,
+    },
+    mantenimiento: {
+      real: 45,
+      plan: 57,
+    },
+  },
+  {
+    id: 10,
+    name: "Fase 2",
+    seguridad: {
+      real: 18,
+      plan: 18,
+    },
+    calidad: {
+      real: 31,
+      plan: 0,
+    },
+    rh: {
+      real: 61,
+      plan: 55,
+    },
+    produccion: {
+      real: 41,
+      plan: 53,
+    },
+    mantenimiento: {
+      real: 45,
+      plan: 57,
+    },
+  },
+  {
+    id: 11,
+    name: "Med 2da mano",
+    seguridad: {
+      real: 18,
+      plan: 18,
+    },
+    calidad: {
+      real: 31,
+      plan: 0,
+    },
+    rh: {
+      real: 61,
+      plan: 55,
+    },
+    produccion: {
+      real: 41,
+      plan: 53,
+    },
+    mantenimiento: {
+      real: 45,
+      plan: 57,
+    },
+  },
+  {
+    id: 12,
+    name: "Coiler 2da mano",
+    seguridad: {
+      real: 18,
+      plan: 18,
+    },
+    calidad: {
+      real: 31,
+      plan: 0,
+    },
+    rh: {
+      real: 61,
+      plan: 55,
+    },
+    produccion: {
+      real: 41,
+      plan: 53,
+    },
+    mantenimiento: {
+      real: 45,
+      plan: 57,
+    },
+  },
+  {
+    id: 13,
+    name: "Est. Gruesa",
+    seguridad: {
+      real: 18,
+      plan: 18,
+    },
+    calidad: {
+      real: 31,
+      plan: 0,
+    },
+    rh: {
+      real: 61,
+      plan: 55,
+    },
+    produccion: {
+      real: 41,
+      plan: 53,
+    },
+    mantenimiento: {
+      real: 45,
+      plan: 57,
+    },
+  },
+];

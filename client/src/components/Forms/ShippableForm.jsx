@@ -44,7 +44,9 @@ const ShippableForm = ({ setOpen, idExpectancy, editShi }) => {
         className="flex justify-center flex-wrap"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-3xl mb-5 w-full text-center">Nuevo entregable</h1>
+        <h1 className="text-3xl mb-5 w-full text-center">
+          {editShi ? "Editar entregable" : "Nuevo entregable"}
+        </h1>
         <div className="mb-10">
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4">Nombre</label>

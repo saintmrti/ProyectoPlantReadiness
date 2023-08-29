@@ -19,3 +19,10 @@ module.exports.insertMachine = async (conn, { machine }) => {
 
   return data[0];
 };
+
+module.exports.deleteMachine = async (conn, { idMaquina }) => {
+  await conn.query(`
+      DELETE FROM vki40_maquinas_PR WHERE id = ${idMaquina};
+  `);
+  return idMaquina;
+};

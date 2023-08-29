@@ -68,7 +68,9 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv }) => {
         className="flex justify-center items-center flex-wrap"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-3xl mb-5 w-full text-center">Agregar avances</h1>
+        <h1 className="text-3xl mb-5 w-full text-center">
+          {editAdv ? "Editar avances" : "Agregar avances"}
+        </h1>
         <div className="mb-10">
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4">Nombre</label>
