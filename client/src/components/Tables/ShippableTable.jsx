@@ -162,9 +162,9 @@ const ShippableTable = ({
                     <StyledTableCell>
                       <Box sx={{ display: "flex", justifyContent: "end" }}>
                         <IconButton
-                          aria-label="edit"
+                          aria-label="add"
                           size="small"
-                          onClick={() => handleOnClickAdv(item.id)}
+                          onClick={() => handleOnClickAdv(item.id, advance)}
                         >
                           <AddCircleOutlineIcon />
                         </IconButton>
@@ -240,21 +240,26 @@ const ShippableTable = ({
                           }
                         </StyledTableCell>
                         <StyledTableCell align="right">
-                          <IconButton
-                            aria-label="edit"
-                            size="small"
-                            onClick={() =>
-                              handleOnClickEditAdv(
-                                advance[item.id].find(
-                                  (obj) =>
-                                    obj.idMaquina ===
-                                    fases[activeIndex]?.idMaquina
-                                )?.id
-                              )
-                            }
-                          >
-                            <EditIcon />
-                          </IconButton>
+                          {advance[item.id].find(
+                            (obj) =>
+                              obj.idMaquina === fases[activeIndex]?.idMaquina
+                          )?.id === undefined ? null : (
+                            <IconButton
+                              aria-label="edit"
+                              size="small"
+                              onClick={() =>
+                                handleOnClickEditAdv(
+                                  advance[item.id].find(
+                                    (obj) =>
+                                      obj.idMaquina ===
+                                      fases[activeIndex]?.idMaquina
+                                  )?.id
+                                )
+                              }
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          )}
                         </StyledTableCell>
                       </>
                     ) : (

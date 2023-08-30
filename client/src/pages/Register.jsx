@@ -33,6 +33,7 @@ import { Spinner } from "../components/Spinner";
 import { Error } from "../components/Error";
 import { Toggle } from "../components/Toggle";
 import { ShippableAlert } from "../components/Alert/ShippableAlert";
+import { AdvanceAlert } from "../components/Alert/AdvanceAlert";
 
 const style = {
   position: "absolute",
@@ -60,6 +61,8 @@ const Register = () => {
   const [editAdv, setEditAdv] = useState(null);
   const [deleteShi, setDeleteShi] = useState(null);
   const [alertShi, setAlertShi] = useState(false);
+  const [phasesGroup, setPhasesGroup] = useState(null);
+  const [alertAdv, setAlertAdv] = useState(false);
 
   const expectancy = useSelector(groupedByIdExpectancy);
   const advance = useSelector(summaryAdvanced);
@@ -69,7 +72,7 @@ const Register = () => {
   const { list: fases } = useSelector((state) => state.phase);
   const { isFetching, didError } = useSelector((state) => state.expectancy);
 
-  const fasesByidGrupo = _.uniqBy(_.values(fases), "idGrupo");
+  const phasesByidGroup = _.uniqBy(_.values(fases), "idGrupo");
   const maxIdGrupo = _.maxBy(_.values(fases), "idGrupo");
   const usedMachines = _.uniqBy(_.values(fases), "idMaquina");
   const updatedMachines = _.filter(machines, (machine) => {
@@ -91,10 +94,26 @@ const Register = () => {
     setOpenShi(true);
   };
 
-  const handleOnClickAdv = (id) => {
+  const handleOnClickAdv = (id, advance) => {
     setChangeShi(id);
     setEditAdv(null);
-    setOpenAdv(true);
+    if (advance && advance[id] && advance[id].length > 0) {
+      const arrayAdv = advance[id];
+      const removePhase = phasesByidGroup.filter(
+        (fase) =>
+          !arrayAdv.some((advanceItem) => advanceItem.idGrupo === fase.idGrupo)
+      );
+      if (removePhase.length > 0) {
+        setPhasesGroup(removePhase);
+        setOpenAdv(true);
+      } else {
+        setPhasesGroup(null);
+        setAlertAdv(true);
+      }
+    } else {
+      setPhasesGroup(phasesByidGroup);
+      setOpenAdv(true);
+    }
   };
 
   const handleOnClickEditShi = (id) => {
@@ -185,13 +204,6 @@ const Register = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                           <div className="flex justify-end mb-3">
-                            {/* <IconButton
-                              aria-label="add"
-                              size="small"
-                              onClick={() => handleOnClickShi(item.id)}
-                            >
-                              <AddCircleOutlineIcon />
-                            </IconButton> */}
                             <Button
                               variant="contained"
                               size="small"
@@ -202,14 +214,6 @@ const Register = () => {
                             </Button>
                             {item.shippables && item.shippables.length > 0 && (
                               <>
-                                {/* <IconButton
-                                  aria-label="addAdvance"
-                                  size="small"
-                                  onClick={() => handleOnClickAdv(item.id)}
-                                >
-                                  <AddchartIcon />
-                                </IconButton> */}
-
                                 <Button
                                   variant="text"
                                   size="small"
@@ -221,37 +225,6 @@ const Register = () => {
                                     ? "Mostrar Avances"
                                     : "Ocultar Avances"}
                                 </Button>
-                                {/* <IconButton
-                                    aria-label="comment"
-                                    size="small"
-                                    onClick={() =>
-                                      setActiveComment(!activeComment)
-                                    }
-                                  >
-                                    {activeComment ? (
-                                      <CommentIcon />
-                                    ) : (
-                                      <CommentsDisabledIcon />
-                                    )}
-                                  </IconButton> */}
-                                {/* {!activeComment && (
-                                  <>
-                                    <IconButton
-                                      aria-label="back"
-                                      size="small"
-                                      onClick={() => handlePrev(item.id)}
-                                    >
-                                      <ArrowBackIcon />
-                                    </IconButton>
-                                    <IconButton
-                                      aria-label="forward"
-                                      size="small"
-                                      onClick={() => handleNext(item.id)}
-                                    >
-                                      <ArrowForwardIcon />
-                                    </IconButton>
-                                  </>
-                                )} */}
                               </>
                             )}
                           </div>
@@ -370,7 +343,7 @@ const Register = () => {
                 <AdvanceForm
                   setOpen={setOpenAdv}
                   idEntregable={changeShi}
-                  fases={fasesByidGrupo}
+                  fases={phasesGroup}
                   editAdv={editAdv}
                 />
               </Box>
@@ -381,6 +354,7 @@ const Register = () => {
               deleteShi={deleteShi}
               setDeleteShi={setDeleteShi}
             />
+            <AdvanceAlert open={alertAdv} setOpen={setAlertAdv} />
           </>
         )}
       </div>
