@@ -70,7 +70,7 @@ const Register = () => {
   const { list: machines } = useSelector((state) => state.machines);
   // const { data: shippables } = useSelector((state) => state.shippable);
   const { list: fases } = useSelector((state) => state.phase);
-  const { isFetching, didError } = useSelector((state) => state.expectancy);
+  const { isFetching, didError } = useSelector((state) => state.advance);
 
   const phasesByidGroup = _.uniqBy(_.values(fases), "idGrupo");
   const maxIdGrupo = _.maxBy(_.values(fases), "idGrupo");

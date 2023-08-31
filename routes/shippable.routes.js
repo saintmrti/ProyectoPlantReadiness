@@ -6,7 +6,6 @@ const {
   modifyShippable,
   eliminateShippable,
 } = require("../controllers/shippable.controller");
-
 const router = Router();
 
 router.get("/", getShippables);

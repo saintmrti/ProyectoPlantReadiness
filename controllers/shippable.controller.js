@@ -17,13 +17,8 @@ module.exports.getShippables = (req, res) => {
 
 module.exports.createShippable = (req, res) => {
   try {
-    const {
-      nombre,
-      evidencia,
-      prioridad,
-      comentarios,
-      idExpectativa,
-    } = req.body;
+    const { nombre, evidencia, prioridad, comentarios, idExpectativa } =
+      req.body;
 
     const newRegister = {
       nombre,
@@ -42,8 +37,7 @@ module.exports.createShippable = (req, res) => {
 
 module.exports.modifyShippable = (req, res) => {
   try {
-    const { nombre, evidencia, prioridad, comentarios, id } =
-      req.body;
+    const { nombre, evidencia, prioridad, comentarios, id } = req.body;
 
     const newRegister = {
       nombre,
