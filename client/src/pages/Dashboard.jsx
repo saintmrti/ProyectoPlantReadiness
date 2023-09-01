@@ -20,54 +20,54 @@ import GaugeSeries from "../components/GaugeCharts/GaugeSeries";
 import SolidGauge from "../components/GaugeCharts/SolidGauge";
 import StackedBar from "../components/BarCharts/StackedBar";
 import ColumnChart from "../components/BarCharts/ColumnChart";
-import MachineTable from "../components/Tables/MachineTable";
+// import MachineTable from "../components/Tables/MachineTable";
 import FilterButton from "../components/ButtonGroup";
 import { kpisRequest } from "../slices/kpis";
 import { getSummaryKpis } from "../selectors/kpis";
 import ProgressBar from "../components/ProgressBar";
 import { Spinner } from "../components/Spinner";
 import { Error } from "../components/Error";
-import { maquinas } from "../components/Tables/data";
+// import { maquinas } from "../components/Tables/data";
 
-const cumplimientoGral = [
-  {
-    name: "Plan",
-    data: [
-      ["Fase 1", 46],
-      ["Fase 2", 38],
-      ["Gral", 43],
-    ],
-  },
-  {
-    name: "Real",
-    data: [
-      ["Fase 1", 54],
-      ["Fase 2", 31],
-      ["Gral", 44],
-    ],
-  },
-];
+// const cumplimientoGral = [
+//   {
+//     name: "Plan",
+//     data: [
+//       ["Fase 1", 46],
+//       ["Fase 2", 38],
+//       ["Gral", 43],
+//     ],
+//   },
+//   {
+//     name: "Real",
+//     data: [
+//       ["Fase 1", 54],
+//       ["Fase 2", 31],
+//       ["Gral", 44],
+//     ],
+//   },
+// ];
 
-const cumplimientoYTD = [
-  {
-    name: "Plan",
-    data: [
-      ["Fase 1", 100],
-      ["Fase 2", 100],
-      ["Gral", 100],
-    ],
-  },
-  {
-    name: "Real",
-    data: [
-      ["Fase 1", 116],
-      ["Fase 2", 81],
-      ["Gral", 103],
-    ],
-  },
-];
+// const cumplimientoYTD = [
+//   {
+//     name: "Plan",
+//     data: [
+//       ["Fase 1", 100],
+//       ["Fase 2", 100],
+//       ["Gral", 100],
+//     ],
+//   },
+//   {
+//     name: "Real",
+//     data: [
+//       ["Fase 1", 116],
+//       ["Fase 2", 81],
+//       ["Gral", 103],
+//     ],
+//   },
+// ];
 
-const categories = ["Fase 1", "Fase 2", "Gral."];
+// const categories = ["Fase 1", "Fase 2", "Gral."];
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -138,14 +138,14 @@ const Dashboard = () => {
                 handleBtnClickFilter={handleBtnClickFilter}
               />
             )}
-            {/* {console.log(summaryKpis)} */}
+            {console.log(summaryKpis)}
             <div className="grid grid-cols-9 gap-2">
               <div className="col-span-2">
-                <Card sx={{ height: "260px" }}>
+                <Card sx={{ height: "285px" }}>
                   {/* <h2 className="text-base text-center mt-3">
                       Total Entregables
                     </h2> */}
-                  <div className="mx-4 mt-1">
+                  <div className="mx-4 mt-2">
                     <ProgressBar
                       rubro={summaryKpis?.shippable_total["1"]?.rubro}
                       real={summaryKpis?.shippable_total["1"]?.reales}
@@ -153,7 +153,7 @@ const Dashboard = () => {
                       total={summaryKpis?.shippable_total["1"]?.totales}
                     />
                   </div>
-                  <div className="mx-4 mt-1">
+                  <div className="mx-4 mt-2">
                     <ProgressBar
                       rubro={summaryKpis?.shippable_total["2"]?.rubro}
                       real={summaryKpis?.shippable_total["2"]?.reales}
@@ -161,7 +161,7 @@ const Dashboard = () => {
                       total={summaryKpis?.shippable_total["2"]?.totales}
                     />
                   </div>
-                  <div className="mx-4 mt-1">
+                  <div className="mx-4 mt-2">
                     <ProgressBar
                       rubro="RH"
                       real={summaryKpis?.shippable_total["3"]?.reales}
@@ -169,7 +169,7 @@ const Dashboard = () => {
                       total={summaryKpis?.shippable_total["3"]?.totales}
                     />
                   </div>
-                  <div className="mx-4 mt-1">
+                  <div className="mx-4 mt-2">
                     <ProgressBar
                       rubro="Producción"
                       real={summaryKpis?.shippable_total["4"]?.reales}
@@ -177,9 +177,9 @@ const Dashboard = () => {
                       total={summaryKpis?.shippable_total["4"]?.totales}
                     />
                   </div>
-                  <div className="mx-4 mt-1">
+                  <div className="mx-4 mt-2">
                     <ProgressBar
-                      rubro="Mantenimiento"
+                      rubro="Mtto"
                       real={summaryKpis?.shippable_total["5"]?.reales}
                       plan={summaryKpis?.shippable_total["5"]?.planes}
                       total={summaryKpis?.shippable_total["5"]?.totales}
@@ -188,17 +188,17 @@ const Dashboard = () => {
                 </Card>
               </div>
               <div className="col-span-4">
-                <Card sx={{ height: "260px" }}>
+                <Card sx={{ height: "285px" }}>
                   <div className="grid grid-cols-2 gap-2 mt-3">
                     <GaugeSeries
-                      height={250}
+                      height={280}
                       title="Cumplimiento Total"
                       total={summaryKpis?.compliance_total[0]?.totales}
                       value={summaryKpis?.compliance_total[0]?.completados}
                       rate={summaryKpis?.compliance_total[0]?.porcentaje}
                     />
                     <GaugeSeries
-                      height={250}
+                      height={280}
                       title="Cumplimiento YTD"
                       total={summaryKpis?.compliance_YTD[0]?.totales}
                       value={summaryKpis?.compliance_YTD[0]?.completados}
@@ -208,39 +208,39 @@ const Dashboard = () => {
                 </Card>
               </div>
               <div className="col-span-3">
-                <Card sx={{ height: "260px" }}>
+                <Card sx={{ height: "285px" }}>
                   <div className="grid grid-cols-3 gap-2 gap-y-0 mt-3">
                     <SolidGauge
                       name="Seguridad"
-                      height={120}
+                      height={130}
                       value={summaryKpis?.compliance_headings["1"]?.completados}
                       total={summaryKpis?.compliance_headings["1"]?.totales}
                       rate={summaryKpis?.compliance_headings["1"]?.porcentaje}
                     />
                     <SolidGauge
                       name="Calidad"
-                      height={120}
+                      height={130}
                       value={summaryKpis?.compliance_headings["2"]?.completados}
                       total={summaryKpis?.compliance_headings["2"]?.totales}
                       rate={summaryKpis?.compliance_headings["2"]?.porcentaje}
                     />
                     <SolidGauge
                       name="RH"
-                      height={120}
+                      height={130}
                       value={summaryKpis?.compliance_headings["3"]?.completados}
                       total={summaryKpis?.compliance_headings["3"]?.totales}
                       rate={summaryKpis?.compliance_headings["3"]?.porcentaje}
                     />
                     <SolidGauge
                       name="Producción"
-                      height={120}
+                      height={130}
                       value={summaryKpis?.compliance_headings["4"]?.completados}
                       total={summaryKpis?.compliance_headings["4"]?.totales}
                       rate={summaryKpis?.compliance_headings["4"]?.porcentaje}
                     />
                     <SolidGauge
                       name="Mantenimiento"
-                      height={120}
+                      height={130}
                       value={summaryKpis?.compliance_headings["5"]?.completados}
                       total={summaryKpis?.compliance_headings["5"]?.totales}
                       rate={summaryKpis?.compliance_headings["5"]?.porcentaje}
@@ -439,7 +439,7 @@ const Dashboard = () => {
                   />
                 </Card>
               </div>
-              <div className="col-span-3">
+              {/* <div className="col-span-3">
                 <Card sx={{ height: "300px" }}>
                   <h2 className="text-base text-center mt-3">
                     Cumplimiento por fase total
@@ -470,7 +470,7 @@ const Dashboard = () => {
                   </h2>
                   <MachineTable tableValues={maquinas} />
                 </Card>
-              </div>
+              </div> */}
             </div>
           </>
         )}
