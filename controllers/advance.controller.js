@@ -52,14 +52,16 @@ module.exports.modifyAdvance = (req, res) => {
     } = req.body;
     const modifiedRegister = {
       idAvance,
-      responsable: responsable === "" ? null : `'${responsable}'`,
-      fecha_inicio: fecha_inicio === "" ? null : `'${fecha_inicio}'`,
-      fecha_termino: fecha_termino === "" ? null : `'${fecha_termino}'`,
-      fecha_real: fecha_real === "" ? null : `'${fecha_real}'`,
-      avance: avance === "" ? null : avance,
-      comentarios: comentarios === "" ? null : `'${comentarios}'`,
+      responsable: responsable || null,
+      fecha_inicio: fecha_inicio || null,
+      fecha_termino: fecha_termino || null,
+      fecha_real: fecha_real || null,
+      avance: avance || null,
+      comentarios: comentarios || null,
     };
 
+    // console.log(modifiedRegister);
+    // res.status(200).json({ message: "Ok" });
     response(res, null, updateAdvance, modifiedRegister);
   } catch (error) {
     console.error(error);

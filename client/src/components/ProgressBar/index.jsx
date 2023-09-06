@@ -4,28 +4,14 @@ const ProgressBar = ({ rubro, real, plan, total }) => {
 
   return (
     <div className="flex">
-      <div className="flex flex-col items-center w-36 justify-center">
+      <div className="flex flex-col w-28 justify-center">
         <div className="text-base">{rubro}</div>
-        <div className="font-semibold">{total ? total : 0}</div>
-      </div>
-      <div className="w-full">
-        <div className="flex mb-1">
-          <div className="text-sm w-12">Real: </div>
-          <div className="w-full h-5 bg-gray-200 rounded">
-            <div
-              className="h-full transition-all ease-in-out duration-500 rounded flex items-center justify-center text-white font-semibold text-sm"
-              style={{
-                width: `${
-                  percentReal ? (percentReal > 100 ? 100 : percentReal) : 0
-                }%`,
-                backgroundColor: `${real >= plan ? "#00b978" : "#f44336"}`,
-              }}
-            >
-              {percentReal > 100 ? "En meta" : real === 0 ? "" : real}
-            </div>
-          </div>
+        <div className="text-base">
+          Total: <span className="font-semibold">{total ? total : 0}</span>
         </div>
-        <div className="flex">
+      </div>
+      <div className="flex-grow">
+        <div className="flex mb-1">
           <div className="text-sm w-12">Plan: </div>
           <div className="w-full h-5 bg-gray-200 rounded">
             <div
@@ -38,6 +24,22 @@ const ProgressBar = ({ rubro, real, plan, total }) => {
               }}
             >
               {percentPlan === 0 ? " " : plan}
+            </div>
+          </div>
+        </div>
+        <div className="flex">
+          <div className="text-sm w-12">Real: </div>
+          <div className="w-full h-5 bg-gray-200 rounded">
+            <div
+              className="h-full transition-all ease-in-out duration-500 rounded flex items-center justify-center text-white font-semibold text-sm"
+              style={{
+                width: `${
+                  percentReal ? (percentReal > 100 ? 100 : percentReal) : 0
+                }%`,
+                backgroundColor: `${real >= plan ? "#00b978" : "#f44336"}`,
+              }}
+            >
+              {percentReal > 100 ? "En meta" : real === 0 ? "" : real}
             </div>
           </div>
         </div>

@@ -2,6 +2,13 @@ import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
 const ColumnChart = ({ series, height, categories }) => {
+  // const seriesLine = [
+  //   {
+  //     name: "Cumplimiento",
+  //     type: "spline",
+  //     data: cumplience,
+  //   }
+  // ]
   return (
     <HighchartsReact
       highcharts={Highcharts}

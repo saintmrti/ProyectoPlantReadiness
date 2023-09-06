@@ -58,12 +58,12 @@ module.exports.updateAdvance = async (conn, modifiedArray) => {
   await conn.query(`
       UPDATE vki40_avances
       SET
-        responsable= ${responsable}, 
-        fecha_inicio= ${fecha_inicio},
-        fecha_termino= ${fecha_termino},
-        fecha_real=${fecha_real},
-        avance= ${avance},
-        comentarios= ${comentarios}
+        responsable = ${responsable !== null ? `'${responsable}'` : null}, 
+        fecha_inicio = ${fecha_inicio !== null ? `'${fecha_inicio}'` : null},
+        fecha_termino = ${fecha_termino !== null ? `'${fecha_termino}'` : null},
+        fecha_real = ${fecha_real !== null ? `'${fecha_real}'` : null},
+        avance = ${avance !== null ? avance : null},
+        comentarios = ${comentarios !== null ? `'${comentarios}'` : null}
       WHERE id = ${idAvance};
     `);
 

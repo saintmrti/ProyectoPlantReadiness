@@ -20,7 +20,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "&:nth-of-type(odd)": {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   "&:last-child td, &:last-child th": {
     border: 0,
   },
@@ -117,34 +116,38 @@ const MachineTable = ({ tableValues }) => (
                 {item.name}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.seguridad?.plan + "%"}
+                {item?.Seguridad?.plan ? `${item.Seguridad.plan}%` : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.seguridad?.real + "%"}
+                {item?.Seguridad?.real ? `${item.Seguridad.real}%` : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.calidad?.plan + "%"}
+                {item?.Calidad?.plan ? `${item.Calidad.plan}%` : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.calidad?.real + "%"}
+                {item?.Calidad?.real ? `${item.Calidad.real}%` : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.rh?.plan + "%"}
+                {item?.Rh?.plan ? `${item.rh.plan}%` : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.rh?.real + "%"}
+                {item?.Rh?.real ? `${item.rh.real}%` : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.produccion?.plan + "%"}
+                {item?.Produccion?.plan ? `${item.produccion.plan}%` : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.produccion?.real + "%"}
+                {item?.Produccion?.real ? `${item.produccion.real}%` : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.mantenimiento?.plan + "%"}
+                {item?.mantenimiento?.plan
+                  ? `${item.Mantenimiento.plan}%`
+                  : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.mantenimiento?.real + "%"}
+                {item?.mantenimiento?.real
+                  ? `${item.Mantenimiento.real}%`
+                  : "0%"}
               </StyledTableCell>
             </StyledTableRow>
           ))}

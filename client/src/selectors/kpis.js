@@ -14,6 +14,9 @@ export const getSummaryKpis = createSelector(
     const parseAdvance = JSON.parse(kpis[0]?.entregables_Avance);
     const parseShippableYear = JSON.parse(kpis[0]?.plan_EntregablesAnio);
     const parseShippableMonth = JSON.parse(kpis[0]?.plan_EntregablesMes);
+    const parseMachines = JSON.parse(kpis[0]?.avancePorMaquina);
+    const parsePhases = JSON.parse(kpis[0]?.cumplimientoPorFaseTotal);
+    const parsePhasesYTD = JSON.parse(kpis[0]?.cumplimientoPorFaseYTD);
 
     const sortedEnergizer = _.orderBy(parseEnergizer, "totales", "desc");
     const energizers = _.map(sortedEnergizer, "energizador");
@@ -47,6 +50,62 @@ export const getSummaryKpis = createSelector(
       ];
     });
 
+    // const groupedByMachines = _.groupBy(parseMachines, "tipo");
+
+    const advanceMachines = _.reduce(
+      parseMachines,
+      (result, item) => {
+        const existingMachine = _.find(result, { name: item.descripcion });
+
+        if (existingMachine) {
+          if (!existingMachine[item.rubro]) {
+            existingMachine[item.rubro] = {
+              real: item.Real,
+              plan: item.Plan,
+            };
+          } else {
+            existingMachine[item.rubro].real += item.Real;
+            existingMachine[item.rubro].plan += item.Plan;
+          }
+        } else {
+          const newMachine = {
+            idMaquina: item.idMaquina,
+            name: item.descripcion,
+          };
+          newMachine[item.rubro] = {
+            real: item.Real,
+            plan: item.Plan,
+          };
+          result.push(newMachine);
+        }
+
+        return result;
+      },
+      []
+    );
+
+    const phasesTotal = [
+      {
+        name: "Plan",
+        data: parsePhases.map((element) => [element.Fase, element.Plan]),
+      },
+      {
+        name: "Real",
+        data: parsePhases.map((element) => [element.Fase, element.Real]),
+      },
+    ];
+
+    const phasesYTD = [
+      {
+        name: "Plan",
+        data: parsePhasesYTD.map((element) => [element.Fase, element.Plan]),
+      },
+      {
+        name: "Real",
+        data: parsePhasesYTD.map((element) => [element.Fase, element.Real]),
+      },
+    ];
+
     const shippable_energizer = {
       categories: energizers,
       series: energizerTotal,
@@ -66,6 +125,10 @@ export const getSummaryKpis = createSelector(
         data: groupedByRealYear,
       },
     ];
+
+    const cumplience_year = _.map(parseShippableYear, "cumplimiento");
+
+    const cumplience_month = _.map(parseShippableMonth, "cumplimiento");
 
     const shippable_month = [
       {
@@ -91,6 +154,11 @@ export const getSummaryKpis = createSelector(
       shippable_advance,
       shippable_year,
       shippable_month,
+      advanceMachines,
+      phasesTotal,
+      phasesYTD,
+      cumplience_year,
+      cumplience_month,
     };
 
     return data;

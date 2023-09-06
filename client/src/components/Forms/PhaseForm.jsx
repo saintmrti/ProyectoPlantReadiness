@@ -63,7 +63,6 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
 
   return (
     <div>
-      {console.log(isFetchingDelete)}
       <form
         className="flex justify-center items-center flex-wrap"
         onSubmit={handleSubmit(onSubmit)}

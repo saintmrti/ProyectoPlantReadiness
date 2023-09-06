@@ -5,11 +5,6 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import _ from "lodash";
 
-// import securityIcon from "../img/securityIcon.png";
-// import rhIcon from "../img/rhIcon.png";
-// import calidadIcon from "../img/calidadIcon.png";
-// import produccionIcon from "../img/produccionIcon.png";
-// import matenimientoIcon from "../img/mantenimientoIcon.png";
 import energizer1 from "../assets/img/energizer1.png";
 import energizer2 from "../assets/img/energizer2.jpg";
 import energizer3 from "../assets/img/energizer3.jpg";
@@ -20,54 +15,15 @@ import GaugeSeries from "../components/GaugeCharts/GaugeSeries";
 import SolidGauge from "../components/GaugeCharts/SolidGauge";
 import StackedBar from "../components/BarCharts/StackedBar";
 import ColumnChart from "../components/BarCharts/ColumnChart";
-// import MachineTable from "../components/Tables/MachineTable";
+import MachineTable from "../components/Tables/MachineTable";
 import FilterButton from "../components/ButtonGroup";
 import { kpisRequest } from "../slices/kpis";
 import { getSummaryKpis } from "../selectors/kpis";
 import ProgressBar from "../components/ProgressBar";
 import { Spinner } from "../components/Spinner";
 import { Error } from "../components/Error";
-// import { maquinas } from "../components/Tables/data";
 
-// const cumplimientoGral = [
-//   {
-//     name: "Plan",
-//     data: [
-//       ["Fase 1", 46],
-//       ["Fase 2", 38],
-//       ["Gral", 43],
-//     ],
-//   },
-//   {
-//     name: "Real",
-//     data: [
-//       ["Fase 1", 54],
-//       ["Fase 2", 31],
-//       ["Gral", 44],
-//     ],
-//   },
-// ];
-
-// const cumplimientoYTD = [
-//   {
-//     name: "Plan",
-//     data: [
-//       ["Fase 1", 100],
-//       ["Fase 2", 100],
-//       ["Gral", 100],
-//     ],
-//   },
-//   {
-//     name: "Real",
-//     data: [
-//       ["Fase 1", 116],
-//       ["Fase 2", 81],
-//       ["Gral", 103],
-//     ],
-//   },
-// ];
-
-// const categories = ["Fase 1", "Fase 2", "Gral."];
+const categories = ["Fase 1", "Fase 2", "Gral."];
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -141,10 +97,10 @@ const Dashboard = () => {
             {console.log(summaryKpis)}
             <div className="grid grid-cols-9 gap-2">
               <div className="col-span-2">
-                <Card sx={{ height: "285px" }}>
-                  {/* <h2 className="text-base text-center mt-3">
-                      Total Entregables
-                    </h2> */}
+                <Card sx={{ height: "320px" }}>
+                  <div className="text-base text-center mt-2">
+                    Avance Entregables
+                  </div>
                   <div className="mx-4 mt-2">
                     <ProgressBar
                       rubro={summaryKpis?.shippable_total["1"]?.rubro}
@@ -188,17 +144,17 @@ const Dashboard = () => {
                 </Card>
               </div>
               <div className="col-span-4">
-                <Card sx={{ height: "285px" }}>
-                  <div className="grid grid-cols-2 gap-2 mt-3">
+                <Card sx={{ height: "320px" }}>
+                  <div className="grid grid-cols-2 gap-2 mt-2">
                     <GaugeSeries
-                      height={280}
+                      height={300}
                       title="Cumplimiento Total"
                       total={summaryKpis?.compliance_total[0]?.totales}
                       value={summaryKpis?.compliance_total[0]?.completados}
                       rate={summaryKpis?.compliance_total[0]?.porcentaje}
                     />
                     <GaugeSeries
-                      height={280}
+                      height={300}
                       title="Cumplimiento YTD"
                       total={summaryKpis?.compliance_YTD[0]?.totales}
                       value={summaryKpis?.compliance_YTD[0]?.completados}
@@ -208,7 +164,10 @@ const Dashboard = () => {
                 </Card>
               </div>
               <div className="col-span-3">
-                <Card sx={{ height: "285px" }}>
+                <Card sx={{ height: "320px" }}>
+                  <div className="text-base text-center mt-2">
+                    Avance Rubros
+                  </div>
                   <div className="grid grid-cols-3 gap-2 gap-y-0 mt-3">
                     <SolidGauge
                       name="Seguridad"
@@ -250,9 +209,9 @@ const Dashboard = () => {
               </div>
               <div className="col-span-2">
                 <Card sx={{ height: "486px" }}>
-                  <h2 className="text-base text-center mt-3">
+                  <div className="text-base text-center mt-2">
                     Champions Pilares
-                  </h2>
+                  </div>
                   <div className="px-4 mt-1">
                     <Box
                       sx={{
@@ -395,9 +354,9 @@ const Dashboard = () => {
               </div>
               <div className="col-span-2">
                 <Card sx={{ height: "486px" }}>
-                  <h2 className="text-base text-center mt-3">
+                  <div className="text-base text-center mt-2">
                     Entregables Energizador
-                  </h2>
+                  </div>
                   <div className="px-2">
                     <StackedBar
                       height={450}
@@ -409,9 +368,9 @@ const Dashboard = () => {
               </div>
               <div className="col-span-2">
                 <Card sx={{ height: "486px" }}>
-                  <h2 className="text-base text-center mt-3">
+                  <div className="text-base text-center mt-2">
                     Avance Entregables
-                  </h2>
+                  </div>
                   <StackedBar
                     height={450}
                     categories={summaryKpis?.shippable_advance?.categories}
@@ -421,56 +380,58 @@ const Dashboard = () => {
               </div>
               <div className="space-y-2 col-span-3">
                 <Card sx={{ height: "239px" }}>
-                  <h2 className="text-base text-center mt-3">
+                  <div className="text-base text-center mt-2">
                     Cumplimiento mensual
-                  </h2>
+                  </div>
                   <ColumnChart
-                    height={200}
+                    height={219}
                     series={summaryKpis?.shippable_month}
+                    // cumplience={summaryKpis?.cumplience_month}
                   />
                 </Card>
                 <Card sx={{ height: "239px" }}>
-                  <h2 className="text-base text-center mt-3">
+                  <div className="text-base text-center mt-2">
                     Cumplimiento anual
-                  </h2>
+                  </div>
                   <ColumnChart
-                    height={200}
+                    height={219}
                     series={summaryKpis?.shippable_year}
+                    // cumplience={summaryKpis?.cumplience_year}
                   />
                 </Card>
               </div>
-              {/* <div className="col-span-3">
-                <Card sx={{ height: "300px" }}>
-                  <h2 className="text-base text-center mt-3">
+              <div className="col-span-3">
+                <Card sx={{ height: "335px" }}>
+                  <div className="text-base text-center mt-2">
                     Cumplimiento por fase total
-                  </h2>
+                  </div>
                   <ColumnChart
-                    height={250}
-                    series={cumplimientoGral}
+                    height={315}
+                    series={summaryKpis?.phasesTotal}
                     categories={categories}
                   />
                 </Card>
               </div>
               <div className="col-span-3">
-                <Card sx={{ height: "300px" }}>
-                  <h2 className="text-base text-center mt-3">
+                <Card sx={{ height: "335px" }}>
+                  <div className="text-base text-center mt-2">
                     Cumplimiento por fase YTD
-                  </h2>
+                  </div>
                   <ColumnChart
-                    height={250}
-                    series={cumplimientoYTD}
+                    height={315}
+                    series={summaryKpis?.phasesYTD}
                     categories={categories}
                   />
                 </Card>
               </div>
               <div className="col-span-3">
-                <Card sx={{ height: "300px" }}>
-                  <h2 className="text-base text-center mt-3">
+                <Card sx={{ height: "335px" }}>
+                  {/* <div className="text-base text-center mt-2">
                     Avance por máquina
-                  </h2>
-                  <MachineTable tableValues={maquinas} />
+                  </div> */}
+                  <MachineTable tableValues={summaryKpis?.advanceMachines} />
                 </Card>
-              </div> */}
+              </div>
             </div>
           </>
         )}
