@@ -1,14 +1,15 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-const ColumnChart = ({ series, height, categories }) => {
-  // const seriesLine = [
-  //   {
-  //     name: "Cumplimiento",
-  //     type: "spline",
-  //     data: cumplience,
-  //   }
-  // ]
+const ColumnChart = ({ series, height, categories, cumplience }) => {
+  const seriesLine = [
+    {
+      name: "Cumplimiento",
+      type: "spline",
+      data: cumplience,
+      color: "#757575",
+    },
+  ];
   return (
     <HighchartsReact
       highcharts={Highcharts}
@@ -54,7 +55,7 @@ const ColumnChart = ({ series, height, categories }) => {
             },
           },
         },
-        series,
+        series: cumplience ? [...series, ...seriesLine] : series,
         colors: [
           "#303F9F",
           "#f44336",

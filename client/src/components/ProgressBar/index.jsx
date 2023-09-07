@@ -44,6 +44,9 @@ const ProgressBar = ({ rubro, real, plan, total }) => {
           </div>
         </div>
       </div>
+      <div className="flex items-center pl-3">
+        <div className="text-sm">10 Ago.</div>
+      </div>
     </div>
   );
 };

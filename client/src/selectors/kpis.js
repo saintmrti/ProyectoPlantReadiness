@@ -50,7 +50,19 @@ export const getSummaryKpis = createSelector(
       ];
     });
 
-    // const groupedByMachines = _.groupBy(parseMachines, "tipo");
+    const cumplience_year = _.map(parseShippableYear, (value) => {
+      return [
+        moment(`${moment().year()}-${value.mes}-01`).valueOf(),
+        value.cumplimiento,
+      ];
+    });
+
+    const cumplience_month = _.map(parseShippableMonth, (value) => {
+      return [
+        moment(`${moment().year()}-${value.mes}-01`).valueOf(),
+        value.cumplimiento,
+      ];
+    });
 
     const advanceMachines = _.reduce(
       parseMachines,
@@ -125,10 +137,6 @@ export const getSummaryKpis = createSelector(
         data: groupedByRealYear,
       },
     ];
-
-    const cumplience_year = _.map(parseShippableYear, "cumplimiento");
-
-    const cumplience_month = _.map(parseShippableMonth, "cumplimiento");
 
     const shippable_month = [
       {

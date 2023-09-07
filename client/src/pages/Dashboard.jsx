@@ -32,8 +32,8 @@ const Dashboard = () => {
 
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState({
-    phase: [],
-    priority: [],
+    phase: ["1", "2"],
+    priority: ["P1", "P2", "P3"],
   });
 
   const toggleFilterButton = () => {
@@ -147,14 +147,14 @@ const Dashboard = () => {
                 <Card sx={{ height: "320px" }}>
                   <div className="grid grid-cols-2 gap-2 mt-2">
                     <GaugeSeries
-                      height={300}
+                      height={280}
                       title="Cumplimiento Total"
                       total={summaryKpis?.compliance_total[0]?.totales}
                       value={summaryKpis?.compliance_total[0]?.completados}
                       rate={summaryKpis?.compliance_total[0]?.porcentaje}
                     />
                     <GaugeSeries
-                      height={300}
+                      height={280}
                       title="Cumplimiento YTD"
                       total={summaryKpis?.compliance_YTD[0]?.totales}
                       value={summaryKpis?.compliance_YTD[0]?.completados}
@@ -208,7 +208,7 @@ const Dashboard = () => {
                 </Card>
               </div>
               <div className="col-span-2">
-                <Card sx={{ height: "486px" }}>
+                <Card sx={{ height: "390px" }}>
                   <div className="text-base text-center mt-2">
                     Champions Pilares
                   </div>
@@ -227,11 +227,13 @@ const Dashboard = () => {
                       <Avatar
                         alt="Remy Sharp"
                         src={energizer7}
-                        sx={{ width: 56, height: 56 }}
+                        sx={{ width: 40, height: 40 }}
                       />
-                      <div className="w-full pl-14">
-                        <p className="text-lg">J. L. Díaz</p>
-                        <p className="text-sm text-gray-600">Champion UEN</p>
+                      <div className="w-full flex justify-center">
+                        <div className="w-36">
+                          <p className="text-sm">J. L. Díaz</p>
+                          <p className="text-sm text-gray-600">Champion UEN</p>
+                        </div>
                       </div>
                     </Box>
                   </div>
@@ -250,11 +252,13 @@ const Dashboard = () => {
                       <Avatar
                         alt="Remy Sharp"
                         src={energizer1}
-                        sx={{ width: 56, height: 56 }}
+                        sx={{ width: 40, height: 40 }}
                       />
-                      <div className="w-full pl-14">
-                        <p className="text-lg">C. Camacho</p>
-                        <p className="text-sm text-gray-600">Seguridad</p>
+                      <div className="w-full flex justify-center">
+                        <div className="w-36">
+                          <p className="text-sm">C. Camacho</p>
+                          <p className="text-sm text-gray-600">Seguridad</p>
+                        </div>
                       </div>
                     </Box>
                   </div>
@@ -273,11 +277,13 @@ const Dashboard = () => {
                       <Avatar
                         alt="Remy Sharp"
                         src={energizer2}
-                        sx={{ width: 56, height: 56 }}
+                        sx={{ width: 40, height: 40 }}
                       />
-                      <div className="w-full pl-14">
-                        <p className="text-lg">Y. Tadeo</p>
-                        <p className="text-sm text-gray-600">Calidad</p>
+                      <div className="w-full flex justify-center">
+                        <div className="w-36">
+                          <p className="text-sm">Y. Tadeo</p>
+                          <p className="text-sm text-gray-600">Calidad</p>
+                        </div>
                       </div>
                     </Box>
                   </div>
@@ -296,11 +302,13 @@ const Dashboard = () => {
                       <Avatar
                         alt="Remy Sharp"
                         src={energizer3}
-                        sx={{ width: 56, height: 56 }}
+                        sx={{ width: 40, height: 40 }}
                       />
-                      <div className="w-full pl-14">
-                        <p className="text-lg">R. Parga</p>
-                        <p className="text-sm text-gray-600">RH</p>
+                      <div className="w-full flex justify-center">
+                        <div className="w-36">
+                          <p className="text-sm">R. Parga</p>
+                          <p className="text-sm text-gray-600">RH</p>
+                        </div>
                       </div>
                     </Box>
                   </div>
@@ -319,11 +327,13 @@ const Dashboard = () => {
                       <Avatar
                         alt="Remy Sharp"
                         src={energizer4}
-                        sx={{ width: 56, height: 56 }}
+                        sx={{ width: 40, height: 40 }}
                       />
-                      <div className="w-full pl-14">
-                        <p className="text-lg">J. Chapa</p>
-                        <p className="text-sm text-gray-600">Producción</p>
+                      <div className="w-full flex justify-center">
+                        <div className="w-36">
+                          <p className="text-sm">J. Chapa</p>
+                          <p className="text-sm text-gray-600">Producción</p>
+                        </div>
                       </div>
                     </Box>
                   </div>
@@ -342,24 +352,26 @@ const Dashboard = () => {
                       <Avatar
                         alt="Remy Sharp"
                         src={energizer6}
-                        sx={{ width: 56, height: 56 }}
+                        sx={{ width: 40, height: 40 }}
                       />
-                      <div className="w-full pl-14">
-                        <p className="text-lg">J. Marroquin</p>
-                        <p className="text-sm text-gray-600">Mantenimiento</p>
+                      <div className="w-full flex justify-center">
+                        <div className="w-36">
+                          <p className="text-sm">J. Marroquin</p>
+                          <p className="text-sm text-gray-600">Mantenimiento</p>
+                        </div>
                       </div>
                     </Box>
                   </div>
                 </Card>
               </div>
               <div className="col-span-2">
-                <Card sx={{ height: "486px" }}>
+                <Card sx={{ height: "390px" }}>
                   <div className="text-base text-center mt-2">
                     Entregables Energizador
                   </div>
                   <div className="px-2">
                     <StackedBar
-                      height={450}
+                      height={350}
                       categories={summaryKpis?.shippable_energizer?.categories}
                       series={summaryKpis?.shippable_energizer?.series}
                     />
@@ -367,68 +379,69 @@ const Dashboard = () => {
                 </Card>
               </div>
               <div className="col-span-2">
-                <Card sx={{ height: "486px" }}>
+                <Card sx={{ height: "390px" }}>
                   <div className="text-base text-center mt-2">
                     Avance Entregables
                   </div>
                   <StackedBar
-                    height={450}
+                    height={350}
                     categories={summaryKpis?.shippable_advance?.categories}
                     series={summaryKpis?.shippable_advance?.series}
                   />
                 </Card>
               </div>
-              <div className="space-y-2 col-span-3">
-                <Card sx={{ height: "239px" }}>
+              <div className="col-span-3 space-y-2">
+                <Card sx={{ height: "191px" }}>
                   <div className="text-base text-center mt-2">
                     Cumplimiento mensual
                   </div>
                   <ColumnChart
-                    height={219}
+                    height={180}
                     series={summaryKpis?.shippable_month}
-                    // cumplience={summaryKpis?.cumplience_month}
+                    cumplience={summaryKpis?.cumplience_month}
                   />
                 </Card>
-                <Card sx={{ height: "239px" }}>
+                <Card sx={{ height: "191px" }}>
                   <div className="text-base text-center mt-2">
                     Cumplimiento anual
                   </div>
                   <ColumnChart
-                    height={219}
+                    height={180}
                     series={summaryKpis?.shippable_year}
-                    // cumplience={summaryKpis?.cumplience_year}
+                    cumplience={summaryKpis?.cumplience_year}
                   />
                 </Card>
               </div>
-              <div className="col-span-3">
-                <Card sx={{ height: "335px" }}>
+              <div className="col-span-3 space-y-2">
+                <Card sx={{ height: "206px" }}>
                   <div className="text-base text-center mt-2">
                     Cumplimiento por fase total
                   </div>
                   <ColumnChart
-                    height={315}
+                    height={186}
                     series={summaryKpis?.phasesTotal}
                     categories={categories}
                   />
                 </Card>
-              </div>
-              <div className="col-span-3">
-                <Card sx={{ height: "335px" }}>
+                <Card sx={{ height: "206px" }}>
                   <div className="text-base text-center mt-2">
                     Cumplimiento por fase YTD
                   </div>
                   <ColumnChart
-                    height={315}
+                    height={186}
                     series={summaryKpis?.phasesYTD}
                     categories={categories}
                   />
                 </Card>
               </div>
-              <div className="col-span-3">
-                <Card sx={{ height: "335px" }}>
-                  {/* <div className="text-base text-center mt-2">
+              {/* <div className="col-span-3">
+                
+              </div> */}
+              <div className="col-span-6">
+                <Card sx={{ height: "420px" }}>
+                  <div className="text-base text-center mt-2 mb-2">
                     Avance por máquina
-                  </div> */}
+                  </div>
                   <MachineTable tableValues={summaryKpis?.advanceMachines} />
                 </Card>
               </div>
