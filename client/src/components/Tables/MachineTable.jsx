@@ -118,25 +118,25 @@ const MachineTable = ({ tableValues }) => (
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
                 {item?.Seguridad?.plan ? `${item.Seguridad.plan}%` : "0%"}
               </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0, color: item?.Seguridad ? item?.Seguridad?.plan > item?.Seguridad?.real ? '#d32f2f' : '#2e7d32' : 'inherit' }}>
                 {item?.Seguridad?.real ? `${item.Seguridad.real}%` : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
                 {item?.Calidad?.plan ? `${item.Calidad.plan}%` : "0%"}
               </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0, color: item?.Calidad ? item?.Calidad?.plan > item?.Calidad?.real ? '#d32f2f' : '#2e7d32' : 'inherit' }}>
                 {item?.Calidad?.real ? `${item.Calidad.real}%` : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
                 {item?.Rh?.plan ? `${item.rh.plan}%` : "0%"}
               </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0, color: item?.Rh ? item?.Rh?.plan > item?.Rh?.real ? '#d32f2f' : '#2e7d32' : 'inherit' }}>
                 {item?.Rh?.real ? `${item.rh.real}%` : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
                 {item?.Produccion?.plan ? `${item.produccion.plan}%` : "0%"}
               </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0, color: item?.Produccion ? item?.Produccion?.plan > item?.Produccion?.real ? '#d32f2f' : '#2e7d32' : 'inherit' }}>
                 {item?.Produccion?.real ? `${item.produccion.real}%` : "0%"}
               </StyledTableCell>
               <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
@@ -144,7 +144,7 @@ const MachineTable = ({ tableValues }) => (
                   ? `${item.Mantenimiento.plan}%`
                   : "0%"}
               </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0, color: item?.mantenimiento ? item?.mantenimiento?.plan > item?.mantenimiento?.real ? '#d32f2f' : '#2e7d32' : 'inherit' }}>
                 {item?.mantenimiento?.real
                   ? `${item.Mantenimiento.real}%`
                   : "0%"}

@@ -32,10 +32,10 @@ export const getSummaryKpis = createSelector(
     const advanceRate = _.map(orderedAdvance, "avance");
     const advanceTotal = _.map(orderedAdvance, "totales");
     const groupedByPlanYear = _.map(parseShippableYear, (value) => {
-      return [moment(`${value.año}-01-01`).valueOf(), value.plan];
+      return [moment(`${value.anio}-01-01`).valueOf(), value.plan];
     });
     const groupedByRealYear = _.map(parseShippableYear, (value) => {
-      return [moment(`${value.año}-01-01`).valueOf(), value.real];
+      return [moment(`${value.anio}-01-01`).valueOf(), value.real];
     });
     const groupedByPlanMonth = _.map(parseShippableMonth, (value) => {
       return [
@@ -167,6 +167,7 @@ export const getSummaryKpis = createSelector(
       phasesYTD,
       cumplience_year,
       cumplience_month,
+      parseShippableYear
     };
 
     return data;
