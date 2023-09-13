@@ -217,20 +217,20 @@ const Register = () => {
             <Box sx={{ width: "100%" }}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs value={value} onChange={handleChange}>
-                  {_.map(headings, (item, index) => (
+                  {_.map(headings, (item) => (
                     <Tab
-                      key={index}
+                      key={item.id}
                       label={item.rubro}
-                      {...a11yProps(parseInt(index - 1))}
+                      {...a11yProps(parseInt(item.id))}
                     />
                   ))}
                 </Tabs>
               </Box>
-              {_.map(headings, (rubro, index) => (
+              {_.map(headings, (rubro) => (
                 <CustomTabPanel
                   value={value}
-                  key={index}
-                  index={parseInt(index - 1)}
+                  key={rubro.id}
+                  index={parseInt(rubro.id)}
                 >
                   <div>
                     {_.map(expectancy[rubro.id], (item, index) => (
