@@ -116,7 +116,6 @@ const ShippableTable = ({
                 <>
                   <StyledTableCell>Evidencia</StyledTableCell>
                   <StyledTableCell align="center">Prioridad</StyledTableCell>
-                  {/* <StyledTableCell align="center">Ponderación</StyledTableCell> */}
                   <StyledTableCell align="center">Comentarios</StyledTableCell>
                   <StyledTableCell align="center"></StyledTableCell>
                 </>
@@ -155,9 +154,6 @@ const ShippableTable = ({
                     <StyledTableCell align="center">
                       {item.prioridad}
                     </StyledTableCell>
-                    {/* <StyledTableCell align="center">
-                      {item.ponderacion}
-                    </StyledTableCell> */}
                     <StyledTableCell>{item.comentarios}</StyledTableCell>
                     <StyledTableCell>
                       <Box sx={{ display: "flex", justifyContent: "end" }}>
@@ -244,6 +240,22 @@ const ShippableTable = ({
                             (obj) =>
                               obj.idMaquina === fases[activeIndex]?.idMaquina
                           )?.id === undefined ? null : (
+                            // (
+                            //   advance[item.id].find(
+                            //     (obj) =>
+                            //       obj.idGrupo === fases[activeIndex]?.idGrupo
+                            //   )?.id === undefined ? null : (
+                            //     <IconButton
+                            //       aria-label="add"
+                            //       size="small"
+                            //       onClick={() =>
+                            //         console.log(item.id, fases[activeIndex]?.id)
+                            //       }
+                            //     >
+                            //       <AddCircleOutlineIcon />
+                            //     </IconButton>
+                            //   )
+                            // )
                             <IconButton
                               aria-label="edit"
                               size="small"

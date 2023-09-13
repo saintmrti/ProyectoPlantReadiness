@@ -1,11 +1,21 @@
-export { insertExpectancyApi, fetchExpectancyApi } from "./expectency";
+export {
+  insertExpectancyApi,
+  fetchExpectancyApi,
+  updateExpectancyApi,
+  deleteExpectancyApi,
+} from "./expectency";
 export {
   insertShippableApi,
   fetchShippableApi,
   updateShippableApi,
   deleteShippableApi,
 } from "./shippable";
-export { fetchHeadingsApi, insertHeadingsApi } from "./headings";
+export {
+  fetchHeadingsApi,
+  insertHeadingsApi,
+  updateHeadingsApi,
+  deleteHeadingsApi,
+} from "./headings";
 export {
   fetchMachinesApi,
   insertMachineApi,

@@ -1,23 +1,36 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { headingsInsertRequest } from "../../slices/headings";
+import {
+  insertHeadingsRequest,
+  updateHeadingsRequest,
+} from "../../slices/headings";
 import { textFieldValidation } from "./validated";
+import { getHeading } from "../../selectors/headings";
 
-const HeadingForm = ({ setOpen }) => {
+const HeadingForm = ({ setOpen, editHead }) => {
   const dispatch = useDispatch();
+  const heading = useSelector((state) => getHeading(state, editHead));
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (values) => {
-    dispatch(headingsInsertRequest(values));
+    editHead
+      ? dispatch(updateHeadingsRequest({ ...values, id: editHead }))
+      : dispatch(insertHeadingsRequest(values));
     setOpen(false);
   };
+
+  useEffect(() => {
+    heading && reset(heading);
+  }, [heading, reset]);
 
   return (
     <div className="max-w-lg">
@@ -25,7 +38,9 @@ const HeadingForm = ({ setOpen }) => {
         className="flex justify-center items-center flex-wrap h-60"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <h1 className="text-3xl mb-3 w-full text-center mt-5">Nuevo Rubro</h1>
+        <h1 className="text-3xl mb-3 w-full text-center mt-5">
+          {editHead ? "Editar Rubro" : "Nuevo Rubro"}
+        </h1>
         <div>
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4">Nombre</label>
@@ -35,6 +50,7 @@ const HeadingForm = ({ setOpen }) => {
               label="Rubro"
               autoComplete="off"
               error={Boolean(errors.name)}
+              defaultValue={heading?.rubro || ""}
               helperText={errors.name?.message}
               {...register("name", {
                 required: true,

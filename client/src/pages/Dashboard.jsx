@@ -94,7 +94,7 @@ const Dashboard = () => {
                 handleBtnClickFilter={handleBtnClickFilter}
               />
             )}
-            {console.log(summaryKpis)}
+            {/* {console.log(summaryKpis)} */}
             <div className="grid grid-cols-9 gap-2">
               <div className="col-span-2">
                 <Card sx={{ height: "320px" }}>
@@ -111,7 +111,7 @@ const Dashboard = () => {
                   </div>
                   <div className="mx-4 mt-2">
                     <ProgressBar
-                      rubro={summaryKpis?.shippable_total["2"]?.rubro}
+                      rubro="Calidad"
                       real={summaryKpis?.shippable_total["2"]?.reales}
                       plan={summaryKpis?.shippable_total["2"]?.planes}
                       total={summaryKpis?.shippable_total["2"]?.totales}

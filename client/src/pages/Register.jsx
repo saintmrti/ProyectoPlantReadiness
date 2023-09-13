@@ -12,6 +12,8 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 
 import ExpectationForm from "../components/Forms/ExpectationForm";
@@ -33,7 +35,9 @@ import { Spinner } from "../components/Spinner";
 import { Error } from "../components/Error";
 import { Toggle } from "../components/Toggle";
 import { ShippableAlert } from "../components/Alert/ShippableAlert";
+import { ExpectancyAlert } from "../components/Alert/ExpectancyAlert";
 import { AdvanceAlert } from "../components/Alert/AdvanceAlert";
+import { HeadingsAlert } from "../components/Alert/HeadingsAlert";
 
 const style = {
   position: "absolute",
@@ -59,8 +63,14 @@ const Register = () => {
   const [changeShi, setChangeShi] = useState(null);
   const [editShi, setEditShip] = useState(null);
   const [editAdv, setEditAdv] = useState(null);
+  const [editExp, setEditExp] = useState(null);
+  const [editHead, setEditHead] = useState(null);
   const [deleteShi, setDeleteShi] = useState(null);
+  const [deleteExp, setDeleteExp] = useState(null);
+  const [deleteHead, setDeleteHead] = useState(null);
   const [alertShi, setAlertShi] = useState(false);
+  const [alertExp, setAlertExp] = useState(false);
+  const [alertHead, setAlertHead] = useState(false);
   const [phasesGroup, setPhasesGroup] = useState(null);
   const [alertAdv, setAlertAdv] = useState(false);
 
@@ -94,6 +104,16 @@ const Register = () => {
     setOpenShi(true);
   };
 
+  const handleOnClickExp = () => {
+    setEditExp(null);
+    setOpenExp(true);
+  };
+
+  const handleOnClickHead = () => {
+    setEditHead(null);
+    setOpenHead(true);
+  };
+
   const handleOnClickAdv = (id, advance) => {
     setChangeShi(id);
     setEditAdv(null);
@@ -121,14 +141,34 @@ const Register = () => {
     setOpenShi(true);
   };
 
+  const handleOnClickEditExp = (id) => {
+    setEditExp(id);
+    setOpenExp(true);
+  };
+
   const handleOnClickEditAdv = (id) => {
     setEditAdv(id);
     setOpenAdv(true);
   };
 
+  const handleOnClickEditHead = (id) => {
+    setEditHead(id);
+    setOpenHead(true);
+  };
+
   const handleOnClickDeleteShi = (id) => {
     setDeleteShi(id);
     setAlertShi(true);
+  };
+
+  const handleOnClickDeleteExp = (id) => {
+    setDeleteExp(id);
+    setAlertExp(true);
+  };
+
+  const handleOnClickDeleteHead = (id) => {
+    setDeleteHead(id);
+    setAlertHead(true);
   };
 
   useEffect(() => {
@@ -157,12 +197,12 @@ const Register = () => {
             <div className="flex mb-3 justify-between">
               <div className="flex">
                 <div className="mr-2">
-                  <Button variant="contained" onClick={() => setOpenHead(true)}>
+                  <Button variant="contained" onClick={handleOnClickHead}>
                     Agregar rubro
                   </Button>
                 </div>
                 <div className="mr-2">
-                  <Button variant="contained" onClick={() => setOpenExp(true)}>
+                  <Button variant="contained" onClick={handleOnClickExp}>
                     Agregar expectativa
                   </Button>
                 </div>
@@ -203,30 +243,49 @@ const Register = () => {
                           <Typography>{item.expectativa}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                          <div className="flex justify-end mb-3">
-                            <Button
-                              variant="contained"
-                              size="small"
-                              onClick={() => handleOnClickShi(item.id)}
-                              sx={{ mr: 1 }}
-                            >
-                              Agregar Entregable
-                            </Button>
-                            {item.shippables && item.shippables.length > 0 && (
-                              <>
-                                <Button
-                                  variant="text"
-                                  size="small"
-                                  onClick={() =>
-                                    setActiveComment(!activeComment)
-                                  }
-                                >
-                                  {activeComment
-                                    ? "Mostrar Avances"
-                                    : "Ocultar Avances"}
-                                </Button>
-                              </>
-                            )}
+                          <div className="flex justify-between mb-3">
+                            <div className="flex">
+                              <IconButton
+                                aria-label="add"
+                                size="small"
+                                onClick={() => handleOnClickEditExp(item.id)}
+                              >
+                                <EditIcon />
+                              </IconButton>
+                              <IconButton
+                                aria-label="add"
+                                size="small"
+                                onClick={() => handleOnClickDeleteExp(item.id)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </div>
+                            <div className="flex">
+                              <Button
+                                variant="contained"
+                                size="small"
+                                onClick={() => handleOnClickShi(item.id)}
+                                sx={{ mr: 1 }}
+                              >
+                                Agregar Entregable
+                              </Button>
+                              {item.shippables &&
+                                item.shippables.length > 0 && (
+                                  <>
+                                    <Button
+                                      variant="text"
+                                      size="small"
+                                      onClick={() =>
+                                        setActiveComment(!activeComment)
+                                      }
+                                    >
+                                      {activeComment
+                                        ? "Mostrar Avances"
+                                        : "Ocultar Avances"}
+                                    </Button>
+                                  </>
+                                )}
+                            </div>
                           </div>
                           {item.shippables && item.shippables.length > 0 && (
                             <div className="mb-3">
@@ -246,6 +305,21 @@ const Register = () => {
                         </AccordionDetails>
                       </Accordion>
                     ))}
+                    <div className="flex justify-end mt-3">
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleOnClickEditHead(rubro.id)}
+                        sx={{ mr: 1 }}
+                      >
+                        Editar Rubro
+                      </Button>
+                      <Button
+                        variant="text"
+                        onClick={() => handleOnClickDeleteHead(rubro.id)}
+                      >
+                        Eliminar Rubro
+                      </Button>
+                    </div>
                   </div>
                 </CustomTabPanel>
               ))}
@@ -264,7 +338,7 @@ const Register = () => {
                 >
                   <CloseIcon />
                 </IconButton>
-                <HeadingForm setOpen={setOpenHead} />
+                <HeadingForm setOpen={setOpenHead} editHead={editHead} />
               </Box>
             </Modal>
             <Modal open={openExp} onClose={() => setOpenExp(false)}>
@@ -281,7 +355,11 @@ const Register = () => {
                 >
                   <CloseIcon />
                 </IconButton>
-                <ExpectationForm data={headings} setOpen={setOpenExp} />
+                <ExpectationForm
+                  data={headings}
+                  setOpen={setOpenExp}
+                  editExp={editExp}
+                />
               </Box>
             </Modal>
             <Modal open={openPha} onClose={() => setOpenPha(false)}>
@@ -353,6 +431,18 @@ const Register = () => {
               onClose={() => setAlertShi(false)}
               deleteShi={deleteShi}
               setDeleteShi={setDeleteShi}
+            />
+            <ExpectancyAlert
+              open={alertExp}
+              onClose={() => setAlertExp(false)}
+              deleteExp={deleteExp}
+              setDeleteExp={setDeleteExp}
+            />
+            <HeadingsAlert
+              open={alertHead}
+              onClose={() => setAlertHead(false)}
+              deleteHead={deleteHead}
+              setDeleteHead={setDeleteHead}
             />
             <AdvanceAlert open={alertAdv} setOpen={setAlertAdv} />
           </>
