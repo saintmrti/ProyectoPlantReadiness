@@ -29,6 +29,7 @@ import { headingsRequest } from "../slices/headings";
 import { machinesRequest } from "../slices/machines";
 import { fetchPhaseRequest } from "../slices/phase";
 import { groupedByIdExpectancy } from "../selectors/expectancy";
+import { summaryHeadings } from "../selectors/headings";
 import { summaryAdvanced } from "../selectors/advance";
 import { CustomTabPanel, a11yProps } from "../components/Tabs/CustomTabPanel";
 import { Spinner } from "../components/Spinner";
@@ -76,7 +77,7 @@ const Register = () => {
 
   const expectancy = useSelector(groupedByIdExpectancy);
   const advance = useSelector(summaryAdvanced);
-  const { list: headings } = useSelector((state) => state.headings);
+  const headings = useSelector(summaryHeadings);
   const { list: machines } = useSelector((state) => state.machines);
   // const { data: shippables } = useSelector((state) => state.shippable);
   const { list: fases } = useSelector((state) => state.phase);
@@ -217,20 +218,20 @@ const Register = () => {
             <Box sx={{ width: "100%" }}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs value={value} onChange={handleChange}>
-                  {_.map(headings, (item) => (
+                  {_.map(headings, (item, index) => (
                     <Tab
                       key={item.id}
                       label={item.rubro}
-                      {...a11yProps(parseInt(item.id))}
+                      {...a11yProps(parseInt(index))}
                     />
                   ))}
                 </Tabs>
               </Box>
-              {_.map(headings, (rubro) => (
+              {_.map(headings, (rubro, index) => (
                 <CustomTabPanel
                   value={value}
                   key={rubro.id}
-                  index={parseInt(rubro.id)}
+                  index={parseInt(index)}
                 >
                   <div>
                     {_.map(expectancy[rubro.id], (item, index) => (
