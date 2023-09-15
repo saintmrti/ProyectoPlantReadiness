@@ -18,7 +18,7 @@ import {
 } from "../../slices/machines";
 import { textFieldValidation } from "./validated";
 
-const PhaseForm = ({ setOpen, data, idGrupo }) => {
+const PhaseForm = ({ setOpen, data, idGrupo, idProyecto }) => {
   const dispatch = useDispatch();
   const {
     register,
@@ -46,7 +46,7 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
   };
 
   const handleAddMachine = () => {
-    dispatch(insertMachineRequest({ machine }));
+    dispatch(insertMachineRequest({ machine, idProyecto }));
     setMachine("");
   };
 
@@ -54,8 +54,9 @@ const PhaseForm = ({ setOpen, data, idGrupo }) => {
     const { name } = values;
     const newPhases = _.map(selectedMachines, (machine) => ({
       idMaquina: machine.id,
-      idGrupo: idGrupo,
+      idGrupo,
       fase: name,
+      idProyecto,
     }));
     dispatch(insertPhaseRequest({ newPhases }));
     setOpen(false);

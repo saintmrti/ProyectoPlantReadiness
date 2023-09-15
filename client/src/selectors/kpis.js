@@ -51,10 +51,7 @@ export const getSummaryKpis = createSelector(
     });
 
     const cumplience_year = _.map(parseShippableYear, (value) => {
-      return [
-        moment(`${moment().year()}-${value.mes}-01`).valueOf(),
-        value.cumplimiento,
-      ];
+      return [moment(`${value.anio}-01-01`).valueOf(), value.cumplimiento];
     });
 
     const cumplience_month = _.map(parseShippableMonth, (value) => {
@@ -82,6 +79,8 @@ export const getSummaryKpis = createSelector(
         } else {
           const newMachine = {
             idMaquina: item.idMaquina,
+            idGrupo: item.idGrupo,
+            tipo: item.tipo,
             name: item.descripcion,
           };
           newMachine[item.rubro] = {
@@ -167,7 +166,6 @@ export const getSummaryKpis = createSelector(
       phasesYTD,
       cumplience_year,
       cumplience_month,
-      parseShippableYear
     };
 
     return data;

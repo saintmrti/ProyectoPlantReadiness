@@ -16,7 +16,7 @@ import {
 import { textFieldValidation } from "./validated";
 import { getExpectancy } from "../../selectors/expectancy";
 
-const ExpectationForm = ({ setOpen, data, editExp }) => {
+const ExpectationForm = ({ setOpen, data, editExp, idProyecto }) => {
   const dispatch = useDispatch();
   const expectancy = useSelector((state) => getExpectancy(state, editExp));
   const {
@@ -29,7 +29,7 @@ const ExpectationForm = ({ setOpen, data, editExp }) => {
   const onSubmit = (values) => {
     editExp
       ? dispatch(updateExpectancyRequest(values))
-      : dispatch(insertExpectancyRequest(values));
+      : dispatch(insertExpectancyRequest({ ...values, idProyecto }));
     setOpen(false);
   };
 

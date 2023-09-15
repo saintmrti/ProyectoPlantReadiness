@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
@@ -17,8 +18,15 @@ import {
   numberFieldValidation,
 } from "./validated";
 
-const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
+const MachinesForm = ({
+  idEntregable,
+  fases,
+  isFetching,
+  advanceState,
+  idProyecto,
+}) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -97,6 +105,7 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
           result[index][fieldName] = value;
           result[index]["idFase"] = fases[index].id;
           result[index]["idEntregable"] = idEntregable;
+          result[index]["idProyecto"] = idProyecto;
         }
 
         return result;
@@ -107,6 +116,7 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
     const filteredArray = _.values(groupedValues);
 
     dispatch(insertAdvanceRequest({ filteredArray }));
+    navigate(`/proyectos/${idProyecto}/registro`);
     reset();
   };
 

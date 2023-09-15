@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import _ from "lodash";
 import Button from "@mui/material/Button";
 import Accordion from "@mui/material/Accordion";
@@ -54,6 +55,8 @@ const style = {
 
 const Register = () => {
   const dispatch = useDispatch();
+  const { idProyecto } = useParams();
+
   const [openExp, setOpenExp] = useState(false);
   const [openShi, setOpenShi] = useState(false);
   const [openPha, setOpenPha] = useState(false);
@@ -173,13 +176,13 @@ const Register = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchExpectancyRequest());
-    dispatch(fetchShippableRequest());
-    dispatch(fetchAdvanceRequest());
-    dispatch(fetchPhaseRequest());
-    dispatch(headingsRequest());
-    dispatch(machinesRequest());
-  }, [dispatch]);
+    dispatch(fetchExpectancyRequest({ idProyecto }));
+    dispatch(fetchShippableRequest({ idProyecto }));
+    dispatch(fetchAdvanceRequest({ idProyecto }));
+    dispatch(fetchPhaseRequest({ idProyecto }));
+    dispatch(headingsRequest({ idProyecto }));
+    dispatch(machinesRequest({ idProyecto }));
+  }, [dispatch, idProyecto]);
   return (
     <>
       <div className="">
@@ -339,7 +342,11 @@ const Register = () => {
                 >
                   <CloseIcon />
                 </IconButton>
-                <HeadingForm setOpen={setOpenHead} editHead={editHead} />
+                <HeadingForm
+                  setOpen={setOpenHead}
+                  editHead={editHead}
+                  idProyecto={idProyecto}
+                />
               </Box>
             </Modal>
             <Modal open={openExp} onClose={() => setOpenExp(false)}>
@@ -360,6 +367,7 @@ const Register = () => {
                   data={headings}
                   setOpen={setOpenExp}
                   editExp={editExp}
+                  idProyecto={idProyecto}
                 />
               </Box>
             </Modal>
@@ -381,6 +389,7 @@ const Register = () => {
                   setOpen={setOpenPha}
                   data={updatedMachines}
                   idGrupo={maxIdGrupo?.idGrupo + 1}
+                  idProyecto={idProyecto}
                 />
               </Box>
             </Modal>
@@ -402,6 +411,7 @@ const Register = () => {
                   setOpen={setOpenShi}
                   idExpectancy={idExpectancy}
                   editShi={editShi}
+                  idProyecto={idProyecto}
                 />
               </Box>
             </Modal>
@@ -424,6 +434,7 @@ const Register = () => {
                   idEntregable={changeShi}
                   fases={phasesGroup}
                   editAdv={editAdv}
+                  idProyecto={idProyecto}
                 />
               </Box>
             </Modal>

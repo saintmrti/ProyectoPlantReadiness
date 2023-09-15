@@ -1,18 +1,19 @@
-module.exports.getSummary = async (conn) => {
+module.exports.getSummary = async (conn, { idProyecto }) => {
   const { data } = await conn.query(`
-      SELECT * FROM vki40_entregables;
+      SELECT * FROM vki40_entregables
+      WHERE idProyecto = ${idProyecto};
     `);
   return data;
 };
 module.exports.insertShippable = async (
   conn,
-  { nombre, evidencia, prioridad, comentarios, idExpectativa }
+  { nombre, evidencia, prioridad, comentarios, idExpectativa, idProyecto }
 ) => {
   const {
     info: { insertId },
   } = await conn.query(`
-      INSERT INTO vki40_entregables (fecha, nombre, evidencia, prioridad, comentarios, idExpectativa)
-      VALUES (GETDATE(), '${nombre}', '${evidencia}', '${prioridad}','${comentarios}', ${idExpectativa});
+      INSERT INTO vki40_entregables (fecha, nombre, evidencia, prioridad, comentarios, idExpectativa, idProyecto)
+      VALUES (GETDATE(), '${nombre}', '${evidencia}', '${prioridad}','${comentarios}', ${idExpectativa}, ${idProyecto});
     `);
 
   const { data } = await conn.query(`

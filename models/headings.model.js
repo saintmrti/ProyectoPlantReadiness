@@ -1,16 +1,17 @@
-module.exports.getSummary = async (conn) => {
+module.exports.getSummary = async (conn, { idProyecto }) => {
   const { data } = await conn.query(`
-        SELECT * FROM vki40_rubros;
+        SELECT * FROM vki40_rubros
+        WHERE idProyecto = ${idProyecto};
     `);
   return data;
 };
 
-module.exports.insertHeading = async (conn, { name }) => {
+module.exports.insertHeading = async (conn, { name, idProyecto }) => {
   const {
     info: { insertId },
   } = await conn.query(`
-        INSERT INTO vki40_rubros (rubro)
-        VALUES ('${name}');
+        INSERT INTO vki40_rubros (rubro, idProyecto)
+        VALUES ('${name}', ${idProyecto});
     `);
 
   const { data } = await conn.query(`

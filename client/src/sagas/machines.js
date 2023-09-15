@@ -13,9 +13,9 @@ import {
   deleteMachineError,
 } from "../slices/machines";
 
-function* fetchMachines() {
+function* fetchMachines({ payload: { idProyecto } }) {
   try {
-    const { data, isError } = yield call(fetchMachinesApi.run);
+    const { data, isError } = yield call(fetchMachinesApi.run, idProyecto);
     if (isError) throw new Error();
     yield put(machinesSuccess({ data }));
   } catch (e) {

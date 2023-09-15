@@ -10,7 +10,7 @@ import { Error } from "../components/Error";
 
 const Advance = () => {
   const dispatch = useDispatch();
-  const { idEntregable, idGrupo } = useParams();
+  const { idProyecto, idEntregable, idGrupo } = useParams();
   const { list: fases } = useSelector((state) => state.phase);
   const isFetchingInsert = useSelector(
     (state) => state.advance.isFetchingInsert
@@ -24,8 +24,8 @@ const Advance = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchPhaseRequest());
-  }, [dispatch]);
+    dispatch(fetchPhaseRequest({ idProyecto }));
+  }, [dispatch, idProyecto]);
 
   return (
     <div className="w-full">
@@ -36,6 +36,7 @@ const Advance = () => {
       ) : (
         <MachinesForm
           idEntregable={idEntregable}
+          idProyecto={idProyecto}
           fases={filterFases}
           isFetching={isFetchingInsert}
           advanceState={advanceState}

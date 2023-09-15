@@ -4,7 +4,11 @@ const { insertPhase, getSummary } = require("../models/phase.model");
 
 module.exports.getPhases = (req, res) => {
   try {
-    response(res, null, getSummary);
+    const { idProyecto } = req.query;
+    const project = {
+      idProyecto: parseInt(idProyecto),
+    };
+    response(res, null, getSummary, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -21,6 +25,7 @@ module.exports.createPhase = (req, res) => {
         idGrupo: item.idGrupo,
         fase: item.fase,
         maquina: item.maquina,
+        idProyecto: item.idProyecto,
       };
     });
     response(res, null, insertPhase, modifiedArray);

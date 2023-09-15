@@ -9,7 +9,11 @@ const {
 
 module.exports.getAdvances = (req, res) => {
   try {
-    response(res, null, getSummary);
+    const { idProyecto } = req.query;
+    const project = {
+      idProyecto: parseInt(idProyecto),
+    };
+    response(res, null, getSummary, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -23,6 +27,7 @@ module.exports.createAdvance = (req, res) => {
     const modifiedArray = _.map(filteredArray, (item) => {
       return {
         idEntregable: parseInt(item.idEntregable),
+        idProyecto: parseInt(item.idProyecto),
         idFase: item.idFase,
         responsable: item.responsible === "" ? null : `'${item.responsible}'`,
         fecha_inicio: item.startDate === "" ? null : `'${item.startDate}'`,

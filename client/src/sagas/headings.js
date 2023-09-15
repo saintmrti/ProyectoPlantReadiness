@@ -21,9 +21,9 @@ import {
   deleteHeadingsError,
 } from "../slices/headings";
 
-function* fetchHeadings() {
+function* fetchHeadings({ payload: { idProyecto } }) {
   try {
-    const { data, isError } = yield call(fetchHeadingsApi.run);
+    const { data, isError } = yield call(fetchHeadingsApi.run, idProyecto);
     if (isError) throw new Error();
     yield put(headingsSuccess({ data }));
   } catch (e) {

@@ -7,7 +7,11 @@ const {
 
 module.exports.getMachines = (req, res) => {
   try {
-    response(res, null, getSummary);
+    const { idProyecto } = req.query;
+    const project = {
+      idProyecto: parseInt(idProyecto),
+    };
+    response(res, null, getSummary, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -19,6 +23,7 @@ module.exports.createMachine = (req, res) => {
     const { machine } = req.body;
     const newRegister = {
       machine,
+      idProyecto,
     };
     response(res, null, insertMachine, newRegister);
   } catch (error) {

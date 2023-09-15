@@ -10,7 +10,11 @@ const {
 
 module.exports.getExpectancies = (req, res) => {
   try {
-    response(res, null, getSummary);
+    const { idProyecto } = req.query;
+    const project = {
+      idProyecto: parseInt(idProyecto),
+    };
+    response(res, null, getSummary, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -19,10 +23,11 @@ module.exports.getExpectancies = (req, res) => {
 
 module.exports.createExpectancy = (req, res) => {
   try {
-    const { expectancy, area } = req.body;
+    const { expectancy, area, idProyecto } = req.body;
     const newRegister = {
       expectancy,
       area: parseInt(area),
+      idProyecto: parseInt(idProyecto),
     };
     response(res, null, insertExpectancy, newRegister);
   } catch (error) {
@@ -52,8 +57,6 @@ module.exports.eliminateExpectancy = (req, res) => {
       idExpectativa: parseInt(idExpectativa),
     };
     response(res, null, deleteExpectancy, newRegister);
-    // console.log(newRegister);
-    // res.status(200).json({ message: "Expectancy deleted" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

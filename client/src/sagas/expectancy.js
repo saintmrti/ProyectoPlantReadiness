@@ -21,9 +21,9 @@ import {
   deleteExpectancyError,
 } from "../slices/expectancy";
 
-function* fetchExpectancy() {
+function* fetchExpectancy({ payload: { idProyecto } }) {
   try {
-    const { data, isError } = yield call(fetchExpectancyApi.run);
+    const { data, isError } = yield call(fetchExpectancyApi.run, idProyecto);
     if (isError) throw new Error();
     yield put(fetchExpectancySuccess({ data }));
   } catch (e) {

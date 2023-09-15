@@ -1,16 +1,17 @@
-module.exports.getSummary = async (conn) => {
+module.exports.getSummary = async (conn, { idProyecto }) => {
   const { data } = await conn.query(`
-        SELECT * FROM vki40_maquinas_PR;
+        SELECT * FROM vki40_maquinas_PR
+        WHERE idProyecto = ${idProyecto};
     `);
   return data;
 };
 
-module.exports.insertMachine = async (conn, { machine }) => {
+module.exports.insertMachine = async (conn, { machine, idProyecto }) => {
   const {
     info: { insertId },
   } = await conn.query(`
-        INSERT INTO vki40_maquinas_PR (maquina)
-        VALUES('${machine}');
+        INSERT INTO vki40_maquinas_PR (maquina, idProyecto)
+        VALUES('${machine}', ${idProyecto});
     `);
 
   const { data } = await conn.query(`

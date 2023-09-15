@@ -8,7 +8,11 @@ const {
 
 module.exports.getShippables = (req, res) => {
   try {
-    response(res, null, getSummary);
+    const { idProyecto } = req.query;
+    const project = {
+      idProyecto: parseInt(idProyecto),
+    };
+    response(res, null, getSummary, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -17,16 +21,22 @@ module.exports.getShippables = (req, res) => {
 
 module.exports.createShippable = (req, res) => {
   try {
-    const { nombre, evidencia, prioridad, comentarios, idExpectativa } =
-      req.body;
+    const {
+      nombre,
+      evidencia,
+      prioridad,
+      comentarios,
+      idExpectativa,
+      idProyecto,
+    } = req.body;
 
     const newRegister = {
       nombre,
       evidencia,
       prioridad,
-      // ponderacion: parseInt(ponderacion),
       comentarios,
       idExpectativa: parseInt(idExpectativa),
+      idProyecto: parseInt(idProyecto),
     };
     response(res, null, insertShippable, newRegister);
   } catch (error) {

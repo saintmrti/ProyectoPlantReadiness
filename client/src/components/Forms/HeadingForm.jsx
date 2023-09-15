@@ -11,7 +11,7 @@ import {
 import { textFieldValidation } from "./validated";
 import { getHeading } from "../../selectors/headings";
 
-const HeadingForm = ({ setOpen, editHead }) => {
+const HeadingForm = ({ setOpen, editHead, idProyecto }) => {
   const dispatch = useDispatch();
   const heading = useSelector((state) => getHeading(state, editHead));
   const {
@@ -24,7 +24,7 @@ const HeadingForm = ({ setOpen, editHead }) => {
   const onSubmit = (values) => {
     editHead
       ? dispatch(updateHeadingsRequest({ ...values, id: editHead }))
-      : dispatch(insertHeadingsRequest(values));
+      : dispatch(insertHeadingsRequest({ ...values, idProyecto }));
     setOpen(false);
   };
 

@@ -8,7 +8,11 @@ const {
 
 module.exports.getHeadings = (req, res) => {
   try {
-    response(res, null, getSummary);
+    const { idProyecto } = req.query;
+    const project = {
+      idProyecto: parseInt(idProyecto),
+    };
+    response(res, null, getSummary, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -17,9 +21,10 @@ module.exports.getHeadings = (req, res) => {
 
 module.exports.createHeading = (req, res) => {
   try {
-    const { name } = req.body;
+    const { name, idProyecto } = req.body;
     const newRegister = {
       name,
+      idProyecto: parseInt(idProyecto),
     };
     response(res, null, insertHeading, newRegister);
   } catch (error) {

@@ -10,9 +10,9 @@ import {
   fetchPhaseError,
 } from "../slices/phase";
 
-function* fetchPhase() {
+function* fetchPhase({ payload: { idProyecto } }) {
   try {
-    const { data, isError } = yield call(fetchPhaseApi.run);
+    const { data, isError } = yield call(fetchPhaseApi.run, idProyecto);
     if (isError) throw new Error();
     yield put(fetchPhaseSuccess({ data }));
   } catch (e) {

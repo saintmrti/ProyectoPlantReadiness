@@ -94,7 +94,7 @@ const Dashboard = () => {
                 handleBtnClickFilter={handleBtnClickFilter}
               />
             )}
-            {/* {console.log(summaryKpis)} */}
+            {console.log(summaryKpis)}
             <div className="grid grid-cols-9 gap-2">
               <div className="col-span-2">
                 <Card sx={{ height: "320px" }}>
@@ -399,6 +399,7 @@ const Dashboard = () => {
                     height={180}
                     series={summaryKpis?.shippable_month}
                     cumplience={summaryKpis?.cumplience_month}
+                    showYear={false}
                   />
                 </Card>
                 <Card sx={{ height: "191px" }}>
@@ -409,6 +410,7 @@ const Dashboard = () => {
                     height={180}
                     series={summaryKpis?.shippable_year}
                     cumplience={summaryKpis?.cumplience_year}
+                    showYear={true}
                   />
                 </Card>
               </div>

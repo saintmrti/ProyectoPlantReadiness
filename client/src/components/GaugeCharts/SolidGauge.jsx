@@ -16,7 +16,7 @@ const SolidGauge = ({ value, name, height, rate }) => {
           height,
           backgroundColor: "transparent",
           style: {
-            fontFamily: "montserrat",
+            fontFamily: "Montserrat",
           },
         },
 

@@ -18,7 +18,7 @@ import { changeAdvance } from "../../slices/setAdvance";
 import { getAdvance } from "../../selectors/advance";
 import { updateAdvanceRequest } from "../../slices/advance";
 
-const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv }) => {
+const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv, idProyecto }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -52,10 +52,12 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv }) => {
       idAvance: editAdv,
     };
 
-    editAdv
-      ? dispatch(updateAdvanceRequest(saveAdvance))
-      : (dispatch(changeAdvance(saveAdvance)),
-        navigate(`/avances/${idEntregable}/${idGrupo}`));
+    if (editAdv) {
+      dispatch(updateAdvanceRequest(saveAdvance));
+    } else {
+      dispatch(changeAdvance(saveAdvance));
+      navigate(`/proyectos/${idProyecto}/avances/${idEntregable}/${idGrupo}`);
+    }
   };
 
   useEffect(() => {
