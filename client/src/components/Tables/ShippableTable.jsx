@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -46,7 +46,7 @@ const ShippableTable = ({
   handleOnClickEditAdv,
   handleOnClickDeleteShi,
 }) => {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(null);
 
   const handleNext = () => {
     setActiveIndex(
@@ -73,6 +73,11 @@ const ShippableTable = ({
     );
   };
 
+  useEffect(() => {
+    const ids = Object.keys(fases);
+    setActiveIndex(parseInt(ids[0]));
+  }, [fases]);
+
   return (
     <>
       <TableContainer
@@ -85,27 +90,29 @@ const ShippableTable = ({
               <TableRow>
                 <StyledTableCell colSpan={2}></StyledTableCell>
                 <StyledTableCell colSpan={7} sx={{ textAlign: "center" }}>
-                  <div className="flex items-center">
-                    <div className="mx-auto">
-                      {`${fases[activeIndex]?.fase} - ${fases[activeIndex]?.maquina}`}
+                  {activeIndex && fases[activeIndex] && (
+                    <div className="flex items-center">
+                      <div className="mx-auto">
+                        {`${fases[activeIndex]?.fase} - ${fases[activeIndex]?.maquina}`}
+                      </div>
+                      <div>
+                        <IconButton
+                          aria-label="back"
+                          size="small"
+                          onClick={() => handlePrev(idExpectancy.id)}
+                        >
+                          <ArrowBackIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="forward"
+                          size="small"
+                          onClick={() => handleNext(idExpectancy.id)}
+                        >
+                          <ArrowForwardIcon />
+                        </IconButton>
+                      </div>
                     </div>
-                    <div>
-                      <IconButton
-                        aria-label="back"
-                        size="small"
-                        onClick={() => handlePrev(idExpectancy.id)}
-                      >
-                        <ArrowBackIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="forward"
-                        size="small"
-                        onClick={() => handleNext(idExpectancy.id)}
-                      >
-                        <ArrowForwardIcon />
-                      </IconButton>
-                    </div>
-                  </div>
+                  )}
                 </StyledTableCell>
               </TableRow>
             )}

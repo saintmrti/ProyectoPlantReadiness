@@ -10,7 +10,13 @@ import {
 } from "@mui/material";
 import { deleteHeadingsRequest } from "../../slices/headings";
 
-export const HeadingsAlert = ({ open, onClose, deleteHead, setDeleteHead }) => {
+export const HeadingsAlert = ({
+  open,
+  onClose,
+  deleteHead,
+  setDeleteHead,
+  setValue,
+}) => {
   const dispatch = useDispatch();
 
   const { list: headings } = useSelector((state) => state.headings);
@@ -20,6 +26,7 @@ export const HeadingsAlert = ({ open, onClose, deleteHead, setDeleteHead }) => {
   const handleOnConfirm = () => {
     dispatch(deleteHeadingsRequest({ idRubro: deleteHead }));
     setDeleteHead(null);
+    setValue(0);
     onClose();
   };
 

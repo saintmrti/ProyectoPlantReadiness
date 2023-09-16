@@ -9,8 +9,15 @@ const Home = () => {
       <Button
         variant="contained"
         onClick={() => navigate("/proyectos/1/registro")}
+        sx={{ mr: 2 }}
       >
         Plant Readiness
+      </Button>
+      <Button
+        variant="contained"
+        onClick={() => navigate("/proyectos/2/registro")}
+      >
+        Proyecto 2
       </Button>
     </div>
   );

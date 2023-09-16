@@ -11,7 +11,7 @@ module.exports.getMachines = (req, res) => {
     const project = {
       idProyecto: parseInt(idProyecto),
     };
-    response(res, null, getSummary, project);
+    response(res, false, getSummary, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -20,12 +20,12 @@ module.exports.getMachines = (req, res) => {
 
 module.exports.createMachine = (req, res) => {
   try {
-    const { machine } = req.body;
+    const { machine, idProyecto } = req.body;
     const newRegister = {
       machine,
-      idProyecto,
+      idProyecto: parseInt(idProyecto),
     };
-    response(res, null, insertMachine, newRegister);
+    response(res, false, insertMachine, newRegister);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -38,7 +38,7 @@ module.exports.eliminateMachine = (req, res) => {
     const deleteRegister = {
       idMaquina: parseInt(idMaquina),
     };
-    response(res, null, deleteMachine, deleteRegister);
+    response(res, false, deleteMachine, deleteRegister);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

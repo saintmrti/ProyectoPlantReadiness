@@ -274,7 +274,8 @@ const Register = () => {
                                 Agregar Entregable
                               </Button>
                               {item.shippables &&
-                                item.shippables.length > 0 && (
+                                item.shippables.length > 0 &&
+                                Object.keys(fases).length > 0 && (
                                   <>
                                     <Button
                                       variant="text"
@@ -388,7 +389,7 @@ const Register = () => {
                 <PhaseForm
                   setOpen={setOpenPha}
                   data={updatedMachines}
-                  idGrupo={maxIdGrupo?.idGrupo + 1}
+                  idGrupo={maxIdGrupo?.idGrupo ? maxIdGrupo?.idGrupo + 1 : 1}
                   idProyecto={idProyecto}
                 />
               </Box>
@@ -455,6 +456,7 @@ const Register = () => {
               onClose={() => setAlertHead(false)}
               deleteHead={deleteHead}
               setDeleteHead={setDeleteHead}
+              setValue={setValue}
             />
             <AdvanceAlert open={alertAdv} setOpen={setAlertAdv} />
           </>

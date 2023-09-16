@@ -39,31 +39,20 @@ module.exports.deleteHeading = async (conn, { idRubro }) => {
 
     SET @rubroID = ${idRubro};
     
-    BEGIN TRANSACTION;
-    
-    -- Elimina los avances relacionados con los entregables de las expectativas en el rubro
     DELETE FROM vki40_avances WHERE idEntregable IN (
       SELECT id FROM vki40_entregables WHERE idExpectativa IN (
         SELECT id FROM vki40_expectativas WHERE rubro = @rubroID
       )
     );
     
-    -- Elimina los entregables relacionados con las expectativas en el rubro
     DELETE FROM vki40_entregables WHERE idExpectativa IN (
       SELECT id FROM vki40_expectativas WHERE rubro = @rubroID
     );
     
-    -- Elimina las expectativas en el rubro
     DELETE FROM vki40_expectativas WHERE rubro = @rubroID;
     
-    -- Finalmente, elimina el rubro en sí
     DELETE FROM vki40_rubros WHERE id = @rubroID;
     
-    COMMIT; -- Confirma la transacción y aplica los cambios
-    `);
-
-  await conn.query(`
-        SELECT * FROM vki40_rubros WHERE id = ${idRubro};
     `);
   return idRubro;
 };

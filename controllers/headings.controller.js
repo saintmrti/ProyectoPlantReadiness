@@ -12,7 +12,7 @@ module.exports.getHeadings = (req, res) => {
     const project = {
       idProyecto: parseInt(idProyecto),
     };
-    response(res, null, getSummary, project);
+    response(res, false, getSummary, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -26,7 +26,7 @@ module.exports.createHeading = (req, res) => {
       name,
       idProyecto: parseInt(idProyecto),
     };
-    response(res, null, insertHeading, newRegister);
+    response(res, false, insertHeading, newRegister);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -40,7 +40,7 @@ module.exports.modifyHeading = (req, res) => {
       id: parseInt(id),
       name,
     };
-    response(res, null, updateHeading, newRegister);
+    response(res, false, updateHeading, newRegister);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -53,7 +53,7 @@ module.exports.eliminateHeading = (req, res) => {
     const deleteRegister = {
       idRubro: parseInt(idRubro),
     };
-    response(res, null, deleteHeading, deleteRegister);
+    response(res, true, deleteHeading, deleteRegister);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

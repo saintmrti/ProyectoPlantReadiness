@@ -13,7 +13,7 @@ module.exports.getAdvances = (req, res) => {
     const project = {
       idProyecto: parseInt(idProyecto),
     };
-    response(res, null, getSummary, project);
+    response(res, false, getSummary, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -22,9 +22,9 @@ module.exports.getAdvances = (req, res) => {
 
 module.exports.createAdvance = (req, res) => {
   try {
-    const { filteredArray } = req.body;
+    const { advance } = req.body;
 
-    const modifiedArray = _.map(filteredArray, (item) => {
+    const modifiedArray = _.map(advance, (item) => {
       return {
         idEntregable: parseInt(item.idEntregable),
         idProyecto: parseInt(item.idProyecto),
@@ -37,7 +37,7 @@ module.exports.createAdvance = (req, res) => {
         comentarios: item.comments === "" ? null : `'${item.comments}'`,
       };
     });
-    response(res, null, insertAdvance, modifiedArray);
+    response(res, false, insertAdvance, modifiedArray);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -64,10 +64,7 @@ module.exports.modifyAdvance = (req, res) => {
       avance: avance || null,
       comentarios: comentarios || null,
     };
-
-    // console.log(modifiedRegister);
-    // res.status(200).json({ message: "Ok" });
-    response(res, null, updateAdvance, modifiedRegister);
+    response(res, false, updateAdvance, modifiedRegister);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

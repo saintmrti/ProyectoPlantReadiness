@@ -8,7 +8,7 @@ module.exports.getKpis = (req, res) => {
       phase,
       priority,
     };
-    response(res, null, getSummary, newRegister);
+    response(res, false, getSummary, newRegister);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
