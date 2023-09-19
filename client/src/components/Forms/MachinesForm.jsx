@@ -25,7 +25,6 @@ const MachinesForm = ({
   idProyecto,
 }) => {
   const dispatch = useDispatch();
-  // const navigate = useNavigate();
   const {
     register,
     handleSubmit,

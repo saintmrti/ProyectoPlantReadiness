@@ -7,6 +7,7 @@ import phase from "./phase";
 import kpis from "./kpis";
 import settings from "./settings";
 import setAdvance from "./setAdvance";
+import projects from "./projects";
 
 const reducer = {
   expectancy,
@@ -18,6 +19,7 @@ const reducer = {
   kpis,
   settings,
   setAdvance,
+  projects,
 };
 
 export default reducer;

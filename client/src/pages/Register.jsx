@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import Button from "@mui/material/Button";
 import Accordion from "@mui/material/Accordion";
@@ -15,7 +16,6 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useDispatch, useSelector } from "react-redux";
 
 import ExpectationForm from "../components/Forms/ExpectationForm";
 import ShippableForm from "../components/Forms/ShippableForm";
@@ -55,6 +55,7 @@ const style = {
 
 const Register = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { idProyecto } = useParams();
 
   const [openExp, setOpenExp] = useState(false);
@@ -216,7 +217,14 @@ const Register = () => {
                   </Button>
                 </div>
               </div>
-              <Toggle />
+              <div className="flex items-center justify-center">
+                <div className="mr-5">
+                  <Button variant="contained" onClick={() => navigate("/")}>
+                    Ir al inicio
+                  </Button>
+                </div>
+                <Toggle />
+              </div>
             </div>
             <Box sx={{ width: "100%" }}>
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>

@@ -1,7 +1,6 @@
 const _ = require("lodash");
 const response = require("../helpers/response");
 const { insertPhase, getSummary } = require("../models/phase.model");
-const { parse } = require("dotenv");
 
 module.exports.getPhases = (req, res) => {
   try {

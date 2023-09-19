@@ -10,6 +10,7 @@ const machinesRoutes = require("./routes/machines.routes");
 const advanceRoutes = require("./routes/advance.routes");
 const phaseRoutes = require("./routes/phase.routes");
 const kpisRoutes = require("./routes/kpis.routes");
+const projectsRoutes = require("./routes/projects.routes");
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -20,7 +21,7 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'client/dist')));
+app.use(express.static(path.join(__dirname, "client/dist")));
 
 // Routes
 app.use("/api/expectativas", expectancyRoutes);
@@ -30,9 +31,10 @@ app.use("/api/maquinas", machinesRoutes);
 app.use("/api/avances", advanceRoutes);
 app.use("/api/fases", phaseRoutes);
 app.use("/api/kpis", kpisRoutes);
+app.use("/api/proyectos", projectsRoutes);
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/dist/index.html'));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/dist/index.html"));
 });
 
 module.exports = app;
