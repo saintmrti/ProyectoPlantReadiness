@@ -1,6 +1,11 @@
 const _ = require("lodash");
 const response = require("../helpers/response");
-const { insertPhase, getSummary } = require("../models/phase.model");
+const {
+  insertPhase,
+  getSummary,
+  updatePhase,
+  deletePhase,
+} = require("../models/phase.model");
 
 module.exports.getPhases = (req, res) => {
   try {
@@ -27,6 +32,35 @@ module.exports.createPhase = (req, res) => {
       };
     });
     response(res, false, insertPhase, modifiedArray);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports.modifyPhase = (req, res) => {
+  try {
+    const { idGrupo, fase, idProyecto } = req.body;
+    const phase = {
+      idGrupo,
+      fase,
+      idProyecto: parseInt(idProyecto),
+    };
+    response(res, false, updatePhase, phase);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports.deletePhase = (req, res) => {
+  try {
+    const { idGrupo, idProyecto } = req.query;
+    const phase = {
+      idGrupo: parseInt(idGrupo),
+      idProyecto: parseInt(idProyecto),
+    };
+    response(res, true, deletePhase, phase);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

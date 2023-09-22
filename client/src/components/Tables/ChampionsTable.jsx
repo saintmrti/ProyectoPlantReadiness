@@ -43,6 +43,7 @@ const ChampionsTable = ({
   list,
   handleClickCham,
   handleEditCham,
+  handleDeleteCham,
   idProyecto,
 }) => {
   const navigate = useNavigate();
@@ -122,7 +123,10 @@ const ChampionsTable = ({
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Eliminar">
-                      <IconButton aria-label="Eliminar" onClick={(f) => f}>
+                      <IconButton
+                        aria-label="Eliminar"
+                        onClick={() => handleDeleteCham(item.id)}
+                      >
                         <DeleteIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>

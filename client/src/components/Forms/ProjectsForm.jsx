@@ -27,7 +27,6 @@ export const ProjectsForm = ({ setOpen, editProject }) => {
   } = useForm();
 
   const onSubmit = (values) => {
-    console.log(selectedFiles);
     if (selectedFiles === null) {
       setMissingImage(true);
     } else {

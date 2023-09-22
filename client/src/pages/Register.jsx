@@ -22,6 +22,7 @@ import ShippableForm from "../components/Forms/ShippableForm";
 import PhaseForm from "../components/Forms/PhaseForm";
 import AdvanceForm from "../components/Forms/AdvanceForm";
 import HeadingForm from "../components/Forms/HeadingForm";
+import UpdatePhaseForm from "../components/Forms/UpdatePhaseForm";
 import ShippableTable from "../components/Tables/ShippableTable";
 import { fetchExpectancyRequest } from "../slices/expectancy";
 import { fetchShippableRequest } from "../slices/shippable";
@@ -40,6 +41,8 @@ import { ShippableAlert } from "../components/Alert/ShippableAlert";
 import { ExpectancyAlert } from "../components/Alert/ExpectancyAlert";
 import { AdvanceAlert } from "../components/Alert/AdvanceAlert";
 import { HeadingsAlert } from "../components/Alert/HeadingsAlert";
+import { PhaseAlert } from "../components/Alert/PhaseAlert";
+import { getProject } from "../selectors/projects";
 
 const style = {
   position: "absolute",
@@ -61,6 +64,7 @@ const Register = () => {
   const [openExp, setOpenExp] = useState(false);
   const [openShi, setOpenShi] = useState(false);
   const [openPha, setOpenPha] = useState(false);
+  const [openShi2, setOpenShi2] = useState(false);
   const [openAdv, setOpenAdv] = useState(false);
   const [openHead, setOpenHead] = useState(false);
   const [idExpectancy, setIdExpectancy] = useState(null);
@@ -70,14 +74,17 @@ const Register = () => {
   const [editAdv, setEditAdv] = useState(null);
   const [editExp, setEditExp] = useState(null);
   const [editHead, setEditHead] = useState(null);
+  const [editPha, setEditPha] = useState(null);
   const [deleteShi, setDeleteShi] = useState(null);
   const [deleteExp, setDeleteExp] = useState(null);
   const [deleteHead, setDeleteHead] = useState(null);
+  const [deletePha, setDeletePha] = useState(null);
   const [alertShi, setAlertShi] = useState(false);
   const [alertExp, setAlertExp] = useState(false);
   const [alertHead, setAlertHead] = useState(false);
-  const [phasesGroup, setPhasesGroup] = useState(null);
   const [alertAdv, setAlertAdv] = useState(false);
+  const [alertPha, setAlertPha] = useState(false);
+  const [phasesGroup, setPhasesGroup] = useState(null);
 
   const expectancy = useSelector(groupedByIdExpectancy);
   const advance = useSelector(summaryAdvanced);
@@ -85,6 +92,7 @@ const Register = () => {
   const { list: machines } = useSelector((state) => state.machines);
   // const { data: shippables } = useSelector((state) => state.shippable);
   const { list: fases } = useSelector((state) => state.phase);
+  const project = useSelector((state) => getProject(state, idProyecto));
   const { isFetching, didError } = useSelector((state) => state.advance);
 
   const phasesByidGroup = _.uniqBy(_.values(fases), "idGrupo");
@@ -161,6 +169,11 @@ const Register = () => {
     setOpenHead(true);
   };
 
+  const handleOnClickEditPha = (id) => {
+    setEditPha(id);
+    setOpenShi2(true);
+  };
+
   const handleOnClickDeleteShi = (id) => {
     setDeleteShi(id);
     setAlertShi(true);
@@ -174,6 +187,11 @@ const Register = () => {
   const handleOnClickDeleteHead = (id) => {
     setDeleteHead(id);
     setAlertHead(true);
+  };
+
+  const handleOnClickDeletePha = (id) => {
+    setDeletePha(id);
+    setAlertPha(true);
   };
 
   useEffect(() => {
@@ -195,7 +213,7 @@ const Register = () => {
           <>
             <div className="flex flex-col items-center mb-6">
               <h1 className="text-3xl font-bold text-center">
-                Plant Readiness
+                {project?.nombre}
               </h1>
               <div className="w-2/3 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
             </div>
@@ -312,6 +330,8 @@ const Register = () => {
                                 handleOnClickEditShi={handleOnClickEditShi}
                                 handleOnClickEditAdv={handleOnClickEditAdv}
                                 handleOnClickDeleteShi={handleOnClickDeleteShi}
+                                handleOnClickEditPha={handleOnClickEditPha}
+                                handleOnClickDeletePha={handleOnClickDeletePha}
                               />
                             </div>
                           )}
@@ -447,6 +467,27 @@ const Register = () => {
                 />
               </Box>
             </Modal>
+            <Modal open={openShi2} onClose={() => setOpenShi2(false)}>
+              <Box sx={style}>
+                <IconButton
+                  aria-label="close"
+                  size="small"
+                  onClick={() => setOpenShi2(false)}
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: 8,
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+                <UpdatePhaseForm
+                  setOpen={setOpenShi2}
+                  editPha={editPha}
+                  idProyecto={idProyecto}
+                />
+              </Box>
+            </Modal>
             <ShippableAlert
               open={alertShi}
               onClose={() => setAlertShi(false)}
@@ -467,6 +508,13 @@ const Register = () => {
               setValue={setValue}
             />
             <AdvanceAlert open={alertAdv} setOpen={setAlertAdv} />
+            <PhaseAlert
+              open={alertPha}
+              onClose={() => setAlertPha(false)}
+              deletePha={deletePha}
+              setDeletePha={setDeletePha}
+              idProyecto={idProyecto}
+            />
           </>
         )}
       </div>

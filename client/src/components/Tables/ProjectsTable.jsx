@@ -24,6 +24,7 @@ const ProjectsTable = ({
   handleClickProject,
   list,
   handleClickEditProject,
+  handleDeleteProject,
 }) => {
   const navigate = useNavigate();
   const handleClickNav = (id) => {
@@ -86,10 +87,22 @@ const ProjectsTable = ({
                     />
                   </TableCell>
                   <TableCell>{item.nombre}</TableCell>
-                  <TableCell align="center">{item.idProyecto}</TableCell>
-                  <TableCell align="center">130/260</TableCell>
+                  <TableCell align="center">{item?.idProyecto}</TableCell>
                   <TableCell align="center">
-                    <ProjectBar percentage={50} />
+                    {item && item.Plan > 0
+                      ? item?.Real + "/" + item?.Plan
+                      : "0/0"}
+                  </TableCell>
+                  <TableCell align="center">
+                    <ProjectBar
+                      percentage={
+                        item && item.Plan > 0
+                          ? parseFloat(
+                              ((item?.Real * 100) / item?.Plan).toFixed(1)
+                            )
+                          : 0
+                      }
+                    />
                   </TableCell>
                   {/* <TableCell>{item.planta}</TableCell>
                                     <TableCell>{item.c_url}</TableCell> */}
@@ -111,7 +124,10 @@ const ProjectsTable = ({
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Eliminar">
-                      <IconButton aria-label="Eliminar" onClick={(f) => f}>
+                      <IconButton
+                        aria-label="Eliminar"
+                        onClick={() => handleDeleteProject(item.id)}
+                      >
                         <DeleteIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>

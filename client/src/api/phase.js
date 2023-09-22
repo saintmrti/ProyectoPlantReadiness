@@ -20,3 +20,24 @@ export const insertPhaseApi = {
       })
       .then(({ data }) => data),
 };
+
+export const updatePhaseApi = {
+  cancel: null,
+  run: (pha) =>
+    axios
+      .put("/api/fases", pha, {
+        cancelToken: new CancelToken((c) => (updatePhaseApi.cancel = c)),
+      })
+      .then(({ data }) => data),
+};
+
+export const deletePhaseApi = {
+  cancel: null,
+  run: (pha) =>
+    axios
+      .delete("/api/fases", {
+        cancelToken: new CancelToken((c) => (deletePhaseApi.cancel = c)),
+        params: pha,
+      })
+      .then(({ data }) => data),
+};

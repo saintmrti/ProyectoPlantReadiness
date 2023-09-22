@@ -5,7 +5,7 @@ import {
   Route,
 } from "react-router-dom";
 
-import Home from "../../pages/Home";
+import Projects from "../../pages/Projects";
 import Register from "../../pages/Register";
 import Dashboard from "../../pages/Dashboard";
 import Advance from "../../pages/Advance";
@@ -17,7 +17,7 @@ export const router = createBrowserRouter([
     path: "*",
     element: (
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Projects />} />
         <Route path="/proyectos/:idProyecto/registro" element={<Register />} />
         <Route
           path="/proyectos/:idProyecto/dashboard"

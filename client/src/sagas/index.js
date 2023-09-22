@@ -26,7 +26,12 @@ export {
   insertAdvanceSaga,
   updateAdvanceSaga,
 } from "./advance";
-export { fetchPhaseSaga, insertPhaseSaga } from "./phase";
+export {
+  fetchPhaseSaga,
+  insertPhaseSaga,
+  updatePhaseSaga,
+  deletePhaseSaga,
+} from "./phase";
 export { fetchKpisSaga } from "./kpis";
 export {
   fetchProjectsSaga,

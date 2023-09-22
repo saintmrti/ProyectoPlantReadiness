@@ -1,10 +1,10 @@
-// import { createSelector } from "@reduxjs/toolkit";
+import { createSelector } from "@reduxjs/toolkit";
 // import _ from "lodash";
 
-// export const getAdvance = createSelector(
-//     ({ advance }, idShi) => advance.data[idShi],
-//     (advance) => {
-//       if (!advance) return {};
-
-//     }
-//   );
+export const getPhase = createSelector(
+  ({ phase }, idFase) => phase.list[idFase],
+  (phase) => {
+    if (!phase) return {};
+    return phase;
+  }
+);

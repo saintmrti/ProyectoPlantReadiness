@@ -1,5 +1,4 @@
 import { useSelector, useDispatch } from "react-redux";
-import _ from "lodash";
 import {
   Dialog,
   DialogActions,
@@ -9,13 +8,12 @@ import {
   Button,
 } from "@mui/material";
 import { deleteExpectancyRequest } from "../../slices/expectancy";
+import { getExpectancy } from "../../selectors/expectancy";
 
 export const ExpectancyAlert = ({ open, onClose, deleteExp, setDeleteExp }) => {
   const dispatch = useDispatch();
 
-  const { data: expectancy } = useSelector((state) => state.expectancy);
-
-  const expectancyFinded = _.find(expectancy, { id: deleteExp });
+  const expectancy = useSelector((state) => getExpectancy(state, deleteExp));
 
   const handleOnConfirm = () => {
     dispatch(deleteExpectancyRequest({ idExpectativa: deleteExp }));
@@ -33,7 +31,7 @@ export const ExpectancyAlert = ({ open, onClose, deleteExp, setDeleteExp }) => {
         <DialogContentText>
           Esta acción no se puede deshacer. Por favor, confirma si estás seguro
           de eliminar{" "}
-          <span className="font-semibold">{expectancyFinded?.expectativa}</span>
+          <span className="font-semibold">{expectancy?.expectativa}</span>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

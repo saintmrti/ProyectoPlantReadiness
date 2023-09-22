@@ -7,29 +7,36 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
-import { deleteShippableRequest } from "../../slices/shippable";
-import { getShippable } from "../../selectors/shippable";
 
-export const ShippableAlert = ({ open, onClose, deleteShi, setDeleteShi }) => {
+import { deletePhaseRequest } from "../../slices/phase";
+import { getPhase } from "../../selectors/phase";
+
+export const PhaseAlert = ({
+  open,
+  onClose,
+  deletePha,
+  setDeletePha,
+  idProyecto,
+}) => {
   const dispatch = useDispatch();
 
-  const shippable = useSelector((state) => getShippable(state, deleteShi));
+  const phase = useSelector((state) => getPhase(state, deletePha));
 
   const handleOnConfirm = () => {
-    dispatch(deleteShippableRequest({ idEntregable: deleteShi }));
-    setDeleteShi(null);
+    dispatch(deletePhaseRequest({ idGrupo: phase?.idGrupo, idProyecto }));
+    setDeletePha(null);
     onClose();
   };
 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>
-        ¿Estás seguro que quieres eliminar el entregable?
+        ¿Estás seguro que quieres eliminar la fase junto con sus avances?
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
           Esta acción no se puede deshacer. Por favor, confirma si estás seguro
-          de eliminar <span className="font-semibold">{shippable?.nombre}</span>
+          de eliminar <span className="font-semibold">{phase?.fase}</span>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

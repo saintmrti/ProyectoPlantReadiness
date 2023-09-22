@@ -52,7 +52,6 @@ module.exports.deleteHeading = async (conn, { idRubro }) => {
     DELETE FROM vki40_expectativas WHERE rubro = @rubroID;
     
     DELETE FROM vki40_rubros WHERE id = @rubroID;
-    
     `);
   return idRubro;
 };

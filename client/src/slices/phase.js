@@ -9,6 +9,10 @@ const Slice = createSlice({
     didError: false,
     isFetchingInsert: false,
     didErrorInsert: false,
+    isFetchingUpdate: false,
+    didErrorUpdate: false,
+    isFetchingDelete: false,
+    didErrorDelete: false,
   },
   reducers: {
     fetchPhaseRequest: (state) => {
@@ -38,6 +42,28 @@ const Slice = createSlice({
       state.isFetchingInsert = false;
       state.didErrorInsert = true;
     },
+    updatePhaseRequest: (state) => {
+      state.isFetchingUpdate = true;
+      state.didErrorUpdate = false;
+    },
+    updatePhaseSuccess: (state, { payload: { data } }) => {
+      _.forEach(data, (item) => {
+        state.list[item.id] = item;
+      });
+      state.isFetchingUpdate = false;
+    },
+    updatePhaseError: (state) => {
+      state.isFetchingUpdate = false;
+      state.didErrorUpdate = true;
+    },
+    deletePhaseRequest: (state) => {
+      state.isFetchingDelete = true;
+      state.didErrorDelete = false;
+    },
+    deletePhaseSuccess: (state, { payload: { idGrupo } }) => {
+      state.list = _.omitBy(state.list, (item) => item.idGrupo === idGrupo);
+      state.isFetchingDelete = false;
+    },
   },
 });
 
@@ -48,5 +74,11 @@ export const {
   insertPhaseRequest,
   insertPhaseSuccess,
   insertPhaseError,
+  updatePhaseRequest,
+  updatePhaseSuccess,
+  updatePhaseError,
+  deletePhaseRequest,
+  deletePhaseSuccess,
+  deletePhaseError,
 } = Slice.actions;
 export default Slice.reducer;

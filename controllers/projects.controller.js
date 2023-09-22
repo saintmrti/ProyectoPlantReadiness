@@ -53,7 +53,7 @@ module.exports.deleteProject = (req, res) => {
     const project = {
       idProyecto: parseInt(idProyecto),
     };
-    response(res, false, deleteProject, project);
+    response(res, true, deleteProject, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

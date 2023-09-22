@@ -1,5 +1,4 @@
 import { useSelector, useDispatch } from "react-redux";
-import _ from "lodash";
 import {
   Dialog,
   DialogActions,
@@ -9,6 +8,7 @@ import {
   Button,
 } from "@mui/material";
 import { deleteHeadingsRequest } from "../../slices/headings";
+import { getHeading } from "../../selectors/headings";
 
 export const HeadingsAlert = ({
   open,
@@ -19,9 +19,7 @@ export const HeadingsAlert = ({
 }) => {
   const dispatch = useDispatch();
 
-  const { list: headings } = useSelector((state) => state.headings);
-
-  const headingFinded = _.find(headings, { id: deleteHead });
+  const heading = useSelector((state) => getHeading(state, deleteHead));
 
   const handleOnConfirm = () => {
     dispatch(deleteHeadingsRequest({ idRubro: deleteHead }));
@@ -38,8 +36,7 @@ export const HeadingsAlert = ({
       <DialogContent>
         <DialogContentText>
           Esta acción no se puede deshacer. Por favor, confirma si estás seguro
-          de eliminar{" "}
-          <span className="font-semibold">{headingFinded?.rubro}</span>
+          de eliminar <span className="font-semibold">{heading?.rubro}</span>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

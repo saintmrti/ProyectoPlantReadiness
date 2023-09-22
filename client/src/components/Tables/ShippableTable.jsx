@@ -45,6 +45,8 @@ const ShippableTable = ({
   handleOnClickEditShi,
   handleOnClickEditAdv,
   handleOnClickDeleteShi,
+  handleOnClickEditPha,
+  handleOnClickDeletePha,
 }) => {
   const [activeIndex, setActiveIndex] = useState(null);
 
@@ -89,13 +91,10 @@ const ShippableTable = ({
             {!activeComment && (
               <TableRow>
                 <StyledTableCell colSpan={2}></StyledTableCell>
-                <StyledTableCell colSpan={7} sx={{ textAlign: "center" }}>
+                <StyledTableCell colSpan={6} sx={{ textAlign: "center" }}>
                   {activeIndex && fases[activeIndex] && (
-                    <div className="flex items-center">
-                      <div className="mx-auto">
-                        {`${fases[activeIndex]?.fase} - ${fases[activeIndex]?.maquina}`}
-                      </div>
-                      <div>
+                    <div className="flex items-center justify-center">
+                      <div className="flex items-center justify-center">
                         <IconButton
                           aria-label="back"
                           size="small"
@@ -103,6 +102,9 @@ const ShippableTable = ({
                         >
                           <ArrowBackIcon />
                         </IconButton>
+                        <div>
+                          {`${fases[activeIndex]?.fase} - ${fases[activeIndex]?.maquina}`}
+                        </div>
                         <IconButton
                           aria-label="forward"
                           size="small"
@@ -111,6 +113,30 @@ const ShippableTable = ({
                           <ArrowForwardIcon />
                         </IconButton>
                       </div>
+                    </div>
+                  )}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {activeIndex && fases[activeIndex] && (
+                    <div>
+                      <IconButton
+                        aria-label="edit"
+                        size="small"
+                        onClick={() =>
+                          handleOnClickEditPha(fases[activeIndex]?.id)
+                        }
+                      >
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton
+                        aria-label="delete"
+                        size="small"
+                        onClick={() =>
+                          handleOnClickDeletePha(fases[activeIndex]?.id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </div>
                   )}
                 </StyledTableCell>

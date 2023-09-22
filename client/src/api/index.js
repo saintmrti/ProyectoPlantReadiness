@@ -22,7 +22,12 @@ export {
   deleteMachineApi,
 } from "./machines";
 export { fetchAdvanceApi, insertAdvanceApi, updateAdvanceApi } from "./advance";
-export { fetchPhaseApi, insertPhaseApi } from "./phase";
+export {
+  fetchPhaseApi,
+  insertPhaseApi,
+  updatePhaseApi,
+  deletePhaseApi,
+} from "./phase";
 export { fetchKpisApi } from "./kpis";
 export {
   fetchProjectsApi,

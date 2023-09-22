@@ -1,6 +1,10 @@
 module.exports.getSummary = async (conn) => {
   const { data } = await conn.query(`
-    SELECT * FROM vki40_Readiness_proyectos;
+    SELECT
+    Proy.*,
+    (SELECT COUNT(*) FROM vki40_avances E WHERE E.idProyecto = Proy.id AND E.avance = 100) as [Real],
+    (SELECT COUNT(*) FROM vki40_avances E WHERE E.idProyecto = Proy.id) as [Plan]
+    FROM vki40_Readiness_proyectos Proy;
   `);
   return data;
 };
@@ -42,7 +46,23 @@ module.exports.updateProject = async (
 
 module.exports.deleteProject = async (conn, { idProyecto }) => {
   await conn.query(`
-    DELETE FROM vki40_Readiness_proyectos WHERE id = ${idProyecto};
+    DECLARE @proyectoID INT;
+
+    SET @proyectoID = ${idProyecto};
+
+    DELETE FROM vki40_avances WHERE idProyecto = @proyectoID;
+
+    DELETE FROM vki40_entregables WHERE idProyecto = @proyectoID;
+
+    DELETE FROM vki40_expectativas WHERE idProyecto = @proyectoID;
+
+    DELETE FROM vki40_rubros WHERE idProyecto = @proyectoID;
+
+    DELETE FROM vki40_fases WHERE idProyecto = @proyectoID;
+
+    DELETE FROM vki40_maquinas_PR WHERE idProyecto = @proyectoID;
+
+    DELETE FROM vki40_Readiness_proyectos WHERE id = @proyectoID;
   `);
 
   return idProyecto;

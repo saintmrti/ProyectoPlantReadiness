@@ -8,6 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 import ChampionsTable from "../components/Tables/ChampionsTable";
 import { ChampionsForm } from "../components/Forms/ChampionsForm";
+import { ChampionsAlert } from "../components/Alert/ChampionsAlert";
 import { fetchChampionsRequest } from "../slices/champions";
 
 const style = {
@@ -29,6 +30,8 @@ const Champions = () => {
 
   const [editCham, setEditCham] = useState(null);
   const [openCham, setOpenCham] = useState(false);
+  const [deleteCham, setDeleteCham] = useState(null);
+  const [chamAlert, setChamAlert] = useState(false);
 
   const handleClickCham = () => {
     setOpenCham(true);
@@ -38,6 +41,11 @@ const Champions = () => {
   const handleEditCham = (id) => {
     setEditCham(id);
     setOpenCham(true);
+  };
+
+  const handleDeleteCham = (id) => {
+    setDeleteCham(id);
+    setChamAlert(true);
   };
 
   useEffect(() => {
@@ -50,7 +58,9 @@ const Champions = () => {
         list={champions}
         handleClickCham={handleClickCham}
         handleEditCham={handleEditCham}
+        handleDeleteCham={handleDeleteCham}
         idProyecto={idProyecto}
+        setChamAlert={setChamAlert}
       />
       <Modal open={openCham} onClose={() => setOpenCham(false)}>
         <Box sx={style}>
@@ -73,6 +83,12 @@ const Champions = () => {
           />
         </Box>
       </Modal>
+      <ChampionsAlert
+        open={chamAlert}
+        onClose={() => setChamAlert(false)}
+        deleteCham={deleteCham}
+        setDeleteCham={setDeleteCham}
+      />
     </>
   );
 };

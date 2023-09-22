@@ -36,7 +36,6 @@ export function FileUploader({
           setImage(null);
           onUpload(null);
         } else {
-          console.log(result);
           setTooLargeImage(false);
           setImage(result[0].base64);
           onUpload(result[0].base64);

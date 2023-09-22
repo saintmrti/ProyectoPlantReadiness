@@ -6,12 +6,6 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import _ from "lodash";
 
-import energizer1 from "../assets/img/energizer1.png";
-import energizer2 from "../assets/img/energizer2.jpg";
-import energizer3 from "../assets/img/energizer3.jpg";
-import energizer4 from "../assets/img/energizer4.jpg";
-import energizer6 from "../assets/img/energizer6.jpg";
-import energizer7 from "../assets/img/energizer7.jpg";
 import GaugeSeries from "../components/GaugeCharts/GaugeSeries";
 import SolidGauge from "../components/GaugeCharts/SolidGauge";
 import StackedBar from "../components/BarCharts/StackedBar";
@@ -101,7 +95,7 @@ const Dashboard = () => {
                 idProyecto={idProyecto}
               />
             )}
-            {console.log(summaryKpis)}
+            {/* {console.log(summaryKpis)} */}
             <div className="grid grid-cols-9 gap-2">
               <div className="col-span-2">
                 <Card sx={{ height: "100%", padding: 1 }}>

@@ -7,29 +7,35 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
-import { deleteShippableRequest } from "../../slices/shippable";
-import { getShippable } from "../../selectors/shippable";
+import { deleteProjectRequest } from "../../slices/projects";
+import { getProject } from "../../selectors/projects";
 
-export const ShippableAlert = ({ open, onClose, deleteShi, setDeleteShi }) => {
+export const ProjectsAlert = ({
+  open,
+  onClose,
+  deleteProject,
+  setDeleteProject,
+}) => {
   const dispatch = useDispatch();
 
-  const shippable = useSelector((state) => getShippable(state, deleteShi));
+  const project = useSelector((state) => getProject(state, deleteProject));
 
   const handleOnConfirm = () => {
-    dispatch(deleteShippableRequest({ idEntregable: deleteShi }));
-    setDeleteShi(null);
+    dispatch(deleteProjectRequest({ idProyecto: deleteProject }));
+    setDeleteProject(null);
     onClose();
   };
 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>
-        ¿Estás seguro que quieres eliminar el entregable?
+        ¿Estás seguro que quieres eliminar el proyecto junto con todo su
+        contenido?
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
           Esta acción no se puede deshacer. Por favor, confirma si estás seguro
-          de eliminar <span className="font-semibold">{shippable?.nombre}</span>
+          de eliminar <span className="font-semibold">{project?.nombre}</span>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
