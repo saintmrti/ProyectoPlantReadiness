@@ -19,3 +19,24 @@ export const insertProjectApi = {
       })
       .then(({ data }) => data),
 };
+
+export const updateProjectApi = {
+  cancel: null,
+  run: (project) =>
+    axios
+      .put("/api/proyectos", project, {
+        cancelToken: new CancelToken((c) => (updateProjectApi.cancel = c)),
+      })
+      .then(({ data }) => data),
+};
+
+export const deleteProjectApi = {
+  cancel: null,
+  run: (idProyecto) =>
+    axios
+      .delete("/api/proyectos", {
+        cancelToken: new CancelToken((c) => (deleteProjectApi.cancel = c)),
+        params: { idProyecto },
+      })
+      .then(({ data }) => data),
+};

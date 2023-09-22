@@ -1,15 +1,18 @@
-import { useState } from 'react';
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import ToggleButton from '@mui/material/ToggleButton';
-import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import DashboardIcon from '@mui/icons-material/Dashboard';
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import DashboardIcon from "@mui/icons-material/Dashboard";
 
-export const Toggle = () => {
+export const Toggle = ({ idProyecto }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const initialValue = location.pathname === '/dashboard' ? 'dashboard' : 'register';
+  const initialValue =
+    location.pathname === `/proyectos/${idProyecto}/dashboard`
+      ? "dashboard"
+      : "register";
   const [toggleValue, setToggleValue] = useState(initialValue);
 
   const handleToggleChange = (event, newValue) => {
@@ -19,21 +22,25 @@ export const Toggle = () => {
   };
 
   const handleClickDashboard = () => {
-    navigate('/dashboard');
+    navigate(`/proyectos/${idProyecto}/dashboard`);
   };
 
   const handleClickRegister = () => {
-    navigate('/');
+    navigate(`/proyectos/${idProyecto}/registro`);
   };
 
   return (
-    <ToggleButtonGroup value={toggleValue} exclusive onChange={handleToggleChange}>
+    <ToggleButtonGroup
+      value={toggleValue}
+      exclusive
+      onChange={handleToggleChange}
+    >
       <ToggleButton value="register" onClick={handleClickRegister}>
-        <AssignmentIcon fontSize="small"/>
+        <AssignmentIcon fontSize="small" />
       </ToggleButton>
       <ToggleButton value="dashboard" onClick={handleClickDashboard}>
-        <DashboardIcon fontSize="small"/>
+        <DashboardIcon fontSize="small" />
       </ToggleButton>
     </ToggleButtonGroup>
   );
-}
+};

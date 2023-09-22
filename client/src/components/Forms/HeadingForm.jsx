@@ -41,23 +41,21 @@ const HeadingForm = ({ setOpen, editHead, idProyecto }) => {
         <h1 className="text-3xl mb-3 w-full text-center mt-5">
           {editHead ? "Editar Rubro" : "Nuevo Rubro"}
         </h1>
-        <div>
-          <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4">Nombre</label>
-            <TextField
-              sx={{ width: "15rem" }}
-              type="text"
-              label="Rubro"
-              autoComplete="off"
-              error={Boolean(errors.name)}
-              defaultValue={heading?.rubro || ""}
-              helperText={errors.name?.message}
-              {...register("name", {
-                required: true,
-                validate: (value) => textFieldValidation(value, 25),
-              })}
-            />
-          </div>
+        <div className="flex justify-end items-center w-full mb-3">
+          <label className="px-4">Nombre</label>
+          <TextField
+            sx={{ width: "15rem" }}
+            type="text"
+            label="Rubro"
+            autoComplete="off"
+            error={Boolean(errors.name)}
+            defaultValue={heading?.rubro || ""}
+            helperText={errors.name?.message}
+            {...register("name", {
+              required: true,
+              validate: (value) => textFieldValidation(value, 25),
+            })}
+          />
         </div>
         <div className="w-full flex justify-center">
           <Button variant="contained" type="submit">

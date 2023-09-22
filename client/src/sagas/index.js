@@ -28,4 +28,15 @@ export {
 } from "./advance";
 export { fetchPhaseSaga, insertPhaseSaga } from "./phase";
 export { fetchKpisSaga } from "./kpis";
-export { fetchProjectsSaga, insertProjectSaga } from "./projects";
+export {
+  fetchProjectsSaga,
+  insertProjectSaga,
+  updateProjectSaga,
+  deleteProjectSaga,
+} from "./projects";
+export {
+  fetchChampionsSaga,
+  insertChampionsSaga,
+  updateChampionsSaga,
+  deleteChampionsSaga,
+} from "./champions";

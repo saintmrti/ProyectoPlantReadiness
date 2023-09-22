@@ -1,7 +1,11 @@
 import { takeLatest, call, put, cancelled } from "redux-saga/effects";
 
-import { router } from "../components/routes";
-import { fetchProjectsApi, insertProjectApi } from "../api/projects";
+import {
+  fetchProjectsApi,
+  insertProjectApi,
+  updateProjectApi,
+  deleteProjectApi,
+} from "../api/projects";
 import {
   fetchProjectsRequest,
   fetchProjectsSuccess,
@@ -9,6 +13,12 @@ import {
   insertProjectRequest,
   insertProjectSuccess,
   insertProjectError,
+  updateProjectRequest,
+  updateProjectSuccess,
+  updateProjectError,
+  deleteProjectRequest,
+  deleteProjectSuccess,
+  deleteProjectError,
 } from "../slices/projects";
 
 function* fetchProjects() {
@@ -34,7 +44,6 @@ function* insertProject({ payload }) {
     const { data, isError } = yield call(insertProjectApi.run, payload);
     if (isError) throw new Error();
     yield put(insertProjectSuccess({ data }));
-    router.navigate(`/proyectos/${data.idProyecto}/registro`);
   } catch (e) {
     yield put(insertProjectError());
   } finally {
@@ -46,4 +55,40 @@ function* insertProject({ payload }) {
 
 export function* insertProjectSaga() {
   yield takeLatest(insertProjectRequest.toString(), insertProject);
+}
+
+function* updateProject({ payload }) {
+  try {
+    const { data, isError } = yield call(updateProjectApi.run, payload);
+    if (isError) throw new Error();
+    yield put(updateProjectSuccess({ data }));
+  } catch (e) {
+    yield put(updateProjectError());
+  } finally {
+    if (yield cancelled()) {
+      yield call(updateProjectApi.cancel);
+    }
+  }
+}
+
+export function* updateProjectSaga() {
+  yield takeLatest(updateProjectRequest.toString(), updateProject);
+}
+
+function* deleteProject({ payload: { idProyecto } }) {
+  try {
+    const { data, isError } = yield call(deleteProjectApi.run, idProyecto);
+    if (isError) throw new Error();
+    yield put(deleteProjectSuccess({ idProyecto: data }));
+  } catch (e) {
+    yield put(deleteProjectError());
+  } finally {
+    if (yield cancelled()) {
+      yield call(deleteProjectApi.cancel);
+    }
+  }
+}
+
+export function* deleteProjectSaga() {
+  yield takeLatest(deleteProjectRequest.toString(), deleteProject);
 }

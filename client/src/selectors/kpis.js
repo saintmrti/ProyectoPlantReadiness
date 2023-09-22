@@ -19,8 +19,8 @@ export const getSummaryKpis = createSelector(
     const parsePhasesYTD = JSON.parse(kpis[0]?.cumplimientoPorFaseYTD);
 
     const sortedEnergizer = _.orderBy(parseEnergizer, "totales", "desc");
-    const energizers = _.map(sortedEnergizer, "energizador");
-    const energizerTotal = _.map(sortedEnergizer, "totales");
+    const energizers = _.map(sortedEnergizer, "energizador").slice(0, 10);
+    const energizerTotal = _.map(sortedEnergizer, "totales").slice(0, 10);
     const orderedAdvance = _.orderBy(parseAdvance, (item) => {
       const avance = item.avance;
       const match = avance.match(/(\d+)%/);
@@ -117,6 +117,11 @@ export const getSummaryKpis = createSelector(
       },
     ];
 
+    const categoriesPhases = {
+      phasesTotal: _.map(parsePhases, "Fase"),
+      phasesYTD: _.map(parsePhasesYTD, "Fase"),
+    };
+
     const shippable_energizer = {
       categories: energizers,
       series: energizerTotal,
@@ -147,6 +152,7 @@ export const getSummaryKpis = createSelector(
         data: groupedByRealMonth,
       },
     ];
+
     const shippable_total = _.keyBy(parseShippable, "Id");
     const compliance_headings = _.keyBy(parseHeadings, "Id");
     const compliance_total = JSON.parse(kpis[0]?.cumplimiento_Total);
@@ -166,6 +172,7 @@ export const getSummaryKpis = createSelector(
       phasesYTD,
       cumplience_year,
       cumplience_month,
+      categoriesPhases,
     };
 
     return data;

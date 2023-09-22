@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import _ from "lodash";
 
 const Slice = createSlice({
-  name: "projects",
+  name: "champions",
   initialState: {
     list: {},
     isFetching: false,
@@ -15,66 +15,70 @@ const Slice = createSlice({
     didErrorDelete: false,
   },
   reducers: {
-    fetchProjectsRequest: (state) => {
+    fetchChampionsRequest: (state) => {
       state.isFetching = true;
       state.didError = false;
     },
-    fetchProjectsSuccess: (state, action) => {
+    fetchChampionsSuccess: (state, action) => {
       const { data } = action.payload;
       state.list = _.keyBy(data, "id");
       state.isFetching = false;
     },
-    fetchProjectsError: (state) => {
+    fetchChampionsError: (state) => {
       state.isFetching = false;
       state.didError = true;
     },
-    insertProjectRequest: (state) => {
+    insertChampionRequest: (state) => {
       state.isFetchingInsert = true;
       state.didErrorInsert = false;
     },
-    insertProjectSuccess: (state, { payload: { data } }) => {
+    insertChampionSuccess: (state, { payload: { data } }) => {
       state.list[data.id] = data;
       state.isFetchingInsert = false;
     },
-    insertProjectError: (state) => {
+    insertChampionError: (state) => {
       state.isFetchingInsert = false;
       state.didErrorInsert = true;
     },
-    updateProjectRequest: (state) => {
+    updateChampionRequest: (state) => {
       state.isFetchingUpdate = true;
       state.didErrorUpdate = false;
     },
-    updateProjectSuccess: (state, { payload: { data } }) => {
+    updateChampionSuccess: (state, { payload: { data } }) => {
       state.list[data.id] = data;
       state.isFetchingUpdate = false;
     },
-    updateProjectError: (state) => {
+    updateChampionError: (state) => {
       state.isFetchingUpdate = false;
       state.didErrorUpdate = true;
     },
-    deleteProjectRequest: (state) => {
+    deleteChampionRequest: (state) => {
       state.isFetchingDelete = true;
       state.didErrorDelete = false;
     },
-    deleteProjectSuccess: (state, { payload: { idProyecto } }) => {
-      delete state.list[idProyecto];
+    deleteChampionSuccess: (state, { payload: { idChampion } }) => {
+      delete state.list[idChampion];
       state.isFetchingDelete = false;
+    },
+    deleteChampionError: (state) => {
+      state.isFetchingDelete = false;
+      state.didErrorDelete = true;
     },
   },
 });
 
 export const {
-  fetchProjectsRequest,
-  fetchProjectsSuccess,
-  fetchProjectsError,
-  insertProjectRequest,
-  insertProjectSuccess,
-  insertProjectError,
-  updateProjectRequest,
-  updateProjectSuccess,
-  updateProjectError,
-  deleteProjectRequest,
-  deleteProjectSuccess,
-  deleteProjectError,
+  fetchChampionsRequest,
+  fetchChampionsSuccess,
+  fetchChampionsError,
+  insertChampionRequest,
+  insertChampionSuccess,
+  insertChampionError,
+  updateChampionRequest,
+  updateChampionSuccess,
+  updateChampionError,
+  deleteChampionRequest,
+  deleteChampionSuccess,
+  deleteChampionError,
 } = Slice.actions;
 export default Slice.reducer;

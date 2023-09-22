@@ -199,7 +199,7 @@ const Register = () => {
               </h1>
               <div className="w-2/3 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
             </div>
-            <div className="flex mb-3 justify-between">
+            <div className="flex mb-3 justify-between items-center">
               <div className="flex">
                 <div className="mr-2">
                   <Button variant="contained" onClick={handleOnClickHead}>
@@ -220,10 +220,10 @@ const Register = () => {
               <div className="flex items-center justify-center">
                 <div className="mr-5">
                   <Button variant="contained" onClick={() => navigate("/")}>
-                    Ir al inicio
+                    Inicio
                   </Button>
                 </div>
-                <Toggle />
+                <Toggle idProyecto={idProyecto} />
               </div>
             </div>
             <Box sx={{ width: "100%" }}>

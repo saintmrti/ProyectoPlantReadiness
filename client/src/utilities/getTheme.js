@@ -6,7 +6,7 @@ export const getTheme = (theme) => {
       palette: {
         mode: "light",
         header: "#FAFAFA",
-        bgcolor: "#F5F5F5",
+        bgcolor: "#F0F2F5",
         primary: {
           main: "#f51919",
         },
@@ -28,6 +28,7 @@ export const getTheme = (theme) => {
   return createTheme({
     palette: {
       mode: "dark",
+      bgcolor: "#0F0D0A",
       status: {
         error: "#f44336",
         warning: "#ffb428",
