@@ -20,6 +20,7 @@ import {
   deletePhaseSuccess,
   deletePhaseError,
 } from "../slices/phase";
+import { insertMachineRequest } from "../slices/machines";
 
 function* fetchPhase({ payload: { idProyecto } }) {
   try {
@@ -44,6 +45,13 @@ function* insertPhase({ payload }) {
     const { data, isError } = yield call(insertPhaseApi.run, payload);
     if (isError) throw new Error();
     yield put(insertPhaseSuccess({ data }));
+    yield put(
+      insertMachineRequest({
+        selectedMachines: payload.selectedMachines,
+        idFase: data.id,
+        idProyecto: payload.idProyecto,
+      })
+    );
   } catch (e) {
     yield put(insertPhaseError());
   } finally {
@@ -75,11 +83,11 @@ export function* updatePhaseSaga() {
   yield takeLatest(updatePhaseRequest.toString(), updatePhase);
 }
 
-function* deletePhase({ payload }) {
+function* deletePhase({ payload: { idFase } }) {
   try {
-    const { data, isError } = yield call(deletePhaseApi.run, payload);
+    const { data, isError } = yield call(deletePhaseApi.run, idFase);
     if (isError) throw new Error();
-    yield put(deletePhaseSuccess({ idGrupo: data }));
+    yield put(deletePhaseSuccess({ idFase: data }));
   } catch (e) {
     yield put(deletePhaseError());
   } finally {

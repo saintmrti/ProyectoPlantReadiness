@@ -31,7 +31,9 @@ const Slice = createSlice({
       state.didErrorInsert = false;
     },
     insertMachineSuccess: (state, { payload: { data } }) => {
-      state.list[data.id] = data;
+      _.forEach(data, (machine) => {
+        state.list[machine.id] = machine;
+      });
       state.isFetchingInsert = false;
     },
     insertMachineError: (state) => {

@@ -33,11 +33,11 @@ export const updatePhaseApi = {
 
 export const deletePhaseApi = {
   cancel: null,
-  run: (pha) =>
+  run: (idFase) =>
     axios
       .delete("/api/fases", {
         cancelToken: new CancelToken((c) => (deletePhaseApi.cancel = c)),
-        params: pha,
+        params: { idFase },
       })
       .then(({ data }) => data),
 };

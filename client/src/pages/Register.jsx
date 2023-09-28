@@ -22,17 +22,19 @@ import ShippableForm from "../components/Forms/ShippableForm";
 import PhaseForm from "../components/Forms/PhaseForm";
 import AdvanceForm from "../components/Forms/AdvanceForm";
 import HeadingForm from "../components/Forms/HeadingForm";
-import UpdatePhaseForm from "../components/Forms/UpdatePhaseForm";
 import ShippableTable from "../components/Tables/ShippableTable";
 import { fetchExpectancyRequest } from "../slices/expectancy";
 import { fetchShippableRequest } from "../slices/shippable";
 import { fetchAdvanceRequest } from "../slices/advance";
+import { fetchProjectsRequest } from "../slices/projects";
 import { headingsRequest } from "../slices/headings";
 import { machinesRequest } from "../slices/machines";
 import { fetchPhaseRequest } from "../slices/phase";
 import { groupedByIdExpectancy } from "../selectors/expectancy";
 import { summaryHeadings } from "../selectors/headings";
 import { summaryAdvanced } from "../selectors/advance";
+import { summaryMachines } from "../selectors/machines";
+import { getProject } from "../selectors/projects";
 import { CustomTabPanel, a11yProps } from "../components/Tabs/CustomTabPanel";
 import { Spinner } from "../components/Spinner";
 import { Error } from "../components/Error";
@@ -42,7 +44,6 @@ import { ExpectancyAlert } from "../components/Alert/ExpectancyAlert";
 import { AdvanceAlert } from "../components/Alert/AdvanceAlert";
 import { HeadingsAlert } from "../components/Alert/HeadingsAlert";
 import { PhaseAlert } from "../components/Alert/PhaseAlert";
-import { getProject } from "../selectors/projects";
 
 const style = {
   position: "absolute",
@@ -64,7 +65,6 @@ const Register = () => {
   const [openExp, setOpenExp] = useState(false);
   const [openShi, setOpenShi] = useState(false);
   const [openPha, setOpenPha] = useState(false);
-  const [openShi2, setOpenShi2] = useState(false);
   const [openAdv, setOpenAdv] = useState(false);
   const [openHead, setOpenHead] = useState(false);
   const [idExpectancy, setIdExpectancy] = useState(null);
@@ -84,26 +84,27 @@ const Register = () => {
   const [alertHead, setAlertHead] = useState(false);
   const [alertAdv, setAlertAdv] = useState(false);
   const [alertPha, setAlertPha] = useState(false);
-  const [phasesGroup, setPhasesGroup] = useState(null);
+  // const [phasesGroup, setPhasesGroup] = useState(null);
 
   const expectancy = useSelector(groupedByIdExpectancy);
   const advance = useSelector(summaryAdvanced);
   const headings = useSelector(summaryHeadings);
-  const { list: machines } = useSelector((state) => state.machines);
+  const machines = useSelector(summaryMachines);
+  const project = useSelector((state) => getProject(state, idProyecto));
+  // const { list: machines } = useSelector((state) => state.machines);
   // const { data: shippables } = useSelector((state) => state.shippable);
   const { list: fases } = useSelector((state) => state.phase);
-  const project = useSelector((state) => getProject(state, idProyecto));
   const { isFetching, didError } = useSelector((state) => state.advance);
 
-  const phasesByidGroup = _.uniqBy(_.values(fases), "idGrupo");
-  const maxIdGrupo = _.maxBy(_.values(fases), "idGrupo");
-  const usedMachines = _.uniqBy(_.values(fases), "idMaquina");
-  const updatedMachines = _.filter(machines, (machine) => {
-    return !_.some(
-      usedMachines,
-      (usedMachine) => usedMachine.idMaquina === machine.id
-    );
-  });
+  // const phasesByidGroup = _.uniqBy(_.values(fases), "idGrupo");
+  // const maxIdGrupo = _.maxBy(_.values(fases), "idGrupo");
+  // const usedMachines = _.uniqBy(_.values(fases), "idMaquina");
+  // const updatedMachines = _.filter(machines, (machine) => {
+  //   return !_.some(
+  //     usedMachines,
+  //     (usedMachine) => usedMachine.idMaquina === machine.id
+  //   );
+  // });
 
   const [value, setValue] = useState(0);
 
@@ -127,26 +128,32 @@ const Register = () => {
     setOpenHead(true);
   };
 
-  const handleOnClickAdv = (id, advance) => {
+  const handleOnClickPha = () => {
+    setEditPha(null);
+    setOpenPha(true);
+  };
+
+  const handleOnClickAdv = (id) => {
     setChangeShi(id);
     setEditAdv(null);
-    if (advance && advance[id] && advance[id].length > 0) {
-      const arrayAdv = advance[id];
-      const removePhase = phasesByidGroup.filter(
-        (fase) =>
-          !arrayAdv.some((advanceItem) => advanceItem.idGrupo === fase.idGrupo)
-      );
-      if (removePhase.length > 0) {
-        setPhasesGroup(removePhase);
-        setOpenAdv(true);
-      } else {
-        setPhasesGroup(null);
-        setAlertAdv(true);
-      }
-    } else {
-      setPhasesGroup(phasesByidGroup);
-      setOpenAdv(true);
-    }
+    setOpenAdv(true);
+    // if (advance && advance[id] && advance[id].length > 0) {
+    //   const arrayAdv = advance[id];
+    //   const removePhase = phasesByidGroup.filter(
+    //     (fase) =>
+    //       !arrayAdv.some((advanceItem) => advanceItem.idGrupo === fase.idGrupo)
+    //   );
+    //   if (removePhase.length > 0) {
+    //     setPhasesGroup(removePhase);
+    //     setOpenAdv(true);
+    //   } else {
+    //     setPhasesGroup(null);
+    //     setAlertAdv(true);
+    //   }
+    // } else {
+    //   setPhasesGroup(phasesByidGroup);
+    //   setOpenAdv(true);
+    // }
   };
 
   const handleOnClickEditShi = (id) => {
@@ -171,7 +178,7 @@ const Register = () => {
 
   const handleOnClickEditPha = (id) => {
     setEditPha(id);
-    setOpenShi2(true);
+    setOpenPha(true);
   };
 
   const handleOnClickDeleteShi = (id) => {
@@ -195,6 +202,7 @@ const Register = () => {
   };
 
   useEffect(() => {
+    dispatch(fetchProjectsRequest());
     dispatch(fetchExpectancyRequest({ idProyecto }));
     dispatch(fetchShippableRequest({ idProyecto }));
     dispatch(fetchAdvanceRequest({ idProyecto }));
@@ -230,7 +238,7 @@ const Register = () => {
                   </Button>
                 </div>
                 <div>
-                  <Button variant="contained" onClick={() => setOpenPha(true)}>
+                  <Button variant="contained" onClick={handleOnClickPha}>
                     Agregar fase
                   </Button>
                 </div>
@@ -301,7 +309,7 @@ const Register = () => {
                               </Button>
                               {item.shippables &&
                                 item.shippables.length > 0 &&
-                                Object.keys(fases).length > 0 && (
+                                Object.keys(machines).length > 0 && (
                                   <>
                                     <Button
                                       variant="text"
@@ -323,9 +331,10 @@ const Register = () => {
                               <ShippableTable
                                 data={item.shippables}
                                 idExpectancy={item.id}
-                                fases={fases}
+                                machines={machines}
                                 advance={advance[item?.id]}
                                 activeComment={activeComment}
+                                setActiveComment={setActiveComment}
                                 handleOnClickAdv={handleOnClickAdv}
                                 handleOnClickEditShi={handleOnClickEditShi}
                                 handleOnClickEditAdv={handleOnClickEditAdv}
@@ -416,9 +425,8 @@ const Register = () => {
                 </IconButton>
                 <PhaseForm
                   setOpen={setOpenPha}
-                  data={updatedMachines}
-                  idGrupo={maxIdGrupo?.idGrupo ? maxIdGrupo?.idGrupo + 1 : 1}
                   idProyecto={idProyecto}
+                  editPha={editPha}
                 />
               </Box>
             </Modal>
@@ -461,13 +469,13 @@ const Register = () => {
                 <AdvanceForm
                   setOpen={setOpenAdv}
                   idEntregable={changeShi}
-                  fases={phasesGroup}
+                  fases={fases}
                   editAdv={editAdv}
                   idProyecto={idProyecto}
                 />
               </Box>
             </Modal>
-            <Modal open={openShi2} onClose={() => setOpenShi2(false)}>
+            {/* <Modal open={openShi2} onClose={() => setOpenShi2(false)}>
               <Box sx={style}>
                 <IconButton
                   aria-label="close"
@@ -487,7 +495,7 @@ const Register = () => {
                   idProyecto={idProyecto}
                 />
               </Box>
-            </Modal>
+            </Modal> */}
             <ShippableAlert
               open={alertShi}
               onClose={() => setAlertShi(false)}
@@ -513,7 +521,6 @@ const Register = () => {
               onClose={() => setAlertPha(false)}
               deletePha={deletePha}
               setDeletePha={setDeletePha}
-              idProyecto={idProyecto}
             />
           </>
         )}

@@ -33,7 +33,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv, idProyecto }) => {
   const onSubmit = (values) => {
     const {
       responsable,
-      idGrupo,
+      idFase,
       fecha_inicio,
       fecha_termino,
       fecha_real,
@@ -56,7 +56,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv, idProyecto }) => {
       dispatch(updateAdvanceRequest(saveAdvance));
     } else {
       dispatch(changeAdvance(saveAdvance));
-      navigate(`/proyectos/${idProyecto}/avances/${idEntregable}/${idGrupo}`);
+      navigate(`/proyectos/${idProyecto}/avances/${idEntregable}/${idFase}`);
     }
   };
 
@@ -100,13 +100,13 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv, idProyecto }) => {
                   label="Seleccionar fase"
                   autoComplete="off"
                   defaultValue=""
-                  {...register("idGrupo", { required: true })}
+                  {...register("idFase", { required: true })}
                 >
                   <MenuItem value="">
                     <em>Seleccionar fase</em>
                   </MenuItem>
                   {_.map(fases, (item) => (
-                    <MenuItem key={item.id} value={item.idGrupo}>
+                    <MenuItem key={item.id} value={item.id}>
                       {item.fase}
                     </MenuItem>
                   ))}

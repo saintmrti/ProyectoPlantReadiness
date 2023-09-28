@@ -20,7 +20,6 @@ export const summaryAdvanced = createSelector(
         idEntregable: item.idEntregable,
         idFase: item.idFase,
         idMaquina: item.idMaquina,
-        idGrupo: item.idGrupo,
         responsable: item.responsable,
         fecha_inicio: formatearFecha(item.fecha_inicio),
         fecha_termino: formatearFecha(item.fecha_termino),

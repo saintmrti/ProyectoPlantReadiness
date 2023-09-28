@@ -101,7 +101,7 @@ const MachinesForm = ({
 
           const value = values[key] !== undefined ? values[key] : "";
           result[index][fieldName] = value;
-          result[index]["idFase"] = fases[index].id;
+          result[index]["idMaquina"] = fases[index].id;
           result[index]["idEntregable"] = idEntregable;
           result[index]["idProyecto"] = idProyecto;
         }

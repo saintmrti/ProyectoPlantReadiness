@@ -4,27 +4,28 @@ import { useSelector, useDispatch } from "react-redux";
 import _ from "lodash";
 
 import MachinesForm from "../components/Forms/MachinesForm";
-import { fetchPhaseRequest } from "../slices/phase";
+import { summaryMachines } from "../selectors/machines";
+import { machinesRequest } from "../slices/machines";
 import { Spinner } from "../components/Spinner";
 import { Error } from "../components/Error";
 
 const Advance = () => {
   const dispatch = useDispatch();
-  const { idProyecto, idEntregable, idGrupo } = useParams();
-  const { list: fases } = useSelector((state) => state.phase);
+  const { idProyecto, idEntregable, idFase } = useParams();
+  const machines = useSelector(summaryMachines);
   const isFetchingInsert = useSelector(
     (state) => state.advance.isFetchingInsert
   );
   const { isFetching, didError } = useSelector((state) => state.phase);
   const advanceState = useSelector((state) => state.setAdvance);
 
-  const filterFases = _.filter(
-    fases,
-    (item) => item.idGrupo === parseInt(idGrupo)
+  const filterMachines = _.filter(
+    machines,
+    (item) => item.idFase === parseInt(idFase)
   );
 
   useEffect(() => {
-    dispatch(fetchPhaseRequest({ idProyecto }));
+    dispatch(machinesRequest({ idProyecto }));
   }, [dispatch, idProyecto]);
 
   return (
@@ -37,7 +38,7 @@ const Advance = () => {
         <MachinesForm
           idEntregable={idEntregable}
           idProyecto={idProyecto}
-          fases={filterFases}
+          fases={filterMachines}
           isFetching={isFetchingInsert}
           advanceState={advanceState}
         />

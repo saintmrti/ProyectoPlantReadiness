@@ -1,6 +1,6 @@
 module.exports.getSummary = async (conn, { idProyecto }) => {
   const { data } = await conn.query(`
-        SELECT * FROM vki40_expectativas
+        SELECT * FROM vki40_Readiness_expectativas
         WHERE idProyecto = ${idProyecto};
     `);
   return data;
@@ -13,12 +13,12 @@ module.exports.insertExpectancy = async (
   const {
     info: { insertId },
   } = await conn.query(`
-    INSERT INTO vki40_expectativas (fecha, expectativa, rubro, idProyecto)
+    INSERT INTO vki40_Readiness_expectativas (fecha, expectativa, rubro, idProyecto)
     VALUES (GETDATE(), '${expectancy}', ${area}, ${idProyecto});
   `);
 
   const { data } = await conn.query(`
-    SELECT * FROM vki40_expectativas WHERE id = ${insertId};
+    SELECT * FROM vki40_Readiness_expectativas WHERE id = ${insertId};
   `);
 
   return data[0];
@@ -29,7 +29,7 @@ module.exports.updateExpectancy = async (
   { expectancy, idExpectativa }
 ) => {
   await conn.query(`
-    UPDATE vki40_expectativas
+    UPDATE vki40_Readiness_expectativas
     SET
       fecha = GETDATE(),
       expectativa = '${expectancy}'
@@ -37,7 +37,7 @@ module.exports.updateExpectancy = async (
   `);
 
   const { data } = await conn.query(`
-    SELECT * FROM vki40_expectativas WHERE id = ${idExpectativa};
+    SELECT * FROM vki40_Readiness_expectativas WHERE id = ${idExpectativa};
   `);
 
   return data[0];
@@ -45,15 +45,15 @@ module.exports.updateExpectancy = async (
 
 module.exports.deleteExpectancy = async (conn, { idExpectativa }) => {
   await conn.query(`
-    DELETE FROM vki40_avances WHERE idEntregable IN (SELECT id FROM vki40_entregables WHERE idExpectativa = ${idExpectativa});
+    DELETE FROM vki40_Readiness_avances WHERE idEntregable IN (SELECT id FROM vki40_Readiness_entregables WHERE idExpectativa = ${idExpectativa});
   `);
 
   await conn.query(`
-    DELETE FROM vki40_entregables WHERE idExpectativa = ${idExpectativa};
+    DELETE FROM vki40_Readiness_entregables WHERE idExpectativa = ${idExpectativa};
   `);
 
   await conn.query(`
-    DELETE FROM vki40_expectativas WHERE id = ${idExpectativa};
+    DELETE FROM vki40_Readiness_expectativas WHERE id = ${idExpectativa};
   `);
 
   return idExpectativa;

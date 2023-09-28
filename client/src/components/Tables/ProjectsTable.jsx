@@ -16,7 +16,6 @@ import Tooltip from "@mui/material/Tooltip";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Avatar from "@mui/material/Avatar";
 
 import { ProjectBar } from "../ProgressBar/ProjectBar";
 
@@ -54,13 +53,10 @@ const ProjectsTable = ({
               <TableRow>
                 {/* <TableCell><b>ID</b></TableCell> */}
                 <TableCell>
-                  <b>Insignia</b>
+                  <b>ID</b>
                 </TableCell>
                 <TableCell>
                   <b>Nombre</b>
-                </TableCell>
-                <TableCell align="center">
-                  <b>Id</b>
                 </TableCell>
                 <TableCell align="center">
                   <b>Entregables</b>
@@ -79,15 +75,8 @@ const ProjectsTable = ({
               {_.map(list, (item) => (
                 <TableRow key={item.id}>
                   {/* <TableCell>{item.idProyecto}</TableCell> */}
-                  <TableCell>
-                    <Avatar
-                      sx={{ width: 50, height: 50 }}
-                      alt={item.nombre}
-                      src={item.icono}
-                    />
-                  </TableCell>
-                  <TableCell>{item.nombre}</TableCell>
-                  <TableCell align="center">{item?.idProyecto}</TableCell>
+                  <TableCell>{item?.id}</TableCell>
+                  <TableCell>{item?.nombre}</TableCell>
                   <TableCell align="center">
                     {item && item.Plan > 0
                       ? item?.Real + "/" + item?.Plan

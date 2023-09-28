@@ -1,4 +1,3 @@
-const _ = require("lodash");
 const response = require("../helpers/response");
 const {
   insertPhase,
@@ -22,16 +21,12 @@ module.exports.getPhases = (req, res) => {
 
 module.exports.createPhase = (req, res) => {
   try {
-    const { newPhases } = req.body;
-    const modifiedArray = _.map(newPhases, (item) => {
-      return {
-        idMaquina: parseInt(item.idMaquina),
-        idGrupo: parseInt(item.idGrupo),
-        fase: item.fase,
-        idProyecto: parseInt(item.idProyecto),
-      };
-    });
-    response(res, false, insertPhase, modifiedArray);
+    const { idProyecto, name } = req.body;
+    const newMachines = {
+      idProyecto: parseInt(idProyecto),
+      fase: name,
+    };
+    response(res, false, insertPhase, newMachines);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -40,11 +35,10 @@ module.exports.createPhase = (req, res) => {
 
 module.exports.modifyPhase = (req, res) => {
   try {
-    const { idGrupo, fase, idProyecto } = req.body;
+    const { id, fase } = req.body;
     const phase = {
-      idGrupo,
+      idFase: id,
       fase,
-      idProyecto: parseInt(idProyecto),
     };
     response(res, false, updatePhase, phase);
   } catch (error) {
@@ -55,10 +49,9 @@ module.exports.modifyPhase = (req, res) => {
 
 module.exports.deletePhase = (req, res) => {
   try {
-    const { idGrupo, idProyecto } = req.query;
+    const { idFase } = req.query;
     const phase = {
-      idGrupo: parseInt(idGrupo),
-      idProyecto: parseInt(idProyecto),
+      idFase: parseInt(idFase),
     };
     response(res, true, deletePhase, phase);
   } catch (error) {

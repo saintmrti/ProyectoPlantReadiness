@@ -33,9 +33,7 @@ const Slice = createSlice({
       state.didErrorInsert = false;
     },
     insertPhaseSuccess: (state, { payload: { data } }) => {
-      _.forEach(data, (item) => {
-        state.list[item.id] = item;
-      });
+      state.list[data.id] = data;
       state.isFetchingInsert = false;
     },
     insertPhaseError: (state) => {
@@ -47,9 +45,7 @@ const Slice = createSlice({
       state.didErrorUpdate = false;
     },
     updatePhaseSuccess: (state, { payload: { data } }) => {
-      _.forEach(data, (item) => {
-        state.list[item.id] = item;
-      });
+      state.list[data.id] = data;
       state.isFetchingUpdate = false;
     },
     updatePhaseError: (state) => {
@@ -60,8 +56,8 @@ const Slice = createSlice({
       state.isFetchingDelete = true;
       state.didErrorDelete = false;
     },
-    deletePhaseSuccess: (state, { payload: { idGrupo } }) => {
-      state.list = _.omitBy(state.list, (item) => item.idGrupo === idGrupo);
+    deletePhaseSuccess: (state, { payload: { idFase } }) => {
+      delete state.list[idFase];
       state.isFetchingDelete = false;
     },
   },

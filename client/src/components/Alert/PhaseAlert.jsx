@@ -11,19 +11,13 @@ import {
 import { deletePhaseRequest } from "../../slices/phase";
 import { getPhase } from "../../selectors/phase";
 
-export const PhaseAlert = ({
-  open,
-  onClose,
-  deletePha,
-  setDeletePha,
-  idProyecto,
-}) => {
+export const PhaseAlert = ({ open, onClose, deletePha, setDeletePha }) => {
   const dispatch = useDispatch();
 
   const phase = useSelector((state) => getPhase(state, deletePha));
 
   const handleOnConfirm = () => {
-    dispatch(deletePhaseRequest({ idGrupo: phase?.idGrupo, idProyecto }));
+    dispatch(deletePhaseRequest({ idFase: phase.id }));
     setDeletePha(null);
     onClose();
   };

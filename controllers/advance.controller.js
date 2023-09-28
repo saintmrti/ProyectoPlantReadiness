@@ -28,7 +28,7 @@ module.exports.createAdvance = (req, res) => {
       return {
         idEntregable: parseInt(item.idEntregable),
         idProyecto: parseInt(item.idProyecto),
-        idFase: item.idFase,
+        idMaquina: item.idMaquina,
         responsable: item.responsible === "" ? null : `'${item.responsible}'`,
         fecha_inicio: item.startDate === "" ? null : `'${item.startDate}'`,
         fecha_termino: item.endDate === "" ? null : `'${item.endDate}'`,

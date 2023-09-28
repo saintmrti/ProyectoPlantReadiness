@@ -24,7 +24,7 @@ export const router = createBrowserRouter([
           element={<Dashboard />}
         />
         <Route
-          path="/proyectos/:idProyecto/avances/:idEntregable/:idGrupo"
+          path="/proyectos/:idProyecto/avances/:idEntregable/:idFase"
           element={<Advance />}
         />
         <Route

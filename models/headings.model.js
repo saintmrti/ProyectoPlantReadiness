@@ -1,6 +1,6 @@
 module.exports.getSummary = async (conn, { idProyecto }) => {
   const { data } = await conn.query(`
-        SELECT * FROM vki40_rubros
+        SELECT * FROM vki40_Readiness_rubros
         WHERE idProyecto = ${idProyecto};
     `);
   return data;
@@ -10,12 +10,12 @@ module.exports.insertHeading = async (conn, { name, idProyecto }) => {
   const {
     info: { insertId },
   } = await conn.query(`
-        INSERT INTO vki40_rubros (rubro, idProyecto)
+        INSERT INTO vki40_Readiness_rubros (rubro, idProyecto)
         VALUES ('${name}', ${idProyecto});
     `);
 
   const { data } = await conn.query(`
-        SELECT * FROM vki40_rubros WHERE id = ${insertId};
+        SELECT * FROM vki40_Readiness_rubros WHERE id = ${insertId};
     `);
 
   return data[0];
@@ -23,12 +23,12 @@ module.exports.insertHeading = async (conn, { name, idProyecto }) => {
 
 module.exports.updateHeading = async (conn, { id, name }) => {
   await conn.query(`
-        UPDATE vki40_rubros
+        UPDATE vki40_Readiness_rubros
         SET rubro = '${name}'
         WHERE id = ${id};
     `);
   const { data } = await conn.query(`
-        SELECT * FROM vki40_rubros WHERE id = ${id};
+        SELECT * FROM vki40_Readiness_rubros WHERE id = ${id};
     `);
   return data[0];
 };
@@ -39,19 +39,19 @@ module.exports.deleteHeading = async (conn, { idRubro }) => {
 
     SET @rubroID = ${idRubro};
     
-    DELETE FROM vki40_avances WHERE idEntregable IN (
-      SELECT id FROM vki40_entregables WHERE idExpectativa IN (
-        SELECT id FROM vki40_expectativas WHERE rubro = @rubroID
+    DELETE FROM vki40_Readiness_avances WHERE idEntregable IN (
+      SELECT id FROM vki40_Readiness_entregables WHERE idExpectativa IN (
+        SELECT id FROM vki40_Readiness_expectativas WHERE rubro = @rubroID
       )
     );
     
-    DELETE FROM vki40_entregables WHERE idExpectativa IN (
-      SELECT id FROM vki40_expectativas WHERE rubro = @rubroID
+    DELETE FROM vki40_Readiness_entregables WHERE idExpectativa IN (
+      SELECT id FROM vki40_Readiness_expectativas WHERE rubro = @rubroID
     );
     
-    DELETE FROM vki40_expectativas WHERE rubro = @rubroID;
+    DELETE FROM vki40_Readiness_expectativas WHERE rubro = @rubroID;
     
-    DELETE FROM vki40_rubros WHERE id = @rubroID;
+    DELETE FROM vki40_Readiness_rubros WHERE id = @rubroID;
     `);
   return idRubro;
 };

@@ -18,11 +18,9 @@ module.exports.getProjects = (req, res) => {
 
 module.exports.createProject = (req, res) => {
   try {
-    const { nombre, icono, idProyecto } = req.body;
+    const { nombre } = req.body;
     const newProject = {
       nombre,
-      icono,
-      idProyecto: parseInt(idProyecto),
     };
     response(res, false, insertProject, newProject);
   } catch (error) {
@@ -33,12 +31,10 @@ module.exports.createProject = (req, res) => {
 
 module.exports.modifyProject = (req, res) => {
   try {
-    const { id, nombre, icono, idProyecto } = req.body;
+    const { id, nombre } = req.body;
     const project = {
       id: parseInt(id),
       nombre,
-      icono,
-      idProyecto: parseInt(idProyecto),
     };
     response(res, false, updateProject, project);
   } catch (error) {

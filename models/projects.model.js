@@ -2,19 +2,19 @@ module.exports.getSummary = async (conn) => {
   const { data } = await conn.query(`
     SELECT
     Proy.*,
-    (SELECT COUNT(*) FROM vki40_avances E WHERE E.idProyecto = Proy.id AND E.avance = 100) as [Real],
-    (SELECT COUNT(*) FROM vki40_avances E WHERE E.idProyecto = Proy.id) as [Plan]
+    (SELECT COUNT(*) FROM vki40_Readiness_avances E WHERE E.idProyecto = Proy.id AND E.avance = 100) as [Real],
+    (SELECT COUNT(*) FROM vki40_Readiness_avances E WHERE E.idProyecto = Proy.id) as [Plan]
     FROM vki40_Readiness_proyectos Proy;
   `);
   return data;
 };
 
-module.exports.insertProject = async (conn, { nombre, icono, idProyecto }) => {
+module.exports.insertProject = async (conn, { nombre }) => {
   const {
     info: { insertId },
   } = await conn.query(`
-        INSERT INTO vki40_Readiness_proyectos (nombre, icono, idProyecto)
-        VALUES ('${nombre}', '${icono}', ${idProyecto});
+        INSERT INTO vki40_Readiness_proyectos (nombre)
+        VALUES ('${nombre}');
     `);
 
   const { data } = await conn.query(`
@@ -24,16 +24,11 @@ module.exports.insertProject = async (conn, { nombre, icono, idProyecto }) => {
   return data[0];
 };
 
-module.exports.updateProject = async (
-  conn,
-  { id, nombre, icono, idProyecto }
-) => {
+module.exports.updateProject = async (conn, { id, nombre }) => {
   await conn.query(`
           UPDATE vki40_Readiness_proyectos
           SET
-            nombre = '${nombre}',
-            icono = '${icono}',
-            idProyecto = ${idProyecto}
+            nombre = '${nombre}'
           WHERE id= ${id};
       `);
 
@@ -50,17 +45,17 @@ module.exports.deleteProject = async (conn, { idProyecto }) => {
 
     SET @proyectoID = ${idProyecto};
 
-    DELETE FROM vki40_avances WHERE idProyecto = @proyectoID;
+    DELETE FROM vki40_Readiness_avances WHERE idProyecto = @proyectoID;
 
-    DELETE FROM vki40_entregables WHERE idProyecto = @proyectoID;
+    DELETE FROM vki40_Readiness_entregables WHERE idProyecto = @proyectoID;
 
-    DELETE FROM vki40_expectativas WHERE idProyecto = @proyectoID;
+    DELETE FROM vki40_Readiness_expectativas WHERE idProyecto = @proyectoID;
 
-    DELETE FROM vki40_rubros WHERE idProyecto = @proyectoID;
+    DELETE FROM vki40_Readiness_rubros WHERE idProyecto = @proyectoID;
 
-    DELETE FROM vki40_fases WHERE idProyecto = @proyectoID;
+    DELETE FROM vki40_Readiness_fases WHERE idProyecto = @proyectoID;
 
-    DELETE FROM vki40_maquinas_PR WHERE idProyecto = @proyectoID;
+    DELETE FROM vki40_Readiness_maquinas WHERE idProyecto = @proyectoID;
 
     DELETE FROM vki40_Readiness_proyectos WHERE id = @proyectoID;
   `);
