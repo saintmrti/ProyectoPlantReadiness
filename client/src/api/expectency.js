@@ -1,5 +1,16 @@
 import axios, { CancelToken } from "axios";
 
+export const fetchExpectancyApi = {
+  cancel: null,
+  run: (idProyecto) =>
+    axios
+      .get("/api/expectativas", {
+        cancelToken: new CancelToken((c) => (fetchExpectancyApi.cancel = c)),
+        params: { idProyecto },
+      })
+      .then(({ data }) => data),
+};
+
 export const insertExpectancyApi = {
   cancel: null,
   run: (exp) =>
@@ -10,12 +21,23 @@ export const insertExpectancyApi = {
       .then(({ data }) => data),
 };
 
-export const fetchExpectancyApi = {
+export const updateExpectancyApi = {
   cancel: null,
-  run: () =>
+  run: (exp) =>
     axios
-      .get("/api/expectativas", {
-        cancelToken: new CancelToken((c) => (fetchExpectancyApi.cancel = c)),
+      .put("/api/expectativas", exp, {
+        cancelToken: new CancelToken((c) => (updateExpectancyApi.cancel = c)),
+      })
+      .then(({ data }) => data),
+};
+
+export const deleteExpectancyApi = {
+  cancel: null,
+  run: (idExpectativa) =>
+    axios
+      .delete("/api/expectativas", {
+        cancelToken: new CancelToken((c) => (deleteExpectancyApi.cancel = c)),
+        params: { idExpectativa },
       })
       .then(({ data }) => data),
 };

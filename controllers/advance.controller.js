@@ -9,7 +9,11 @@ const {
 
 module.exports.getAdvances = (req, res) => {
   try {
-    response(res, null, getSummary);
+    const { idProyecto } = req.query;
+    const project = {
+      idProyecto: parseInt(idProyecto),
+    };
+    response(res, false, getSummary, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -18,12 +22,13 @@ module.exports.getAdvances = (req, res) => {
 
 module.exports.createAdvance = (req, res) => {
   try {
-    const { filteredArray } = req.body;
+    const { advance } = req.body;
 
-    const modifiedArray = _.map(filteredArray, (item) => {
+    const modifiedArray = _.map(advance, (item) => {
       return {
         idEntregable: parseInt(item.idEntregable),
-        idFase: item.idFase,
+        idProyecto: parseInt(item.idProyecto),
+        idMaquina: item.idMaquina,
         responsable: item.responsible === "" ? null : `'${item.responsible}'`,
         fecha_inicio: item.startDate === "" ? null : `'${item.startDate}'`,
         fecha_termino: item.endDate === "" ? null : `'${item.endDate}'`,
@@ -32,7 +37,7 @@ module.exports.createAdvance = (req, res) => {
         comentarios: item.comments === "" ? null : `'${item.comments}'`,
       };
     });
-    response(res, null, insertAdvance, modifiedArray);
+    response(res, false, insertAdvance, modifiedArray);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -52,15 +57,14 @@ module.exports.modifyAdvance = (req, res) => {
     } = req.body;
     const modifiedRegister = {
       idAvance,
-      responsable: responsable === "" ? null : `'${responsable}'`,
-      fecha_inicio: fecha_inicio === "" ? null : `'${fecha_inicio}'`,
-      fecha_termino: fecha_termino === "" ? null : `'${fecha_termino}'`,
-      fecha_real: fecha_real === "" ? null : `'${fecha_real}'`,
-      avance: avance === "" ? null : avance,
-      comentarios: comentarios === "" ? null : `'${comentarios}'`,
+      responsable: responsable || null,
+      fecha_inicio: fecha_inicio || null,
+      fecha_termino: fecha_termino || null,
+      fecha_real: fecha_real || null,
+      avance: avance || null,
+      comentarios: comentarios || null,
     };
-
-    response(res, null, updateAdvance, modifiedRegister);
+    response(res, false, updateAdvance, modifiedRegister);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

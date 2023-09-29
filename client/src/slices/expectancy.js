@@ -9,6 +9,10 @@ const Slice = createSlice({
     didError: false,
     isFetchingInsert: false,
     didErrorInsert: false,
+    didErrorUpdate: false,
+    isFetchingUpdate: false,
+    didErrorDelete: false,
+    isFetchingDelete: false,
   },
   reducers: {
     fetchExpectancyRequest: (state) => {
@@ -36,6 +40,30 @@ const Slice = createSlice({
       state.isFetchingInsert = false;
       state.didErrorInsert = true;
     },
+    updateExpectancyRequest: (state) => {
+      state.isFetchingUpdate = true;
+      state.didErrorUpdate = false;
+    },
+    updateExpectancySuccess: (state, { payload: { data } }) => {
+      state.data[data.id] = data;
+      state.isFetchingUpdate = false;
+    },
+    updateExpectancyError: (state) => {
+      state.isFetchingUpdate = false;
+      state.didErrorUpdate = true;
+    },
+    deleteExpectancyRequest: (state) => {
+      state.isFetchingDelete = true;
+      state.didErrorDelete = false;
+    },
+    deleteExpectancySuccess: (state, { payload: { idExpectativa } }) => {
+      delete state.data[idExpectativa];
+      state.isFetchingDelete = false;
+    },
+    deleteExpectancyError: (state) => {
+      state.isFetchingDelete = false;
+      state.didErrorDelete = true;
+    },
   },
 });
 
@@ -46,5 +74,11 @@ export const {
   insertExpectancyRequest,
   insertExpectancySuccess,
   insertExpectancyError,
+  updateExpectancyRequest,
+  updateExpectancySuccess,
+  updateExpectancyError,
+  deleteExpectancyRequest,
+  deleteExpectancySuccess,
+  deleteExpectancyError,
 } = Slice.actions;
 export default Slice.reducer;

@@ -21,9 +21,9 @@ import {
   deleteShippableError,
 } from "../slices/shippable";
 
-function* fetchShippable() {
+function* fetchShippable({ payload: { idProyecto } }) {
   try {
-    const { data, isError } = yield call(fetchShippableApi.run);
+    const { data, isError } = yield call(fetchShippableApi.run, idProyecto);
     if (isError) throw new Error();
     yield put(fetchShippableSuccess({ data }));
   } catch (e) {

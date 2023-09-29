@@ -9,16 +9,18 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import {
-  textFieldValidation,
-  dateFieldValidation,
-  numberFieldValidation,
-} from "./validated";
+import { textFieldValidation } from "./validated";
 import { changeAdvance } from "../../slices/setAdvance";
 import { getAdvance } from "../../selectors/advance";
 import { updateAdvanceRequest } from "../../slices/advance";
 
-const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv }) => {
+const AdvanceForm = ({
+  setOpen,
+  phases,
+  idEntregable,
+  editAdv,
+  idProyecto,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -33,7 +35,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv }) => {
   const onSubmit = (values) => {
     const {
       responsable,
-      idGrupo,
+      idFase,
       fecha_inicio,
       fecha_termino,
       fecha_real,
@@ -52,10 +54,12 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv }) => {
       idAvance: editAdv,
     };
 
-    editAdv
-      ? dispatch(updateAdvanceRequest(saveAdvance))
-      : (dispatch(changeAdvance(saveAdvance)),
-        navigate(`/avances/${idEntregable}/${idGrupo}`));
+    if (editAdv) {
+      dispatch(updateAdvanceRequest(saveAdvance));
+    } else {
+      dispatch(changeAdvance(saveAdvance));
+      navigate(`/proyectos/${idProyecto}/avances/${idEntregable}/${idFase}`);
+    }
   };
 
   useEffect(() => {
@@ -82,7 +86,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv }) => {
               error={Boolean(errors.responsable)}
               helperText={errors.responsable?.message}
               {...register("responsable", {
-                required: true,
+                required: false,
                 validate: (value) => textFieldValidation(value, 30),
               })}
             />
@@ -98,13 +102,13 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv }) => {
                   label="Seleccionar fase"
                   autoComplete="off"
                   defaultValue=""
-                  {...register("idGrupo", { required: true })}
+                  {...register("idFase", { required: true })}
                 >
                   <MenuItem value="">
                     <em>Seleccionar fase</em>
                   </MenuItem>
-                  {_.map(fases, (item) => (
-                    <MenuItem key={item.id} value={item.idGrupo}>
+                  {_.map(phases, (item) => (
+                    <MenuItem key={item.id} value={item.id}>
                       {item.fase}
                     </MenuItem>
                   ))}
@@ -120,8 +124,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv }) => {
               error={Boolean(errors.fecha_inicio)}
               helperText={errors.fecha_inicio?.message}
               {...register("fecha_inicio", {
-                required: true,
-                validate: (value) => dateFieldValidation(value),
+                required: false,
               })}
             />
           </div>
@@ -133,8 +136,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv }) => {
               error={Boolean(errors.fecha_termino)}
               helperText={errors.fecha_termino?.message}
               {...register("fecha_termino", {
-                required: true,
-                validate: (value) => dateFieldValidation(value),
+                required: false,
               })}
             />
           </div>
@@ -157,8 +159,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv }) => {
                 max: 100,
               }}
               {...register("avance", {
-                required: true,
-                validate: (value) => numberFieldValidation(value),
+                required: false,
               })}
             />
           </div>

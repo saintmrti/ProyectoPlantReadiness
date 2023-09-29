@@ -9,21 +9,22 @@ const Slice = createSlice({
     didError: false,
   },
   reducers: {
-    kpisRequest: (state) => {
+    fetchKpisRequest: (state) => {
       state.isFetching = true;
       state.didError = false;
     },
-    kpisSuccess: (state, action) => {
+    fetchKpisSuccess: (state, action) => {
       const { data } = action.payload;
       state.data = data;
       state.isFetching = false;
     },
-    kpisError: (state) => {
+    fetchKpisError: (state) => {
       state.isFetching = false;
       state.didError = true;
     },
   },
 });
 
-export const { kpisRequest, kpisSuccess, kpisError } = Slice.actions;
+export const { fetchKpisRequest, fetchKpisSuccess, fetchKpisError } =
+  Slice.actions;
 export default Slice.reducer;

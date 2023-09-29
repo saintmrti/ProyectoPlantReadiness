@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -37,21 +37,24 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const ShippableTable = ({
   data,
-  fases,
+  machines,
   advance,
   activeComment,
+  setActiveComment,
   idExpectancy,
   handleOnClickAdv,
   handleOnClickEditShi,
   handleOnClickEditAdv,
   handleOnClickDeleteShi,
+  handleOnClickEditPha,
+  handleOnClickDeletePha,
 }) => {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(null);
 
   const handleNext = () => {
     setActiveIndex(
       (prevIndex) => {
-        const ids = Object.keys(fases);
+        const ids = Object.keys(machines);
         const currentIndex = ids.indexOf(String(prevIndex));
         const nextIndex = (currentIndex + 1) % ids.length;
         return parseInt(ids[nextIndex]);
@@ -63,7 +66,7 @@ const ShippableTable = ({
   const handlePrev = () => {
     setActiveIndex(
       (prevIndex) => {
-        const ids = Object.keys(fases);
+        const ids = Object.keys(machines);
         const currentIndex = _.findIndex(ids, (id) => id === String(prevIndex));
         const backIndex =
           currentIndex === 0 ? ids.length - 1 : currentIndex - 1;
@@ -72,6 +75,12 @@ const ShippableTable = ({
       // prevIndex === 1 ? _.size(fases) : prevIndex - 1
     );
   };
+
+  useEffect(() => {
+    const ids = Object.keys(machines);
+    setActiveIndex(parseInt(ids[0]));
+    Object.keys(machines).length === 0 && setActiveComment(true);
+  }, [machines, setActiveComment]);
 
   return (
     <>
@@ -83,29 +92,55 @@ const ShippableTable = ({
           <TableHead>
             {!activeComment && (
               <TableRow>
-                <StyledTableCell colSpan={2}></StyledTableCell>
+                <StyledTableCell colSpan={1}></StyledTableCell>
                 <StyledTableCell colSpan={7} sx={{ textAlign: "center" }}>
-                  <div className="flex items-center">
-                    <div className="mx-auto">
-                      {`${fases[activeIndex]?.fase} - ${fases[activeIndex]?.maquina}`}
+                  {activeIndex && machines[activeIndex] && (
+                    <div className="flex items-center justify-center">
+                      <div className="flex items-center justify-center">
+                        <IconButton
+                          aria-label="back"
+                          size="small"
+                          onClick={() => handlePrev(idExpectancy.id)}
+                        >
+                          <ArrowBackIcon />
+                        </IconButton>
+                        <div className="w-56">
+                          {`${machines[activeIndex]?.fase} - ${machines[activeIndex]?.maquina}`}
+                        </div>
+                        <IconButton
+                          aria-label="forward"
+                          size="small"
+                          onClick={() => handleNext(idExpectancy.id)}
+                        >
+                          <ArrowForwardIcon />
+                        </IconButton>
+                      </div>
                     </div>
+                  )}
+                </StyledTableCell>
+                <StyledTableCell align="right" sx={{ width: "100px" }}>
+                  {activeIndex && machines[activeIndex] && (
                     <div>
                       <IconButton
-                        aria-label="back"
+                        aria-label="edit"
                         size="small"
-                        onClick={() => handlePrev(idExpectancy.id)}
+                        onClick={() =>
+                          handleOnClickEditPha(machines[activeIndex]?.idFase)
+                        }
                       >
-                        <ArrowBackIcon />
+                        <EditIcon />
                       </IconButton>
                       <IconButton
-                        aria-label="forward"
+                        aria-label="delete"
                         size="small"
-                        onClick={() => handleNext(idExpectancy.id)}
+                        onClick={() =>
+                          handleOnClickDeletePha(machines[activeIndex]?.idFase)
+                        }
                       >
-                        <ArrowForwardIcon />
+                        <DeleteIcon />
                       </IconButton>
                     </div>
-                  </div>
+                  )}
                 </StyledTableCell>
               </TableRow>
             )}
@@ -116,7 +151,6 @@ const ShippableTable = ({
                 <>
                   <StyledTableCell>Evidencia</StyledTableCell>
                   <StyledTableCell align="center">Prioridad</StyledTableCell>
-                  {/* <StyledTableCell align="center">Ponderación</StyledTableCell> */}
                   <StyledTableCell align="center">Comentarios</StyledTableCell>
                   <StyledTableCell align="center"></StyledTableCell>
                 </>
@@ -155,9 +189,6 @@ const ShippableTable = ({
                     <StyledTableCell align="center">
                       {item.prioridad}
                     </StyledTableCell>
-                    {/* <StyledTableCell align="center">
-                      {item.ponderacion}
-                    </StyledTableCell> */}
                     <StyledTableCell>{item.comentarios}</StyledTableCell>
                     <StyledTableCell>
                       <Box sx={{ display: "flex", justifyContent: "end" }}>
@@ -195,7 +226,7 @@ const ShippableTable = ({
                           {
                             advance[item.id].find(
                               (obj) =>
-                                obj.idMaquina === fases[activeIndex]?.idMaquina
+                                obj.idMaquina === machines[activeIndex]?.id
                             )?.responsable
                           }
                         </StyledTableCell>
@@ -203,7 +234,7 @@ const ShippableTable = ({
                           {
                             advance[item.id].find(
                               (obj) =>
-                                obj.idMaquina === fases[activeIndex]?.idMaquina
+                                obj.idMaquina === machines[activeIndex]?.id
                             )?.fecha_inicio
                           }
                         </StyledTableCell>
@@ -211,7 +242,7 @@ const ShippableTable = ({
                           {
                             advance[item.id].find(
                               (obj) =>
-                                obj.idMaquina === fases[activeIndex]?.idMaquina
+                                obj.idMaquina === machines[activeIndex]?.id
                             )?.fecha_termino
                           }
                         </StyledTableCell>
@@ -219,7 +250,7 @@ const ShippableTable = ({
                           {
                             advance[item.id].find(
                               (obj) =>
-                                obj.idMaquina === fases[activeIndex]?.idMaquina
+                                obj.idMaquina === machines[activeIndex]?.id
                             )?.fecha_real
                           }
                         </StyledTableCell>
@@ -227,7 +258,7 @@ const ShippableTable = ({
                           {
                             advance[item.id].find(
                               (obj) =>
-                                obj.idMaquina === fases[activeIndex]?.idMaquina
+                                obj.idMaquina === machines[activeIndex]?.id
                             )?.avance
                           }
                         </StyledTableCell>
@@ -235,15 +266,30 @@ const ShippableTable = ({
                           {
                             advance[item.id].find(
                               (obj) =>
-                                obj.idMaquina === fases[activeIndex]?.idMaquina
+                                obj.idMaquina === machines[activeIndex]?.id
                             )?.comentarios
                           }
                         </StyledTableCell>
                         <StyledTableCell align="right">
                           {advance[item.id].find(
-                            (obj) =>
-                              obj.idMaquina === fases[activeIndex]?.idMaquina
+                            (obj) => obj.idMaquina === machines[activeIndex]?.id
                           )?.id === undefined ? null : (
+                            // (
+                            //   advance[item.id].find(
+                            //     (obj) =>
+                            //       obj.idGrupo === fases[activeIndex]?.idGrupo
+                            //   )?.id === undefined ? null : (
+                            //     <IconButton
+                            //       aria-label="add"
+                            //       size="small"
+                            //       onClick={() =>
+                            //         console.log(item.id, fases[activeIndex]?.id)
+                            //       }
+                            //     >
+                            //       <AddCircleOutlineIcon />
+                            //     </IconButton>
+                            //   )
+                            // )
                             <IconButton
                               aria-label="edit"
                               size="small"
@@ -252,7 +298,7 @@ const ShippableTable = ({
                                   advance[item.id].find(
                                     (obj) =>
                                       obj.idMaquina ===
-                                      fases[activeIndex]?.idMaquina
+                                      machines[activeIndex]?.id
                                   )?.id
                                 )
                               }

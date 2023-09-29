@@ -1,10 +1,18 @@
-const _ = require("lodash");
 const response = require("../helpers/response");
-const { insertPhase, getSummary } = require("../models/phase.model");
+const {
+  insertPhase,
+  getSummary,
+  updatePhase,
+  deletePhase,
+} = require("../models/phase.model");
 
 module.exports.getPhases = (req, res) => {
   try {
-    response(res, null, getSummary);
+    const { idProyecto } = req.query;
+    const project = {
+      idProyecto: parseInt(idProyecto),
+    };
+    response(res, false, getSummary, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -13,17 +21,39 @@ module.exports.getPhases = (req, res) => {
 
 module.exports.createPhase = (req, res) => {
   try {
-    const { newPhases } = req.body;
+    const { idProyecto, name } = req.body;
+    const newMachines = {
+      idProyecto: parseInt(idProyecto),
+      fase: name,
+    };
+    response(res, false, insertPhase, newMachines);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
 
-    const modifiedArray = _.map(newPhases, (item) => {
-      return {
-        idMaquina: item.idMaquina,
-        idGrupo: item.idGrupo,
-        fase: item.fase,
-        maquina: item.maquina,
-      };
-    });
-    response(res, null, insertPhase, modifiedArray);
+module.exports.modifyPhase = (req, res) => {
+  try {
+    const { id, fase } = req.body;
+    const phase = {
+      idFase: id,
+      fase,
+    };
+    response(res, false, updatePhase, phase);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports.deletePhase = (req, res) => {
+  try {
+    const { idFase } = req.query;
+    const phase = {
+      idFase: parseInt(idFase),
+    };
+    response(res, true, deletePhase, phase);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

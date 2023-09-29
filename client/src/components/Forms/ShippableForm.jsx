@@ -15,7 +15,7 @@ import {
 import { textFieldValidation } from "./validated";
 import { getShippable } from "../../selectors/shippable";
 
-const ShippableForm = ({ setOpen, idExpectancy, editShi }) => {
+const ShippableForm = ({ setOpen, idExpectancy, editShi, idProyecto }) => {
   const dispatch = useDispatch();
   const shippable = useSelector((state) => getShippable(state, editShi));
   const {
@@ -29,7 +29,7 @@ const ShippableForm = ({ setOpen, idExpectancy, editShi }) => {
     values.idExpectativa = idExpectancy;
     editShi
       ? dispatch(updateShippableRequest(values))
-      : dispatch(insertShippableRequest(values));
+      : dispatch(insertShippableRequest({ ...values, idProyecto }));
     setOpen(false);
     reset();
   };

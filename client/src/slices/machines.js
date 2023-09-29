@@ -13,16 +13,16 @@ const Slice = createSlice({
     didErrorDelete: false,
   },
   reducers: {
-    machinesRequest: (state) => {
+    fetchMachinesRequest: (state) => {
       state.isFetching = true;
       state.didError = false;
     },
-    machinesSuccess: (state, action) => {
+    fetchMachinesSuccess: (state, action) => {
       const { data } = action.payload;
       state.list = _.keyBy(data, "id");
       state.isFetching = false;
     },
-    machinesError: (state) => {
+    fetchMachinesError: (state) => {
       state.isFetching = false;
       state.didError = true;
     },
@@ -31,7 +31,9 @@ const Slice = createSlice({
       state.didErrorInsert = false;
     },
     insertMachineSuccess: (state, { payload: { data } }) => {
-      state.list[data.id] = data;
+      _.forEach(data, (machine) => {
+        state.list[machine.id] = machine;
+      });
       state.isFetchingInsert = false;
     },
     insertMachineError: (state) => {
@@ -54,9 +56,9 @@ const Slice = createSlice({
 });
 
 export const {
-  machinesRequest,
-  machinesSuccess,
-  machinesError,
+  fetchMachinesRequest,
+  fetchMachinesSuccess,
+  fetchMachinesError,
   insertMachineRequest,
   insertMachineSuccess,
   insertMachineError,

@@ -1,32 +1,51 @@
-module.exports.getSummary = async (conn) => {
+module.exports.getSummary = async (conn, { idProyecto }) => {
   const { data } = await conn.query(`
-    SELECT f.id, f.idMaquina, f.idGrupo, f.fase, m.maquina
-    FROM vki40_fases AS f
-    INNER JOIN vki40_maquinas_PR AS m ON f.idMaquina = m.id;
+        SELECT * FROM vki40_Readiness_fases
+        WHERE idProyecto = ${idProyecto};
     `);
   return data;
 };
 
-module.exports.insertPhase = async (conn, modifiedArray) => {
-  const insertPromises = modifiedArray.map(async (item) => {
-    const { idMaquina, idGrupo, fase } = item;
-    const {
-      info: { insertId },
-    } = await conn.query(`
-      INSERT INTO vki40_fases (idMaquina, idGrupo, fase)
-      VALUES(${idMaquina}, ${idGrupo}, '${fase}');
-    `);
+module.exports.insertPhase = async (conn, { idProyecto, fase }) => {
+  const {
+    info: { insertId },
+  } = await conn.query(`
+    INSERT INTO vki40_Readiness_fases (fase, idProyecto)
+    VALUES('${fase}', ${idProyecto});
+  `);
 
-    const { data } = await conn.query(`
-      SELECT f.id, f.idMaquina, f.idGrupo, f.fase, m.maquina
-      FROM vki40_fases AS f
-      INNER JOIN vki40_maquinas_PR AS m ON f.idMaquina = m.id
-      WHERE f.id= ${insertId};
-    `);
+  const { data } = await conn.query(`
+    SELECT * FROM vki40_Readiness_fases WHERE id = ${insertId};
+  `);
 
-    return data[0];
-  });
+  return data[0];
+};
 
-  const results = await Promise.all(insertPromises);
-  return results;
+module.exports.updatePhase = async (conn, { idFase, fase }) => {
+  await conn.query(`
+    UPDATE vki40_Readiness_fases
+    SET 
+      fase= '${fase}'
+    WHERE id= ${idFase};
+  `);
+
+  const { data } = await conn.query(`
+    SELECT * FROM vki40_Readiness_fases WHERE id = ${idFase};
+  `);
+
+  return data[0];
+};
+
+module.exports.deletePhase = async (conn, { idFase }) => {
+  await conn.query(`
+    DELETE FROM vki40_Readiness_avances
+    WHERE idMaquina IN (SELECT id FROM vki40_Readiness_maquinas WHERE idFase = ${idFase});
+  `);
+  await conn.query(`
+    DELETE FROM vki40_Readiness_maquinas WHERE idFase = ${idFase};
+  `);
+  await conn.query(`
+    DELETE FROM vki40_Readiness_fases WHERE id = ${idFase};
+  `);
+  return idFase;
 };

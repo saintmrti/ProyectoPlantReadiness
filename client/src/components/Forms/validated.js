@@ -1,5 +1,5 @@
 export const textFieldValidation = (value, maxLength) => {
-  const regex = /^[a-zA-Z0-9\s]+$/;
+  const regex = /^[^<>&'";=]+$/;
   if (typeof value !== "undefined" && value !== null) {
     if (!regex.test(value)) {
       return "Caracteres no permitidos";

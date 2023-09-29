@@ -1,28 +1,41 @@
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "@mui/material/Button";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import { useDispatch } from "react-redux";
 import _ from "lodash";
 
-import { insertExpectancyRequest } from "../../slices/expectancy";
+import {
+  insertExpectancyRequest,
+  updateExpectancyRequest,
+} from "../../slices/expectancy";
 import { textFieldValidation } from "./validated";
+import { getExpectancy } from "../../selectors/expectancy";
 
-const ExpectationForm = ({ setOpen, data }) => {
+const ExpectationForm = ({ setOpen, data, editExp, idProyecto }) => {
   const dispatch = useDispatch();
+  const expectancy = useSelector((state) => getExpectancy(state, editExp));
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (values) => {
-    dispatch(insertExpectancyRequest(values));
+    editExp
+      ? dispatch(updateExpectancyRequest(values))
+      : dispatch(insertExpectancyRequest({ ...values, idProyecto }));
     setOpen(false);
   };
+
+  useEffect(() => {
+    expectancy && reset(expectancy);
+  }, [expectancy, reset]);
 
   return (
     <div className="max-w-lg">
@@ -31,7 +44,7 @@ const ExpectationForm = ({ setOpen, data }) => {
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="text-3xl mb-3 w-full text-center mt-5">
-          Nueva expectativa
+          {editExp ? "Editar expectativa" : "Nueva expectativa"}
         </h1>
         <div>
           <div className="flex justify-end items-center w-full mb-3">
@@ -41,6 +54,7 @@ const ExpectationForm = ({ setOpen, data }) => {
               type="text"
               label="Expectativa"
               autoComplete="off"
+              defaultValue={expectancy?.expectativa || ""}
               error={Boolean(errors.expectancy)}
               helperText={errors.expectancy?.message}
               {...register("expectancy", {
@@ -49,29 +63,31 @@ const ExpectationForm = ({ setOpen, data }) => {
               })}
             />
           </div>
-          <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4">Rubro</label>
-            <FormControl sx={{ minWidth: "15rem" }}>
-              <InputLabel id="demo">Seleccionar rubro</InputLabel>
-              <Select
-                labelId="demo"
-                id="demo-simple-select"
-                label="Seleccionar rubro"
-                autoComplete="off"
-                defaultValue=""
-                {...register("area", { required: true })}
-              >
-                <MenuItem value="">
-                  <em>Seleccionar rubro</em>
-                </MenuItem>
-                {_.map(data, (item) => (
-                  <MenuItem key={item.id} value={item.id}>
-                    {item.rubro}
+          {!editExp && (
+            <div className="flex justify-end items-center w-full mb-3">
+              <label className="px-4">Rubro</label>
+              <FormControl sx={{ minWidth: "15rem" }}>
+                <InputLabel id="demo">Seleccionar rubro</InputLabel>
+                <Select
+                  labelId="demo"
+                  id="demo-simple-select"
+                  label="Seleccionar rubro"
+                  autoComplete="off"
+                  defaultValue=""
+                  {...register("area", { required: true })}
+                >
+                  <MenuItem value="">
+                    <em>Seleccionar rubro</em>
                   </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
+                  {_.map(data, (item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.rubro}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+          )}
         </div>
         <div className="w-full flex justify-center">
           <Button variant="contained" type="submit">

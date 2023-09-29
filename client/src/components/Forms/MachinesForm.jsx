@@ -17,7 +17,13 @@ import {
   numberFieldValidation,
 } from "./validated";
 
-const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
+const MachinesForm = ({
+  idEntregable,
+  fases,
+  isFetching,
+  advanceState,
+  idProyecto,
+}) => {
   const dispatch = useDispatch();
   const {
     register,
@@ -95,8 +101,9 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
 
           const value = values[key] !== undefined ? values[key] : "";
           result[index][fieldName] = value;
-          result[index]["idFase"] = fases[index].id;
+          result[index]["idMaquina"] = fases[index].id;
           result[index]["idEntregable"] = idEntregable;
+          result[index]["idProyecto"] = idProyecto;
         }
 
         return result;
@@ -106,7 +113,7 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
 
     const filteredArray = _.values(groupedValues);
 
-    dispatch(insertAdvanceRequest({ filteredArray }));
+    dispatch(insertAdvanceRequest({ advance: filteredArray, idProyecto }));
     reset();
   };
 

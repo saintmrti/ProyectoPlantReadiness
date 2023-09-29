@@ -23,3 +23,11 @@ export const groupedByIdExpectancy = createSelector(
     return list;
   }
 );
+
+export const getExpectancy = createSelector(
+  ({ expectancy }, idExpectancy) => expectancy.data[idExpectancy],
+  (expectancy) => {
+    if (!expectancy) return {};
+    return expectancy;
+  }
+);
