@@ -2,9 +2,9 @@ import { takeLatest, call, put, cancelled } from "redux-saga/effects";
 
 import { fetchMachinesApi, insertMachineApi, deleteMachineApi } from "../api";
 import {
-  machinesRequest,
-  machinesSuccess,
-  machinesError,
+  fetchMachinesRequest,
+  fetchMachinesSuccess,
+  fetchMachinesError,
   insertMachineRequest,
   insertMachineSuccess,
   insertMachineError,
@@ -17,9 +17,9 @@ function* fetchMachines({ payload: { idProyecto } }) {
   try {
     const { data, isError } = yield call(fetchMachinesApi.run, idProyecto);
     if (isError) throw new Error();
-    yield put(machinesSuccess({ data }));
+    yield put(fetchMachinesSuccess({ data }));
   } catch (e) {
-    yield put(machinesError());
+    yield put(fetchMachinesError());
   } finally {
     if (yield cancelled()) {
       yield call(fetchMachinesApi.cancel);
@@ -28,7 +28,7 @@ function* fetchMachines({ payload: { idProyecto } }) {
 }
 
 export function* fetchMachinesSaga() {
-  yield takeLatest(machinesRequest.toString(), fetchMachines);
+  yield takeLatest(fetchMachinesRequest.toString(), fetchMachines);
 }
 
 function* insertMachine({ payload }) {

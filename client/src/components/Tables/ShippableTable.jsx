@@ -92,8 +92,8 @@ const ShippableTable = ({
           <TableHead>
             {!activeComment && (
               <TableRow>
-                <StyledTableCell colSpan={2}></StyledTableCell>
-                <StyledTableCell colSpan={6} sx={{ textAlign: "center" }}>
+                <StyledTableCell colSpan={1}></StyledTableCell>
+                <StyledTableCell colSpan={7} sx={{ textAlign: "center" }}>
                   {activeIndex && machines[activeIndex] && (
                     <div className="flex items-center justify-center">
                       <div className="flex items-center justify-center">
@@ -195,7 +195,7 @@ const ShippableTable = ({
                         <IconButton
                           aria-label="add"
                           size="small"
-                          onClick={() => handleOnClickAdv(item.id)}
+                          onClick={() => handleOnClickAdv(item.id, advance)}
                         >
                           <AddCircleOutlineIcon />
                         </IconButton>

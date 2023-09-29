@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -9,6 +10,7 @@ export function FilterButton({
   selectedFilter,
   handleBtnClickFilter,
   idProyecto,
+  phases,
 }) {
   const navigate = useNavigate();
   const handleBtnClick = (button, key) => {
@@ -37,22 +39,19 @@ export function FilterButton({
             variant="outlined"
             aria-label="outlined primary button group"
           >
-            <Button
-              variant={
-                selectedFilter.phase.includes("1") ? "contained" : "outlined"
-              }
-              onClick={() => handleBtnClick("1", "phase")}
-            >
-              1
-            </Button>
-            <Button
-              variant={
-                selectedFilter.phase.includes("2") ? "contained" : "outlined"
-              }
-              onClick={() => handleBtnClick("2", "phase")}
-            >
-              2
-            </Button>
+            {_.map(phases, (phase, index) => (
+              <Button
+                key={phase}
+                variant={
+                  selectedFilter.phase.includes(phase)
+                    ? "outlined"
+                    : "contained"
+                }
+                onClick={() => handleBtnClick(phase, "phase")}
+              >
+                {index + 1}
+              </Button>
+            ))}
           </ButtonGroup>
         </div>
         <div className="flex items-center mx-3">
@@ -66,8 +65,8 @@ export function FilterButton({
                 key={priority}
                 variant={
                   selectedFilter.priority.includes(`P${priority}`)
-                    ? "contained"
-                    : "outlined"
+                    ? "outlined"
+                    : "contained"
                 }
                 onClick={() => handleBtnClick(`P${priority}`, "priority")}
               >

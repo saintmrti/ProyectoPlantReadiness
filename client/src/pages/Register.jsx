@@ -27,8 +27,8 @@ import { fetchExpectancyRequest } from "../slices/expectancy";
 import { fetchShippableRequest } from "../slices/shippable";
 import { fetchAdvanceRequest } from "../slices/advance";
 import { fetchProjectsRequest } from "../slices/projects";
-import { headingsRequest } from "../slices/headings";
-import { machinesRequest } from "../slices/machines";
+import { fetchHeadingsRequest } from "../slices/headings";
+import { fetchMachinesRequest } from "../slices/machines";
 import { fetchPhaseRequest } from "../slices/phase";
 import { groupedByIdExpectancy } from "../selectors/expectancy";
 import { summaryHeadings } from "../selectors/headings";
@@ -84,28 +84,17 @@ const Register = () => {
   const [alertHead, setAlertHead] = useState(false);
   const [alertAdv, setAlertAdv] = useState(false);
   const [alertPha, setAlertPha] = useState(false);
-  // const [phasesGroup, setPhasesGroup] = useState(null);
+  const [selectedPhases, setSelectedPhases] = useState(null);
 
   const expectancy = useSelector(groupedByIdExpectancy);
   const advance = useSelector(summaryAdvanced);
   const headings = useSelector(summaryHeadings);
   const machines = useSelector(summaryMachines);
   const project = useSelector((state) => getProject(state, idProyecto));
-  // const { list: machines } = useSelector((state) => state.machines);
-  // const { data: shippables } = useSelector((state) => state.shippable);
-  const { list: fases } = useSelector((state) => state.phase);
+  const { list: phases } = useSelector((state) => state.phase);
   const { isFetching, didError } = useSelector((state) => state.advance);
 
-  // const phasesByidGroup = _.uniqBy(_.values(fases), "idGrupo");
-  // const maxIdGrupo = _.maxBy(_.values(fases), "idGrupo");
-  // const usedMachines = _.uniqBy(_.values(fases), "idMaquina");
-  // const updatedMachines = _.filter(machines, (machine) => {
-  //   return !_.some(
-  //     usedMachines,
-  //     (usedMachine) => usedMachine.idMaquina === machine.id
-  //   );
-  // });
-
+  const arrayPhases = _.values(phases);
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -133,27 +122,26 @@ const Register = () => {
     setOpenPha(true);
   };
 
-  const handleOnClickAdv = (id) => {
+  const handleOnClickAdv = (id, advance) => {
     setChangeShi(id);
     setEditAdv(null);
-    setOpenAdv(true);
-    // if (advance && advance[id] && advance[id].length > 0) {
-    //   const arrayAdv = advance[id];
-    //   const removePhase = phasesByidGroup.filter(
-    //     (fase) =>
-    //       !arrayAdv.some((advanceItem) => advanceItem.idGrupo === fase.idGrupo)
-    //   );
-    //   if (removePhase.length > 0) {
-    //     setPhasesGroup(removePhase);
-    //     setOpenAdv(true);
-    //   } else {
-    //     setPhasesGroup(null);
-    //     setAlertAdv(true);
-    //   }
-    // } else {
-    //   setPhasesGroup(phasesByidGroup);
-    //   setOpenAdv(true);
-    // }
+    if (advance && advance[id] && advance[id].length > 0) {
+      const arrayAdv = advance[id];
+      const removePhase = arrayPhases.filter(
+        (fase) =>
+          !arrayAdv.some((advanceItem) => advanceItem.idFase === fase.id)
+      );
+      if (removePhase.length > 0) {
+        setSelectedPhases(removePhase);
+        setOpenAdv(true);
+      } else {
+        setSelectedPhases(null);
+        setAlertAdv(true);
+      }
+    } else {
+      setSelectedPhases(arrayPhases);
+      setOpenAdv(true);
+    }
   };
 
   const handleOnClickEditShi = (id) => {
@@ -203,12 +191,12 @@ const Register = () => {
 
   useEffect(() => {
     dispatch(fetchProjectsRequest());
-    dispatch(fetchExpectancyRequest({ idProyecto }));
-    dispatch(fetchShippableRequest({ idProyecto }));
-    dispatch(fetchAdvanceRequest({ idProyecto }));
     dispatch(fetchPhaseRequest({ idProyecto }));
-    dispatch(headingsRequest({ idProyecto }));
-    dispatch(machinesRequest({ idProyecto }));
+    dispatch(fetchMachinesRequest({ idProyecto }));
+    dispatch(fetchShippableRequest({ idProyecto }));
+    dispatch(fetchExpectancyRequest({ idProyecto }));
+    dispatch(fetchHeadingsRequest({ idProyecto }));
+    dispatch(fetchAdvanceRequest({ idProyecto }));
   }, [dispatch, idProyecto]);
   return (
     <>
@@ -469,33 +457,12 @@ const Register = () => {
                 <AdvanceForm
                   setOpen={setOpenAdv}
                   idEntregable={changeShi}
-                  fases={fases}
+                  phases={selectedPhases}
                   editAdv={editAdv}
                   idProyecto={idProyecto}
                 />
               </Box>
             </Modal>
-            {/* <Modal open={openShi2} onClose={() => setOpenShi2(false)}>
-              <Box sx={style}>
-                <IconButton
-                  aria-label="close"
-                  size="small"
-                  onClick={() => setOpenShi2(false)}
-                  sx={{
-                    position: "absolute",
-                    right: 8,
-                    top: 8,
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <UpdatePhaseForm
-                  setOpen={setOpenShi2}
-                  editPha={editPha}
-                  idProyecto={idProyecto}
-                />
-              </Box>
-            </Modal> */}
             <ShippableAlert
               open={alertShi}
               onClose={() => setAlertShi(false)}

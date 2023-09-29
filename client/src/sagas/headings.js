@@ -7,9 +7,9 @@ import {
   deleteHeadingsApi,
 } from "../api";
 import {
-  headingsRequest,
-  headingsSuccess,
-  headingsError,
+  fetchHeadingsRequest,
+  fetchHeadingsSuccess,
+  fetchHeadingsError,
   insertHeadingsRequest,
   insertHeadingsSuccess,
   insertHeadingsError,
@@ -25,9 +25,9 @@ function* fetchHeadings({ payload: { idProyecto } }) {
   try {
     const { data, isError } = yield call(fetchHeadingsApi.run, idProyecto);
     if (isError) throw new Error();
-    yield put(headingsSuccess({ data }));
+    yield put(fetchHeadingsSuccess({ data }));
   } catch (e) {
-    yield put(headingsError());
+    yield put(fetchHeadingsError());
   } finally {
     if (yield cancelled()) {
       yield call(fetchHeadingsApi.cancel);
@@ -36,7 +36,7 @@ function* fetchHeadings({ payload: { idProyecto } }) {
 }
 
 export function* fetchHeadingsSaga() {
-  yield takeLatest(headingsRequest.toString(), fetchHeadings);
+  yield takeLatest(fetchHeadingsRequest.toString(), fetchHeadings);
 }
 
 function* insertHeading({ payload }) {

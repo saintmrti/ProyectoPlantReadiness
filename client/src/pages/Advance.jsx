@@ -5,7 +5,7 @@ import _ from "lodash";
 
 import MachinesForm from "../components/Forms/MachinesForm";
 import { summaryMachines } from "../selectors/machines";
-import { machinesRequest } from "../slices/machines";
+import { fetchMachinesRequest } from "../slices/machines";
 import { Spinner } from "../components/Spinner";
 import { Error } from "../components/Error";
 
@@ -25,7 +25,7 @@ const Advance = () => {
   );
 
   useEffect(() => {
-    dispatch(machinesRequest({ idProyecto }));
+    dispatch(fetchMachinesRequest({ idProyecto }));
   }, [dispatch, idProyecto]);
 
   return (

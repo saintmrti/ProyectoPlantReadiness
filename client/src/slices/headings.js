@@ -15,16 +15,16 @@ const Slice = createSlice({
     didErrorDelete: false,
   },
   reducers: {
-    headingsRequest: (state) => {
+    fetchHeadingsRequest: (state) => {
       state.isFetching = true;
       state.didError = false;
     },
-    headingsSuccess: (state, action) => {
+    fetchHeadingsSuccess: (state, action) => {
       const { data } = action.payload;
       state.list = _.keyBy(data, "id");
       state.isFetching = false;
     },
-    headingsError: (state) => {
+    fetchHeadingsError: (state) => {
       state.isFetching = false;
       state.didError = true;
     },
@@ -68,9 +68,9 @@ const Slice = createSlice({
 });
 
 export const {
-  headingsRequest,
-  headingsSuccess,
-  headingsError,
+  fetchHeadingsRequest,
+  fetchHeadingsSuccess,
+  fetchHeadingsError,
   insertHeadingsRequest,
   insertHeadingsSuccess,
   insertHeadingsError,

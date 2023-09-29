@@ -18,27 +18,6 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 
-// const list = [
-//   {
-//     id: 1,
-//     img: "$$$",
-//     nombre: "Proyecto 1",
-//     rubro: "Rubro 1",
-//   },
-//   {
-//     id: 2,
-//     img: "$$$",
-//     nombre: "Proyecto 2",
-//     rubro: "Rubro 2",
-//   },
-//   {
-//     id: 3,
-//     img: "$$$",
-//     nombre: "Proyecto 3",
-//     rubro: "Rubro 3",
-//   },
-// ];
-
 const ChampionsTable = ({
   list,
   handleClickCham,

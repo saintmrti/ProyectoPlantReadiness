@@ -12,8 +12,9 @@ import StackedBar from "../components/BarCharts/StackedBar";
 import ColumnChart from "../components/BarCharts/ColumnChart";
 import MachineTable from "../components/Tables/MachineTable";
 import { FilterButton } from "../components/ButtonGroup/FilterButton";
-import { kpisRequest } from "../slices/kpis";
+import { fetchKpisRequest } from "../slices/kpis";
 import { fetchChampionsRequest } from "../slices/champions";
+import { fetchPhaseRequest } from "../slices/phase";
 import { getSummaryKpis } from "../selectors/kpis";
 import { DashboardBar } from "../components/ProgressBar/DashboardBar";
 import { Spinner } from "../components/Spinner";
@@ -25,11 +26,14 @@ const Dashboard = () => {
   const summaryKpis = useSelector(getSummaryKpis);
   const { isFetching, didError } = useSelector((state) => state.kpis);
   const { list: champions } = useSelector((state) => state.champions);
+  const { list: phases } = useSelector((state) => state.phase);
+
+  const arrayPhases = _.map(phases, "id");
 
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState({
-    phase: ["1", "2"],
-    priority: ["P1", "P2", "P3"],
+    phase: [],
+    priority: [],
   });
 
   const toggleFilterButton = () => {
@@ -45,7 +49,7 @@ const Dashboard = () => {
       idProyecto,
     };
 
-    dispatch(kpisRequest(newFilter));
+    dispatch(fetchKpisRequest(newFilter));
   };
 
   useEffect(() => {
@@ -56,7 +60,8 @@ const Dashboard = () => {
       priority: priorityString,
       idProyecto,
     };
-    dispatch(kpisRequest(newFilter));
+    dispatch(fetchKpisRequest(newFilter));
+    dispatch(fetchPhaseRequest({ idProyecto }));
     dispatch(fetchChampionsRequest({ idProyecto }));
   }, []);
   return (
@@ -74,6 +79,7 @@ const Dashboard = () => {
                 selectedFilter={selectedFilter}
                 handleBtnClickFilter={handleBtnClickFilter}
                 idProyecto={idProyecto}
+                phases={arrayPhases}
               />
             )}
             <div className="h-80 flex items-end justify-center">
@@ -93,9 +99,9 @@ const Dashboard = () => {
                 selectedFilter={selectedFilter}
                 handleBtnClickFilter={handleBtnClickFilter}
                 idProyecto={idProyecto}
+                phases={arrayPhases}
               />
             )}
-            {/* {console.log(summaryKpis)} */}
             <div className="grid grid-cols-9 gap-2">
               <div className="col-span-2">
                 <Card sx={{ height: "100%", padding: 1 }}>

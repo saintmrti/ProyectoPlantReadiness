@@ -9,16 +9,18 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import {
-  textFieldValidation,
-  dateFieldValidation,
-  numberFieldValidation,
-} from "./validated";
+import { textFieldValidation } from "./validated";
 import { changeAdvance } from "../../slices/setAdvance";
 import { getAdvance } from "../../selectors/advance";
 import { updateAdvanceRequest } from "../../slices/advance";
 
-const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv, idProyecto }) => {
+const AdvanceForm = ({
+  setOpen,
+  phases,
+  idEntregable,
+  editAdv,
+  idProyecto,
+}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -84,7 +86,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv, idProyecto }) => {
               error={Boolean(errors.responsable)}
               helperText={errors.responsable?.message}
               {...register("responsable", {
-                required: true,
+                required: false,
                 validate: (value) => textFieldValidation(value, 30),
               })}
             />
@@ -105,7 +107,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv, idProyecto }) => {
                   <MenuItem value="">
                     <em>Seleccionar fase</em>
                   </MenuItem>
-                  {_.map(fases, (item) => (
+                  {_.map(phases, (item) => (
                     <MenuItem key={item.id} value={item.id}>
                       {item.fase}
                     </MenuItem>
@@ -122,8 +124,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv, idProyecto }) => {
               error={Boolean(errors.fecha_inicio)}
               helperText={errors.fecha_inicio?.message}
               {...register("fecha_inicio", {
-                required: true,
-                validate: (value) => dateFieldValidation(value),
+                required: false,
               })}
             />
           </div>
@@ -135,8 +136,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv, idProyecto }) => {
               error={Boolean(errors.fecha_termino)}
               helperText={errors.fecha_termino?.message}
               {...register("fecha_termino", {
-                required: true,
-                validate: (value) => dateFieldValidation(value),
+                required: false,
               })}
             />
           </div>
@@ -159,8 +159,7 @@ const AdvanceForm = ({ setOpen, fases, idEntregable, editAdv, idProyecto }) => {
                 max: 100,
               }}
               {...register("avance", {
-                required: true,
-                validate: (value) => numberFieldValidation(value),
+                required: false,
               })}
             />
           </div>
