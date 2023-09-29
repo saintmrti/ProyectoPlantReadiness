@@ -27,7 +27,6 @@ export const ChampionsForm = ({ idProyecto, setOpen, editCham }) => {
   } = useForm();
 
   const onSubmit = (values) => {
-    console.log(selectedFiles);
     if (selectedFiles === null) {
       setMissingImage(true);
     } else {

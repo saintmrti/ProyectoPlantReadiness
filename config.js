@@ -1,13 +1,2 @@
-const { config } = require("dotenv");
-
-config();
-
-module.exports = {
-  port: process.env.PORT || 3001,
-  db: {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST || "localhost",
-  },
-};
+module.exports.SECRET_TOKEN =
+  "1HOCmJEmDu+P4yGXlvE9tkXWEUCCUao+RxQEoVClRZJqa6d2JZS+oDwCHv/d9gkfJ3kwdRfkeZsB8vp4cq9H7A==";

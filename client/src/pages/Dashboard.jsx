@@ -90,6 +90,7 @@ const Dashboard = () => {
           </>
         ) : (
           <>
+            {/* {console.log(summaryKpis)} */}
             <button className="ml-2" onClick={toggleFilterButton}>
               Mostrar / Ocultar
             </button>

@@ -79,7 +79,6 @@ export const getSummaryKpis = createSelector(
         } else {
           const newMachine = {
             idMaquina: item.idMaquina,
-            idGrupo: item.idGrupo,
             tipo: item.tipo,
             name: item.descripcion,
           };

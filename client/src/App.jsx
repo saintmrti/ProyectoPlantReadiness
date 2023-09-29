@@ -1,6 +1,7 @@
-// import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import { useSelector } from "react-redux";
+// import { useDispatch } from "react-redux";
 import DarkUnica from "highcharts/themes/dark-unica";
 import Highcharts from "highcharts";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -20,9 +21,19 @@ Highcharts.setOptions({
 });
 
 const App = () => {
-  // const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.settings);
-  if (theme !== "light") DarkUnica(Highcharts);
+
+  // const dispatch = useDispatch();
+  // const queryString = window.location.search;
+  // const urlParams = new URLSearchParams(queryString);
+  // const urlTheme = urlParams.get("theme");
+  // if (urlTheme && urlTheme !== theme) dispatch(changeTheme(urlTheme));
+
+  useEffect(() => {
+    if (theme !== "light") {
+      DarkUnica(Highcharts);
+    }
+  }, [theme]);
 
   return (
     <>
