@@ -33,7 +33,12 @@ module.exports.updateProject = async (conn, { id, nombre }) => {
       `);
 
   const { data } = await conn.query(`
-          SELECT * FROM vki40_Readiness_proyectos WHERE id = ${id};
+        SELECT
+        Proy.*,
+        (SELECT COUNT(*) FROM vki40_Readiness_avances E WHERE E.idProyecto = Proy.id AND E.avance = 100) as [Real],
+        (SELECT COUNT(*) FROM vki40_Readiness_avances E WHERE E.idProyecto = Proy.id) as [Plan]
+        FROM vki40_Readiness_proyectos Proy
+        WHERE Proy.id = ${id};
       `);
 
   return data[0];

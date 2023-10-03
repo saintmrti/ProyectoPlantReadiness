@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { auth } = require("../middlewares/auth");
 
 const {
   getChampions,
@@ -9,9 +10,9 @@ const {
 
 const router = Router();
 
-router.get("/", getChampions);
-router.post("/", createChampion);
-router.put("/", modifyChampion);
-router.delete("/", eliminateChampion);
+router.get("/", auth, getChampions);
+router.post("/", auth, createChampion);
+router.put("/", auth, modifyChampion);
+router.delete("/", auth, eliminateChampion);
 
 module.exports = router;

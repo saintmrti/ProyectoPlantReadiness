@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { auth } = require("../middlewares/auth");
 
 const {
   getProjects,
@@ -9,9 +10,9 @@ const {
 
 const router = Router();
 
-router.get("/", getProjects);
-router.post("/", createProject);
-router.put("/", modifyProject);
-router.delete("/", deleteProject);
+router.get("/", auth, getProjects);
+router.post("/", auth, createProject);
+router.put("/", auth, modifyProject);
+router.delete("/", auth, deleteProject);
 
 module.exports = router;

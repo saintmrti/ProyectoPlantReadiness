@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { auth } = require("../middlewares/auth");
 
 const {
   getHeadings,
@@ -9,9 +10,9 @@ const {
 
 const router = Router();
 
-router.get("/", getHeadings);
-router.post("/", createHeading);
-router.put("/", modifyHeading);
-router.delete("/", eliminateHeading);
+router.get("/", auth, getHeadings);
+router.post("/", auth, createHeading);
+router.put("/", auth, modifyHeading);
+router.delete("/", auth, eliminateHeading);
 
 module.exports = router;
