@@ -5,11 +5,12 @@ import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import { useTheme } from "@mui/material/styles";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.white,
-    color: theme.palette.common.black,
+    backgroundColor: theme.palette.common.hover,
+    // color: theme.palette.common.black,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 12,
@@ -25,195 +26,218 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 //   },
 // }));
 
-const MachineTable = ({ tableValues }) => (
-  <div style={{ padding: "0px 10px" }}>
-    <Table size="small">
-      <TableHead>
-        <TableRow>
-          <StyledTableCell sx={{ width: "140px" }}></StyledTableCell>
-          <StyledTableCell
-            align="center"
-            colSpan={2}
-            sx={{ fontSize: 10, padding: 0 }}
-          >
-            Seguridad
-          </StyledTableCell>
-          <StyledTableCell
-            align="center"
-            colSpan={2}
-            sx={{ fontSize: 10, padding: 0 }}
-          >
-            Calidad
-          </StyledTableCell>
-          <StyledTableCell
-            align="center"
-            colSpan={2}
-            sx={{ fontSize: 10, padding: 0 }}
-          >
-            RH
-          </StyledTableCell>
-          <StyledTableCell
-            align="center"
-            colSpan={2}
-            sx={{ fontSize: 10, padding: 0 }}
-          >
-            Producción
-          </StyledTableCell>
-          <StyledTableCell
-            align="center"
-            colSpan={2}
-            sx={{ fontSize: 10, padding: 0 }}
-          >
-            Mtto
-          </StyledTableCell>
-        </TableRow>
-        <TableRow>
-          <StyledTableCell sx={{ width: "140px" }}></StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Plan
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Real
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Plan
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Real
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Plan
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Real
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Plan
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Real
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Plan
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Real
-          </StyledTableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {tableValues &&
-          _.map(tableValues, (item, i) => (
-            <TableRow
-              key={i}
-              sx={{
-                "&:last-child td, &:last-child th": {
-                  border: 0,
-                },
-                backgroundColor: item?.tipo === 1 ? "#F0F0F0" : "inherit",
-              }}
+const MachineTable = ({ tableValues }) => {
+  const theme = useTheme();
+  return (
+    <div style={{ padding: "0px 10px" }}>
+      <Table size="small">
+        <TableHead>
+          <TableRow>
+            <StyledTableCell sx={{ width: "140px" }}></StyledTableCell>
+            <StyledTableCell
+              align="center"
+              colSpan={2}
+              sx={{ fontSize: 10, padding: 0 }}
             >
-              <StyledTableCell
-                component="th"
-                scope="row"
-                sx={{ fontSize: 10, padding: 0 }}
-              >
-                {item.name}
-              </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.Seguridad?.plan ? `${item.Seguridad.plan}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
+              Seguridad
+            </StyledTableCell>
+            <StyledTableCell
+              align="center"
+              colSpan={2}
+              sx={{ fontSize: 10, padding: 0 }}
+            >
+              Calidad
+            </StyledTableCell>
+            <StyledTableCell
+              align="center"
+              colSpan={2}
+              sx={{ fontSize: 10, padding: 0 }}
+            >
+              RH
+            </StyledTableCell>
+            <StyledTableCell
+              align="center"
+              colSpan={2}
+              sx={{ fontSize: 10, padding: 0 }}
+            >
+              Producción
+            </StyledTableCell>
+            <StyledTableCell
+              align="center"
+              colSpan={2}
+              sx={{ fontSize: 10, padding: 0 }}
+            >
+              Mtto
+            </StyledTableCell>
+          </TableRow>
+          <TableRow>
+            <StyledTableCell sx={{ width: "140px" }}></StyledTableCell>
+            <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              Plan
+            </StyledTableCell>
+            <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              Real
+            </StyledTableCell>
+            <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              Plan
+            </StyledTableCell>
+            <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              Real
+            </StyledTableCell>
+            <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              Plan
+            </StyledTableCell>
+            <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              Real
+            </StyledTableCell>
+            <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              Plan
+            </StyledTableCell>
+            <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              Real
+            </StyledTableCell>
+            <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              Plan
+            </StyledTableCell>
+            <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
+              Real
+            </StyledTableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {tableValues &&
+            _.map(tableValues, (item, i) => (
+              <TableRow
+                key={i}
                 sx={{
-                  fontSize: 10,
-                  padding: 0,
-                  color: item?.Seguridad
-                    ? item?.Seguridad?.plan > item?.Seguridad?.real
-                      ? "#d32f2f"
-                      : "#2e7d32"
-                    : "inherit",
+                  "&:last-child td, &:last-child th": {
+                    border: 0,
+                  },
+                  backgroundColor:
+                    item?.tipo === 1
+                      ? theme.palette.mode === "light"
+                        ? "#F0F0F0"
+                        : "#424242"
+                      : "inherit",
                 }}
               >
-                {item?.Seguridad?.real ? `${item.Seguridad.real}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.Calidad?.plan ? `${item.Calidad.plan}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-                sx={{
-                  fontSize: 10,
-                  padding: 0,
-                  color: item?.Calidad
-                    ? item?.Calidad?.plan > item?.Calidad?.real
-                      ? "#d32f2f"
-                      : "#2e7d32"
-                    : "inherit",
-                }}
-              >
-                {item?.Calidad?.real ? `${item.Calidad.real}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.Rh?.plan ? `${item.rh.plan}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-                sx={{
-                  fontSize: 10,
-                  padding: 0,
-                  color: item?.Rh
-                    ? item?.Rh?.plan > item?.Rh?.real
-                      ? "#d32f2f"
-                      : "#2e7d32"
-                    : "inherit",
-                }}
-              >
-                {item?.Rh?.real ? `${item.rh.real}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.Produccion?.plan ? `${item.produccion.plan}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-                sx={{
-                  fontSize: 10,
-                  padding: 0,
-                  color: item?.Produccion
-                    ? item?.Produccion?.plan > item?.Produccion?.real
-                      ? "#d32f2f"
-                      : "#2e7d32"
-                    : "inherit",
-                }}
-              >
-                {item?.Produccion?.real ? `${item.produccion.real}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.mantenimiento?.plan
-                  ? `${item.Mantenimiento.plan}%`
-                  : "0%"}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-                sx={{
-                  fontSize: 10,
-                  padding: 0,
-                  color: item?.mantenimiento
-                    ? item?.mantenimiento?.plan > item?.mantenimiento?.real
-                      ? "#d32f2f"
-                      : "#2e7d32"
-                    : "inherit",
-                }}
-              >
-                {item?.mantenimiento?.real
-                  ? `${item.Mantenimiento.real}%`
-                  : "0%"}
-              </StyledTableCell>
-            </TableRow>
-          ))}
-      </TableBody>
-    </Table>
-  </div>
-);
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  sx={{ fontSize: 10, padding: 0 }}
+                >
+                  {item.name}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{ fontSize: 10, padding: 0 }}
+                >
+                  {item?.Seguridad?.plan ? `${item.Seguridad.plan}%` : "0%"}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{
+                    fontSize: 10,
+                    padding: 0,
+                    color: item?.Seguridad
+                      ? item?.Seguridad?.plan > item?.Seguridad?.real
+                        ? "#d32f2f"
+                        : "#2e7d32"
+                      : "inherit",
+                  }}
+                >
+                  {item?.Seguridad?.real ? `${item.Seguridad.real}%` : "0%"}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{ fontSize: 10, padding: 0 }}
+                >
+                  {item?.Calidad?.plan ? `${item.Calidad.plan}%` : "0%"}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{
+                    fontSize: 10,
+                    padding: 0,
+                    color: item?.Calidad
+                      ? item?.Calidad?.plan > item?.Calidad?.real
+                        ? "#d32f2f"
+                        : "#2e7d32"
+                      : "inherit",
+                  }}
+                >
+                  {item?.Calidad?.real ? `${item.Calidad.real}%` : "0%"}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{ fontSize: 10, padding: 0 }}
+                >
+                  {item?.Rh?.plan ? `${item.rh.plan}%` : "0%"}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{
+                    fontSize: 10,
+                    padding: 0,
+                    color: item?.Rh
+                      ? item?.Rh?.plan > item?.Rh?.real
+                        ? "#d32f2f"
+                        : "#2e7d32"
+                      : "inherit",
+                  }}
+                >
+                  {item?.Rh?.real ? `${item.rh.real}%` : "0%"}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{ fontSize: 10, padding: 0 }}
+                >
+                  {item?.Produccion?.plan ? `${item.produccion.plan}%` : "0%"}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{
+                    fontSize: 10,
+                    padding: 0,
+                    color: item?.Produccion
+                      ? item?.Produccion?.plan > item?.Produccion?.real
+                        ? "#d32f2f"
+                        : "#2e7d32"
+                      : "inherit",
+                  }}
+                >
+                  {item?.Produccion?.real ? `${item.produccion.real}%` : "0%"}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{ fontSize: 10, padding: 0 }}
+                >
+                  {item?.mantenimiento?.plan
+                    ? `${item.Mantenimiento.plan}%`
+                    : "0%"}
+                </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{
+                    fontSize: 10,
+                    padding: 0,
+                    color: item?.mantenimiento
+                      ? item?.mantenimiento?.plan > item?.mantenimiento?.real
+                        ? "#d32f2f"
+                        : "#2e7d32"
+                      : "inherit",
+                  }}
+                >
+                  {item?.mantenimiento?.real
+                    ? `${item.Mantenimiento.real}%`
+                    : "0%"}
+                </StyledTableCell>
+              </TableRow>
+            ))}
+        </TableBody>
+      </Table>
+    </div>
+  );
+};
 
 export default MachineTable;

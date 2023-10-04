@@ -18,8 +18,8 @@ module.exports.generateToken = (userId, userName, userEmail, admin) =>
 module.exports.decodeToken = (token) =>
   new Promise((resolve, reject) => {
     try {
-      const { userId, admin, n_ddz } = jwt.decode(token, SECRET_TOKEN);
-      resolve({ userId, admin, n_ddz });
+      const { userId, admin, n_pr } = jwt.decode(token, SECRET_TOKEN);
+      resolve({ userId, admin, n_pr });
     } catch (error) {
       reject("Token no válido");
     }

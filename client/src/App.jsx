@@ -22,12 +22,14 @@ Highcharts.setOptions({
 
 const App = () => {
   const { theme } = useSelector((state) => state.settings);
-
   const dispatch = useDispatch();
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const urlTheme = urlParams.get("theme");
-  if (urlTheme && urlTheme !== theme) dispatch(changeTheme(urlTheme));
+
+  useEffect(() => {
+    if (urlTheme && urlTheme !== theme) dispatch(changeTheme(urlTheme));
+  }, [urlTheme, theme, dispatch]);
 
   useEffect(() => {
     if (theme !== "light") {

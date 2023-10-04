@@ -112,10 +112,10 @@ const Dashboard = () => {
                   {_.map(summaryKpis?.shippable_total, (item) => (
                     <DashboardBar
                       key={item.Id}
-                      rubro={item.rubro}
-                      real={item.reales}
-                      plan={item.planes}
-                      total={item.totales}
+                      rubro={item?.rubro || ""}
+                      real={item?.reales || 0}
+                      plan={item?.planes || 0}
+                      total={item?.totales || 0}
                     />
                   ))}
                 </Card>
@@ -150,10 +150,10 @@ const Dashboard = () => {
                       <SolidGauge
                         key={item.Id}
                         height={130}
-                        name={item.rubro}
-                        value={item.completados}
-                        total={item.totales}
-                        rate={item.porcentaje}
+                        name={item?.rubro || ""}
+                        value={item?.completados || 0}
+                        total={item?.totales || 0}
+                        rate={item?.porcentaje || 0}
                       />
                     ))}
                   </div>
@@ -176,15 +176,15 @@ const Dashboard = () => {
                         }}
                       >
                         <Avatar
-                          alt={item.nombre}
-                          src={item.imagen}
+                          alt={item?.nombre}
+                          src={item?.imagen}
                           sx={{ width: 40, height: 40 }}
                         />
                         <div className="w-full flex justify-center">
                           <div className="w-36">
-                            <p className="text-sm">{item.nombre}</p>
+                            <p className="text-sm">{item?.nombre}</p>
                             <p className="text-sm text-gray-600">
-                              {item.rubro}
+                              {item?.rubro}
                             </p>
                           </div>
                         </div>

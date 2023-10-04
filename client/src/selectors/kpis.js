@@ -32,63 +32,63 @@ export const getSummaryKpis = createSelector(
     const advanceRate = _.map(orderedAdvance, "avance");
     const advanceTotal = _.map(orderedAdvance, "totales");
     const groupedByPlanYear = _.map(parseShippableYear, (value) => {
-      return [moment(`${value.anio}-01-01`).valueOf(), value.plan];
+      return [moment(`${value?.anio}-01-01`).valueOf(), value?.plan || 0];
     });
     const groupedByRealYear = _.map(parseShippableYear, (value) => {
-      return [moment(`${value.anio}-01-01`).valueOf(), value.real];
+      return [moment(`${value?.anio}-01-01`).valueOf(), value?.real || 0];
     });
     const groupedByPlanMonth = _.map(parseShippableMonth, (value) => {
       return [
-        moment(`${moment().year()}-${value.mes}-01`).valueOf(),
-        value.plan,
+        moment(`${moment().year()}-${value?.mes}-01`).valueOf(),
+        value?.plan || 0,
       ];
     });
     const groupedByRealMonth = _.map(parseShippableMonth, (value) => {
       return [
-        moment(`${moment().year()}-${value.mes}-01`).valueOf(),
-        value.real,
+        moment(`${moment().year()}-${value?.mes}-01`).valueOf(),
+        value?.real || 0,
       ];
     });
 
     const cumplience_year = _.map(parseShippableYear, (value) => {
-      return [moment(`${value.anio}-01-01`).valueOf(), value.cumplimiento];
+      return [moment(`${value?.anio}-01-01`).valueOf(), value?.cumplimiento || 0];
     });
 
     const cumplience_month = _.map(parseShippableMonth, (value) => {
       return [
-        moment(`${moment().year()}-${value.mes}-01`).valueOf(),
-        value.cumplimiento,
+        moment(`${moment().year()}-${value?.mes}-01`).valueOf(),
+        value?.cumplimiento || 0,
       ];
     });
 
     const advanceMachines = _.reduce(
       parseMachines,
       (result, item) => {
-        const existingMachine = _.find(result, { name: item.descripcion });
-
+        const existingMachine = _.find(result, { name: item?.descripcion });
+    
         if (existingMachine) {
-          if (!existingMachine[item.rubro]) {
-            existingMachine[item.rubro] = {
-              real: item.Real,
-              plan: item.Plan,
+          if (!existingMachine[item?.rubro]) {
+            existingMachine[item?.rubro] = {
+              real: item?.Real || 0,
+              plan: item?.Plan || 0,
             };
           } else {
-            existingMachine[item.rubro].real += item.Real;
-            existingMachine[item.rubro].plan += item.Plan;
+            existingMachine[item?.rubro].real += item?.Real || 0;
+            existingMachine[item?.rubro].plan += item?.Plan || 0;
           }
         } else {
           const newMachine = {
-            idMaquina: item.idMaquina,
-            tipo: item.tipo,
-            name: item.descripcion,
+            idMaquina: item?.idMaquina || "",
+            tipo: item?.tipo || "",
+            name: item?.descripcion || "",
           };
-          newMachine[item.rubro] = {
-            real: item.Real,
-            plan: item.Plan,
+          newMachine[item?.rubro] = {
+            real: item?.Real || 0,
+            plan: item?.Plan || 0,
           };
           result.push(newMachine);
         }
-
+    
         return result;
       },
       []
@@ -97,22 +97,22 @@ export const getSummaryKpis = createSelector(
     const phasesTotal = [
       {
         name: "Plan",
-        data: parsePhases.map((element) => [element.Fase, element.Plan]),
+        data: parsePhases.map((element) => [element?.Fase || "", element?.Plan || 0]),
       },
       {
         name: "Real",
-        data: parsePhases.map((element) => [element.Fase, element.Real]),
+        data: parsePhases.map((element) => [element?.Fase || "", element?.Real || 0]),
       },
     ];
 
     const phasesYTD = [
       {
         name: "Plan",
-        data: parsePhasesYTD.map((element) => [element.Fase, element.Plan]),
+        data: parsePhasesYTD.map((element) => [element?.Fase || "", element?.Plan || 0]),
       },
       {
         name: "Real",
-        data: parsePhasesYTD.map((element) => [element.Fase, element.Real]),
+        data: parsePhasesYTD.map((element) => [element?.Fase || "", element?.Real || 0]),
       },
     ];
 
