@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -48,6 +48,7 @@ const ShippableTable = ({
   handleOnClickDeleteShi,
   handleOnClickEditPha,
   handleOnClickDeletePha,
+  tokenData,
 }) => {
   const [activeIndex, setActiveIndex] = useState(null);
 
@@ -119,28 +120,32 @@ const ShippableTable = ({
                   )}
                 </StyledTableCell>
                 <StyledTableCell align="right" sx={{ width: "100px" }}>
-                  {activeIndex && machines[activeIndex] && (
-                    <div>
-                      <IconButton
-                        aria-label="edit"
-                        size="small"
-                        onClick={() =>
-                          handleOnClickEditPha(machines[activeIndex]?.idFase)
-                        }
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="delete"
-                        size="small"
-                        onClick={() =>
-                          handleOnClickDeletePha(machines[activeIndex]?.idFase)
-                        }
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </div>
-                  )}
+                  {activeIndex &&
+                    machines[activeIndex] &&
+                    tokenData?.userLevel === 4 && (
+                      <Fragment>
+                        <IconButton
+                          aria-label="edit"
+                          size="small"
+                          onClick={() =>
+                            handleOnClickEditPha(machines[activeIndex]?.idFase)
+                          }
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="delete"
+                          size="small"
+                          onClick={() =>
+                            handleOnClickDeletePha(
+                              machines[activeIndex]?.idFase
+                            )
+                          }
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Fragment>
+                    )}
                 </StyledTableCell>
               </TableRow>
             )}
@@ -199,20 +204,24 @@ const ShippableTable = ({
                         >
                           <AddCircleOutlineIcon />
                         </IconButton>
-                        <IconButton
-                          aria-label="edit"
-                          size="small"
-                          onClick={() => handleOnClickEditShi(item.id)}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton
-                          aria-label="delete"
-                          size="small"
-                          onClick={() => handleOnClickDeleteShi(item.id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
+                        {tokenData?.userLevel === 4 && (
+                          <Fragment>
+                            <IconButton
+                              aria-label="edit"
+                              size="small"
+                              onClick={() => handleOnClickEditShi(item.id)}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton
+                              aria-label="delete"
+                              size="small"
+                              onClick={() => handleOnClickDeleteShi(item.id)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Fragment>
+                        )}
                       </Box>
                     </StyledTableCell>
                   </>
@@ -290,21 +299,25 @@ const ShippableTable = ({
                             //     </IconButton>
                             //   )
                             // )
-                            <IconButton
-                              aria-label="edit"
-                              size="small"
-                              onClick={() =>
-                                handleOnClickEditAdv(
-                                  advance[item.id].find(
-                                    (obj) =>
-                                      obj.idMaquina ===
-                                      machines[activeIndex]?.id
-                                  )?.id
-                                )
-                              }
-                            >
-                              <EditIcon />
-                            </IconButton>
+                            <Fragment>
+                              {tokenData?.userLevel === 4 && (
+                                <IconButton
+                                  aria-label="edit"
+                                  size="small"
+                                  onClick={() =>
+                                    handleOnClickEditAdv(
+                                      advance[item.id].find(
+                                        (obj) =>
+                                          obj.idMaquina ===
+                                          machines[activeIndex]?.id
+                                      )?.id
+                                    )
+                                  }
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                              )}
+                            </Fragment>
                           )}
                         </StyledTableCell>
                       </>

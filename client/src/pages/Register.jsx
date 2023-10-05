@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useTheme } from "@mui/material/styles";
 import _ from "lodash";
 import Button from "@mui/material/Button";
 import Accordion from "@mui/material/Accordion";
@@ -60,6 +61,7 @@ const style = {
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
   const { idProyecto } = useParams();
 
   const [openExp, setOpenExp] = useState(false);
@@ -93,6 +95,7 @@ const Register = () => {
   const project = useSelector((state) => getProject(state, idProyecto));
   const { list: phases } = useSelector((state) => state.phase);
   const { isFetching, didError } = useSelector((state) => state.advance);
+  const { tokenData } = useSelector((state) => state.auth);
 
   const arrayPhases = _.values(phases);
   const [value, setValue] = useState(0);
@@ -211,25 +214,32 @@ const Register = () => {
               <h1 className="text-3xl font-bold text-center">
                 {project?.nombre}
               </h1>
-              <div className="w-2/3 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
+              <div
+                className="w-full h-1 bg-gradient-to-r from-transparent to-transparent"
+                style={{ backgroundColor: theme.palette.primary.main }}
+              ></div>
             </div>
             <div className="flex mb-3 justify-between items-center">
-              <div className="flex">
-                <div className="mr-2">
-                  <Button variant="contained" onClick={handleOnClickHead}>
-                    Agregar rubro
-                  </Button>
-                </div>
-                <div className="mr-2">
-                  <Button variant="contained" onClick={handleOnClickExp}>
-                    Agregar expectativa
-                  </Button>
-                </div>
-                <div>
-                  <Button variant="contained" onClick={handleOnClickPha}>
-                    Agregar fase
-                  </Button>
-                </div>
+              <div>
+                {tokenData?.userLevel === 4 && (
+                  <div className="flex">
+                    <div className="mr-2">
+                      <Button variant="contained" onClick={handleOnClickHead}>
+                        Agregar rubro
+                      </Button>
+                    </div>
+                    <div className="mr-2">
+                      <Button variant="contained" onClick={handleOnClickExp}>
+                        Agregar expectativa
+                      </Button>
+                    </div>
+                    <div>
+                      <Button variant="contained" onClick={handleOnClickPha}>
+                        Agregar fase
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="flex items-center justify-center">
                 <div className="mr-5">
@@ -270,31 +280,41 @@ const Register = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                           <div className="flex justify-between mb-3">
-                            <div className="flex">
-                              <IconButton
-                                aria-label="add"
-                                size="small"
-                                onClick={() => handleOnClickEditExp(item.id)}
-                              >
-                                <EditIcon />
-                              </IconButton>
-                              <IconButton
-                                aria-label="add"
-                                size="small"
-                                onClick={() => handleOnClickDeleteExp(item.id)}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
+                            <div>
+                              {tokenData?.userLevel === 4 && (
+                                <div className="flex">
+                                  <IconButton
+                                    aria-label="add"
+                                    size="small"
+                                    onClick={() =>
+                                      handleOnClickEditExp(item.id)
+                                    }
+                                  >
+                                    <EditIcon />
+                                  </IconButton>
+                                  <IconButton
+                                    aria-label="add"
+                                    size="small"
+                                    onClick={() =>
+                                      handleOnClickDeleteExp(item.id)
+                                    }
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </div>
+                              )}
                             </div>
                             <div className="flex">
-                              <Button
-                                variant="contained"
-                                size="small"
-                                onClick={() => handleOnClickShi(item.id)}
-                                sx={{ mr: 1 }}
-                              >
-                                Agregar Entregable
-                              </Button>
+                              {tokenData?.userLevel === 4 && (
+                                <Button
+                                  variant="contained"
+                                  size="small"
+                                  onClick={() => handleOnClickShi(item.id)}
+                                  sx={{ mr: 1 }}
+                                >
+                                  Agregar Entregable
+                                </Button>
+                              )}
                               {item.shippables &&
                                 item.shippables.length > 0 &&
                                 Object.keys(machines).length > 0 && (
@@ -329,27 +349,30 @@ const Register = () => {
                                 handleOnClickDeleteShi={handleOnClickDeleteShi}
                                 handleOnClickEditPha={handleOnClickEditPha}
                                 handleOnClickDeletePha={handleOnClickDeletePha}
+                                tokenData={tokenData}
                               />
                             </div>
                           )}
                         </AccordionDetails>
                       </Accordion>
                     ))}
-                    <div className="flex justify-end mt-3">
-                      <Button
-                        variant="outlined"
-                        onClick={() => handleOnClickEditHead(rubro.id)}
-                        sx={{ mr: 1 }}
-                      >
-                        Editar Rubro
-                      </Button>
-                      <Button
-                        variant="text"
-                        onClick={() => handleOnClickDeleteHead(rubro.id)}
-                      >
-                        Eliminar Rubro
-                      </Button>
-                    </div>
+                    {tokenData?.userLevel === 4 && (
+                      <div className="flex justify-end mt-3">
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleOnClickEditHead(rubro.id)}
+                          sx={{ mr: 1 }}
+                        >
+                          Editar Rubro
+                        </Button>
+                        <Button
+                          variant="text"
+                          onClick={() => handleOnClickDeleteHead(rubro.id)}
+                        >
+                          Eliminar Rubro
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </CustomTabPanel>
               ))}

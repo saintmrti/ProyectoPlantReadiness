@@ -171,7 +171,7 @@ const AdvanceForm = ({
               rows={3}
               className="w-64"
               autoComplete="off"
-              inputProps={{ maxLength: 120 }}
+              inputProps={{ maxLength: 255 }}
               {...register("comentarios", { required: false })}
             />
           </div>

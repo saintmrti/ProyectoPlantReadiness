@@ -9,7 +9,6 @@ module.exports.getKpis = (req, res) => {
       priority,
       idProyecto: parseInt(idProyecto),
     };
-    console.log(newRegister);
     response(res, false, getSummary, newRegister);
   } catch (error) {
     console.error(error);

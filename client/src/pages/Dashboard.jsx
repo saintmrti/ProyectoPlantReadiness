@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
@@ -22,11 +23,13 @@ import { Error } from "../components/Error";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const { idProyecto } = useParams();
   const summaryKpis = useSelector(getSummaryKpis);
   const { isFetching, didError } = useSelector((state) => state.kpis);
   const { list: champions } = useSelector((state) => state.champions);
   const { list: phases } = useSelector((state) => state.phase);
+  const { tokenData } = useSelector((state) => state.auth);
 
   const arrayPhases = _.map(phases, "id");
 
@@ -80,6 +83,7 @@ const Dashboard = () => {
                 handleBtnClickFilter={handleBtnClickFilter}
                 idProyecto={idProyecto}
                 phases={arrayPhases}
+                tokenData={tokenData}
               />
             )}
             <div className="h-80 flex items-end justify-center">
@@ -90,7 +94,6 @@ const Dashboard = () => {
           </>
         ) : (
           <>
-            {/* {console.log(summaryKpis)} */}
             <button className="ml-2" onClick={toggleFilterButton}>
               Mostrar / Ocultar
             </button>
@@ -101,6 +104,7 @@ const Dashboard = () => {
                 handleBtnClickFilter={handleBtnClickFilter}
                 idProyecto={idProyecto}
                 phases={arrayPhases}
+                tokenData={tokenData}
               />
             )}
             <div className="grid grid-cols-9 gap-2">
@@ -112,10 +116,10 @@ const Dashboard = () => {
                   {_.map(summaryKpis?.shippable_total, (item) => (
                     <DashboardBar
                       key={item.Id}
-                      rubro={item?.rubro || ""}
-                      real={item?.reales || 0}
-                      plan={item?.planes || 0}
-                      total={item?.totales || 0}
+                      rubro={item?.rubro}
+                      real={item?.reales}
+                      plan={item?.planes}
+                      total={item?.totales}
                     />
                   ))}
                 </Card>
@@ -183,7 +187,10 @@ const Dashboard = () => {
                         <div className="w-full flex justify-center">
                           <div className="w-36">
                             <p className="text-sm">{item?.nombre}</p>
-                            <p className="text-sm text-gray-600">
+                            <p
+                              className="text-sm"
+                              style={{ color: theme.palette.text.secondary }}
+                            >
                               {item?.rubro}
                             </p>
                           </div>
@@ -266,12 +273,16 @@ const Dashboard = () => {
                 </Card>
               </div>
               <div className="col-span-6">
-                <Card sx={{ height: "100%" }}>
+                <Card sx={{ height: "100%", padding: "0px 10px" }}>
                   <div className="text-base text-center mt-2 mb-2">
                     Avance por máquina
                   </div>
-                  <MachineTable tableValues={summaryKpis?.advanceMachines} />
+                  <MachineTable
+                    data={summaryKpis?.advanceMachines}
+                    rubros={summaryKpis?.headingMachines}
+                  />
                 </Card>
+                {/* {console.log(summaryKpis)} */}
               </div>
             </div>
           </>

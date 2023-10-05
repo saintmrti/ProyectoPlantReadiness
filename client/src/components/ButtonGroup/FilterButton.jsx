@@ -11,6 +11,7 @@ export function FilterButton({
   handleBtnClickFilter,
   idProyecto,
   phases,
+  tokenData,
 }) {
   const navigate = useNavigate();
   const handleBtnClick = (button, key) => {
@@ -87,14 +88,16 @@ export function FilterButton({
       </div>
       <div className="flex justify-center items-center">
         <div>
-          <Button
-            variant="contained"
-            className="bg-primary text-white"
-            onClick={() => navigate(`/proyectos/${idProyecto}/champions`)}
-            sx={{ mr: 2 }}
-          >
-            Champions
-          </Button>
+          {tokenData?.userLevel === 4 && (
+            <Button
+              variant="contained"
+              className="bg-primary text-white"
+              onClick={() => navigate(`/proyectos/${idProyecto}/champions`)}
+              sx={{ mr: 2 }}
+            >
+              Champions
+            </Button>
+          )}
         </div>
         <div>
           <Button

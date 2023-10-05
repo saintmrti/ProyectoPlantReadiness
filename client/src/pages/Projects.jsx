@@ -31,6 +31,7 @@ const Projects = () => {
     isFetching,
     didError,
   } = useSelector((state) => state.projects);
+  const { tokenData } = useSelector((state) => state.auth);
 
   const [open, setOpen] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
@@ -69,6 +70,7 @@ const Projects = () => {
             handleClickProject={handleClickProject}
             handleClickEditProject={handleClickEditProject}
             handleDeleteProject={handleDeleteProject}
+            tokenData={tokenData}
           />
           <Modal open={open} onClose={() => setOpen(false)}>
             <Box sx={style}>

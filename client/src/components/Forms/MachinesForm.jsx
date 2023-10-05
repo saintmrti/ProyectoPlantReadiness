@@ -212,7 +212,7 @@ const MachinesForm = ({
             label="Comentarios"
             defaultValue={advanceState.comentarios}
             disabled={!checkboxStates[machine.maquina]}
-            inputProps={{ maxLength: 120 }}
+            inputProps={{ maxLength: 255 }}
             {...register(`comments_${index}`, { required: false })}
           />
         </div>

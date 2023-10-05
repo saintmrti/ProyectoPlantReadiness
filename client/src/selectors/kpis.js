@@ -32,63 +32,71 @@ export const getSummaryKpis = createSelector(
     const advanceRate = _.map(orderedAdvance, "avance");
     const advanceTotal = _.map(orderedAdvance, "totales");
     const groupedByPlanYear = _.map(parseShippableYear, (value) => {
-      return [moment(`${value?.anio}-01-01`).valueOf(), value?.plan || 0];
+      return [moment(`${value?.anio}-01-01`).valueOf(), value?.plan];
     });
     const groupedByRealYear = _.map(parseShippableYear, (value) => {
-      return [moment(`${value?.anio}-01-01`).valueOf(), value?.real || 0];
+      return [moment(`${value?.anio}-01-01`).valueOf(), value?.real];
     });
     const groupedByPlanMonth = _.map(parseShippableMonth, (value) => {
       return [
         moment(`${moment().year()}-${value?.mes}-01`).valueOf(),
-        value?.plan || 0,
+        value?.plan,
       ];
     });
     const groupedByRealMonth = _.map(parseShippableMonth, (value) => {
       return [
         moment(`${moment().year()}-${value?.mes}-01`).valueOf(),
-        value?.real || 0,
+        value?.real,
       ];
     });
 
     const cumplience_year = _.map(parseShippableYear, (value) => {
-      return [moment(`${value?.anio}-01-01`).valueOf(), value?.cumplimiento || 0];
+      return [moment(`${value?.anio}-01-01`).valueOf(), value?.cumplimiento];
     });
 
     const cumplience_month = _.map(parseShippableMonth, (value) => {
       return [
         moment(`${moment().year()}-${value?.mes}-01`).valueOf(),
-        value?.cumplimiento || 0,
+        value?.cumplimiento,
       ];
     });
+
+    const headingMachines = _.uniq(_.map(parseMachines, "rubro"));
 
     const advanceMachines = _.reduce(
       parseMachines,
       (result, item) => {
         const existingMachine = _.find(result, { name: item?.descripcion });
-    
+
         if (existingMachine) {
-          if (!existingMachine[item?.rubro]) {
-            existingMachine[item?.rubro] = {
-              real: item?.Real || 0,
-              plan: item?.Plan || 0,
-            };
-          } else {
-            existingMachine[item?.rubro].real += item?.Real || 0;
-            existingMachine[item?.rubro].plan += item?.Plan || 0;
+          if (!existingMachine.rubros) {
+            existingMachine.rubros = {};
           }
+
+          headingMachines.forEach((rubro) => {
+            if (!existingMachine.rubros[rubro]) {
+              existingMachine.rubros[rubro] = [0, 0];
+            }
+          });
+
+          existingMachine.rubros[item?.rubro] = [item?.Real, item?.Plan];
         } else {
           const newMachine = {
-            idMaquina: item?.idMaquina || "",
-            tipo: item?.tipo || "",
-            name: item?.descripcion || "",
+            idMaquina: item?.idMaquina,
+            tipo: item?.tipo,
+            name: item?.descripcion,
+            rubros: {},
           };
-          newMachine[item?.rubro] = {
-            real: item?.Real || 0,
-            plan: item?.Plan || 0,
-          };
+
+          headingMachines.forEach((rubro) => {
+            newMachine.rubros[rubro] = [0, 0];
+          });
+
+          newMachine.rubros[item?.rubro] = [item?.Real, item?.Plan];
+
           result.push(newMachine);
         }
-    
+
         return result;
       },
       []
@@ -97,22 +105,22 @@ export const getSummaryKpis = createSelector(
     const phasesTotal = [
       {
         name: "Plan",
-        data: parsePhases.map((element) => [element?.Fase || "", element?.Plan || 0]),
+        data: parsePhases.map((element) => [element?.Fase, element?.Plan]),
       },
       {
         name: "Real",
-        data: parsePhases.map((element) => [element?.Fase || "", element?.Real || 0]),
+        data: parsePhases.map((element) => [element?.Fase, element?.Real]),
       },
     ];
 
     const phasesYTD = [
       {
         name: "Plan",
-        data: parsePhasesYTD.map((element) => [element?.Fase || "", element?.Plan || 0]),
+        data: parsePhasesYTD.map((element) => [element?.Fase, element?.Plan]),
       },
       {
         name: "Real",
-        data: parsePhasesYTD.map((element) => [element?.Fase || "", element?.Real || 0]),
+        data: parsePhasesYTD.map((element) => [element?.Fase, element?.Real]),
       },
     ];
 
@@ -167,6 +175,7 @@ export const getSummaryKpis = createSelector(
       shippable_year,
       shippable_month,
       advanceMachines,
+      headingMachines,
       phasesTotal,
       phasesYTD,
       cumplience_year,
