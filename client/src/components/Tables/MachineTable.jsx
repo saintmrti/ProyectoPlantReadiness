@@ -87,7 +87,7 @@ const MachineTable = ({ data, rubros }) => {
                   }}
                 >
                   <StyledTableCell
-                    component="th"
+                    component="th" 
                     scope="row"
                     sx={{ fontSize: 10, padding: "0 10px" }}
                   >

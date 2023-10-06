@@ -11,7 +11,7 @@ const middleware = (admin) => (req, res, next) => {
       req.userId = payload.userId;
       if (admin && !payload.admin)
         return res.json(errorObj("No tienes autorización"));
-      if (!payload.n_pr)
+      if (payload.n_pr === 0)
         return res.status(401).json(errorObj("Acceso no autorizado"));
       return next();
     })
