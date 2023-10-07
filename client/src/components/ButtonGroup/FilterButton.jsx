@@ -88,7 +88,7 @@ export function FilterButton({
       </div>
       <div className="flex justify-center items-center">
         <div>
-          {tokenData?.userLevel === 4 && (
+          {tokenData?.n_pr === 2 && (
             <Button
               variant="contained"
               className="bg-primary text-white"

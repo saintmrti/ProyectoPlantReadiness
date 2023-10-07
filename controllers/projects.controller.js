@@ -18,11 +18,12 @@ module.exports.getProjects = (req, res) => {
 
 module.exports.createProject = (req, res) => {
   try {
-    const { nombre } = req.body;
+    const { nombre, idPlantilla } = req.body;
     const newProject = {
       nombre,
+      idPlantilla,
     };
-    response(res, false, insertProject, newProject);
+    response(res, true, insertProject, newProject);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

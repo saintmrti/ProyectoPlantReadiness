@@ -9,12 +9,16 @@ module.exports.getSummary = async (conn) => {
   return data;
 };
 
-module.exports.insertProject = async (conn, { nombre }) => {
+module.exports.insertProject = async (conn, { nombre, idPlantilla }) => {
   const {
     info: { insertId },
   } = await conn.query(`
         INSERT INTO vki40_Readiness_proyectos (nombre)
         VALUES ('${nombre}');
+    `);
+
+  await conn.query(`
+    exec sp_vki40_Readiness_generaPlantilla ${insertId}, ${idPlantilla};
     `);
 
   const { data } = await conn.query(`

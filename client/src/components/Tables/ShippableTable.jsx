@@ -122,7 +122,7 @@ const ShippableTable = ({
                 <StyledTableCell align="right" sx={{ width: "100px" }}>
                   {activeIndex &&
                     machines[activeIndex] &&
-                    tokenData?.userLevel === 4 && (
+                    tokenData?.n_pr === 2 && (
                       <Fragment>
                         <IconButton
                           aria-label="edit"
@@ -204,7 +204,7 @@ const ShippableTable = ({
                         >
                           <AddCircleOutlineIcon />
                         </IconButton>
-                        {tokenData?.userLevel === 4 && (
+                        {tokenData?.n_pr === 2 && (
                           <Fragment>
                             <IconButton
                               aria-label="edit"
@@ -300,7 +300,7 @@ const ShippableTable = ({
                             //   )
                             // )
                             <Fragment>
-                              {tokenData?.userLevel === 4 && (
+                              {tokenData?.n_pr === 2 && (
                                 <IconButton
                                   aria-label="edit"
                                   size="small"

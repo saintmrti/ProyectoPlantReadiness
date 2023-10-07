@@ -221,7 +221,7 @@ const Register = () => {
             </div>
             <div className="flex mb-3 justify-between items-center">
               <div>
-                {tokenData?.userLevel === 4 && (
+                {tokenData?.n_pr === 2 && (
                   <div className="flex">
                     <div className="mr-2">
                       <Button variant="contained" onClick={handleOnClickHead}>
@@ -281,7 +281,7 @@ const Register = () => {
                         <AccordionDetails>
                           <div className="flex justify-between mb-3">
                             <div>
-                              {tokenData?.userLevel === 4 && (
+                              {tokenData?.n_pr === 2 && (
                                 <div className="flex">
                                   <IconButton
                                     aria-label="add"
@@ -305,7 +305,7 @@ const Register = () => {
                               )}
                             </div>
                             <div className="flex">
-                              {tokenData?.userLevel === 4 && (
+                              {tokenData?.n_pr === 2 && (
                                 <Button
                                   variant="contained"
                                   size="small"
@@ -356,7 +356,7 @@ const Register = () => {
                         </AccordionDetails>
                       </Accordion>
                     ))}
-                    {tokenData?.userLevel === 4 && (
+                    {tokenData?.n_pr === 2 && (
                       <div className="flex justify-end mt-3">
                         <Button
                           variant="outlined"

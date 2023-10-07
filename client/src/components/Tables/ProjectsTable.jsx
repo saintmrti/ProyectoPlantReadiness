@@ -43,7 +43,7 @@ const ProjectsTable = ({
           >
             Proyectos
           </Typography>
-          {tokenData?.userLevel === 4 && (
+          {tokenData?.n_pr === 2 && (
             <Tooltip title="Agregar proyecto">
               <IconButton onClick={handleClickProject}>
                 <AddIcon />
@@ -108,7 +108,7 @@ const ProjectsTable = ({
                         <ExitToAppIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    {tokenData?.userLevel === 4 && (
+                    {tokenData?.n_pr === 2 && (
                       <Fragment>
                         <Tooltip title="Editar">
                           <IconButton
