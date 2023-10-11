@@ -4,21 +4,20 @@ import { useParams } from "react-router-dom";
 
 import UsersTable from "../components/Tables/UsersTable";
 import { fetchUsersRequest, updateUsersRequest } from "../slices/users";
-import { getUsers } from "../selectors/users";
+import { summaryUsers } from "../selectors/users";
 
 const UserAccess = () => {
   const dispatch = useDispatch();
   const { idProyecto } = useParams();
 
   // const { list: users } = useSelector((state) => state.users);
-  const users = useSelector(getUsers);
+  const users = useSelector(summaryUsers(idProyecto));
 
   const handleOnClickUsers = (users) => {
     const usersUpdate = {
       idProyecto,
       users,
     };
-    console.log(usersUpdate);
     dispatch(updateUsersRequest(usersUpdate));
   };
 

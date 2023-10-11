@@ -54,6 +54,7 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
   };
 
   useEffect(() => {
+    setSelectedItems([]);
     _.map(list, (item) => {
       if (item.access && item.rol !== "Champion Gerente") {
         setSelectedItems((prevState) => {
@@ -87,7 +88,6 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
             </IconButton>
           </Tooltip>
         </Toolbar>
-        {console.log(selectedItems)}
         <TableContainer>
           <Table>
             <TableHead>

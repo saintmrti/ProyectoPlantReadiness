@@ -1,4 +1,4 @@
-module.exports.getSummary = async (conn, { idProyecto }) => {
+module.exports.getSummary = async (conn) => {
   const { data: dataUsers } = await conn.query(`
       SELECT idUsuario, c_nombre, c_apellido_pat, c_apellido_mat, n_pr
       FROM vki40_usuarios
@@ -6,8 +6,7 @@ module.exports.getSummary = async (conn, { idProyecto }) => {
     `);
 
   const { data: dataAccess } = await conn.query(`
-      SELECT * FROM vki40_Readiness_usuarios_proyectos
-      WHERE idProyecto = ${idProyecto};
+      SELECT * FROM vki40_Readiness_usuarios_proyectos;
     `);
 
   return {
