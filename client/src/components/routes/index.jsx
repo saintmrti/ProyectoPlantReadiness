@@ -10,6 +10,7 @@ import Register from "../../pages/Register";
 import Dashboard from "../../pages/Dashboard";
 import Advance from "../../pages/Advance";
 import Champions from "../../pages/Champions";
+import UserAccess from "../../pages/UserAccess";
 import PrivateRoute from "../PrivateRoute";
 import Authentication from "../Authentication";
 
@@ -37,6 +38,10 @@ export const router = createBrowserRouter([
           <Route
             path="/proyectos/:idProyecto/champions"
             element={<Champions />}
+          />
+          <Route
+            path="/proyectos/:idProyecto/usuarios"
+            element={<UserAccess />}
           />
         </Route>
         <Route path="*" element={<h1>Not Found</h1>} />

@@ -45,3 +45,4 @@ export {
   updateChampionsSaga,
   deleteChampionsSaga,
 } from "./champions";
+export { fetchUsersSaga, updateUsersSaga } from "./users";

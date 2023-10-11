@@ -53,7 +53,7 @@ export const ProjectsForm = ({ setOpen, editProject }) => {
             helperText={errors.nombre?.message}
             {...register("nombre", {
               required: true,
-              validate: (value) => textFieldValidation(value, 25),
+              validate: (value) => textFieldValidation(value, 50),
             })}
           />
         </div>
@@ -67,7 +67,7 @@ export const ProjectsForm = ({ setOpen, editProject }) => {
                 {...register("idPlantilla", { required: true })}
               >
                 <MenuItem value={1}>Planta</MenuItem>
-                <MenuItem value={2}>Maquina</MenuItem>
+                <MenuItem value={2}>Serie de maquinas</MenuItem>
               </Select>
             </FormControl>
           </div>

@@ -160,7 +160,12 @@ export const getSummaryKpis = createSelector(
       },
     ];
 
-    const shippable_total = _.keyBy(parseShippable, "Id");
+    const arrayShippable = _.map(parseShippable, (value) => ({
+      ...value,
+      fechaHoy: moment().tz("America/Mexico_City").format("DD-MMM"),
+    }));
+
+    const shippable_total = _.keyBy(arrayShippable, "Id");
     const compliance_headings = _.keyBy(parseHeadings, "Id");
     const compliance_total = JSON.parse(kpis[0]?.cumplimiento_Total);
     const compliance_YTD = JSON.parse(kpis[0]?.cumplimiento_YTD);

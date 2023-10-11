@@ -115,11 +115,12 @@ const Dashboard = () => {
                   </div>
                   {_.map(summaryKpis?.shippable_total, (item) => (
                     <DashboardBar
-                      key={item.Id}
+                      key={item?.Id}
                       rubro={item?.rubro}
                       real={item?.reales}
                       plan={item?.planes}
                       total={item?.totales}
+                      date={item?.fechaHoy}
                     />
                   ))}
                 </Card>

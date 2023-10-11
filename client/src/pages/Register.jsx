@@ -96,7 +96,6 @@ const Register = () => {
   const { list: phases } = useSelector((state) => state.phase);
   const { isFetching, didError } = useSelector((state) => state.advance);
   const { tokenData } = useSelector((state) => state.auth);
-
   const arrayPhases = _.values(phases);
   const [value, setValue] = useState(0);
 
@@ -242,6 +241,16 @@ const Register = () => {
                 )}
               </div>
               <div className="flex items-center justify-center">
+                <div className="mr-5">
+                  <Button
+                    variant="contained"
+                    onClick={() =>
+                      navigate(`/proyectos/${idProyecto}/usuarios`)
+                    }
+                  >
+                    Champions
+                  </Button>
+                </div>
                 <div className="mr-5">
                   <Button variant="contained" onClick={() => navigate("/")}>
                     Inicio

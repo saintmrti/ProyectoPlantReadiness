@@ -41,3 +41,5 @@ export {
   updateChampionApi,
   deleteChampionApi,
 } from "./champions";
+
+export { fetchUsersApi, updateUsersApi } from "./users";

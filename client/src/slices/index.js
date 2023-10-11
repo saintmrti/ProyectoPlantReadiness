@@ -10,6 +10,7 @@ import setAdvance from "./setAdvance";
 import projects from "./projects";
 import champions from "./champions";
 import auth from "./auth";
+import users from "./users";
 
 const reducer = {
   expectancy,
@@ -24,6 +25,7 @@ const reducer = {
   projects,
   champions,
   auth,
+  users,
 };
 
 export default reducer;
