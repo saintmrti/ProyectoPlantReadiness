@@ -23,6 +23,7 @@ import ShippableForm from "../components/Forms/ShippableForm";
 import PhaseForm from "../components/Forms/PhaseForm";
 import AdvanceForm from "../components/Forms/AdvanceForm";
 import HeadingForm from "../components/Forms/HeadingForm";
+import ProductsForm from "../components/Forms/ProductsForm";
 import ShippableTable from "../components/Tables/ShippableTable";
 import { fetchExpectancyRequest } from "../slices/expectancy";
 import { fetchShippableRequest } from "../slices/shippable";
@@ -69,6 +70,7 @@ const Register = () => {
   const [openPha, setOpenPha] = useState(false);
   const [openAdv, setOpenAdv] = useState(false);
   const [openHead, setOpenHead] = useState(false);
+  const [openProd, setOpenProd] = useState(false);
   const [idExpectancy, setIdExpectancy] = useState(null);
   const [activeComment, setActiveComment] = useState(true);
   const [changeShi, setChangeShi] = useState(null);
@@ -222,12 +224,12 @@ const Register = () => {
               <div>
                 {tokenData?.n_pr === 2 && (
                   <div className="flex">
-                    <div className="mr-2">
+                    <div className="mr-5">
                       <Button variant="contained" onClick={handleOnClickHead}>
                         Agregar rubro
                       </Button>
                     </div>
-                    <div className="mr-2">
+                    <div className="mr-5">
                       <Button variant="contained" onClick={handleOnClickExp}>
                         Agregar expectativa
                       </Button>
@@ -241,19 +243,21 @@ const Register = () => {
                 )}
               </div>
               <div className="flex items-center justify-center">
-                <div className="mr-5">
-                  <Button
-                    variant="contained"
-                    onClick={() =>
-                      navigate(`/proyectos/${idProyecto}/usuarios`)
-                    }
-                  >
-                    Champions
-                  </Button>
-                </div>
+                {tokenData?.n_pr === 2 && (
+                  <div className="mr-5">
+                    <Button
+                      variant="contained"
+                      onClick={() =>
+                        navigate(`/proyectos/${idProyecto}/usuarios`)
+                      }
+                    >
+                      Champions
+                    </Button>
+                  </div>
+                )}
                 <div className="mr-5">
                   <Button variant="contained" onClick={() => navigate("/")}>
-                    Inicio
+                    Proyectos
                   </Button>
                 </div>
                 <Toggle idProyecto={idProyecto} />
@@ -269,6 +273,10 @@ const Register = () => {
                       {...a11yProps(parseInt(index))}
                     />
                   ))}
+                  {/* <Tab
+                    label="Productos Commissioning"
+                    {...a11yProps(headings.length || 0)}
+                  /> */}
                 </Tabs>
               </Box>
               {_.map(headings, (rubro, index) => (
@@ -385,6 +393,14 @@ const Register = () => {
                   </div>
                 </CustomTabPanel>
               ))}
+              {/* <CustomTabPanel value={value} index={headings.length || 0}>
+                <div className="flex justify-end">
+                  <Button variant="contained" onClick={() => setOpenProd(true)}>
+                    Nueva Maquina
+                  </Button>
+                </div>
+                <div>Hola mundo</div>
+              </CustomTabPanel> */}
             </Box>
             <Modal open={openHead} onClose={() => setOpenHead(false)}>
               <Box sx={style}>
@@ -491,6 +507,27 @@ const Register = () => {
                   idEntregable={changeShi}
                   phases={selectedPhases}
                   editAdv={editAdv}
+                  idProyecto={idProyecto}
+                />
+              </Box>
+            </Modal>
+            <Modal open={openProd} onClose={() => setOpenProd(false)}>
+              <Box sx={style}>
+                <IconButton
+                  aria-label="close"
+                  size="small"
+                  onClick={() => setOpenProd(false)}
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: 8,
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+                <ProductsForm
+                  setOpen={setOpenHead}
+                  editHead={editHead}
                   idProyecto={idProyecto}
                 />
               </Box>

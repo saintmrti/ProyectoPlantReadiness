@@ -147,7 +147,6 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
       </Paper>
       <Button
         variant="contained"
-        color="primary"
         onClick={() => handleOnClickUsers(selectedItems)}
         sx={{ position: "absolute", bottom: 20, right: 20 }}
       >

@@ -5,12 +5,16 @@ import { useParams } from "react-router-dom";
 import UsersTable from "../components/Tables/UsersTable";
 import { fetchUsersRequest, updateUsersRequest } from "../slices/users";
 import { summaryUsers } from "../selectors/users";
+import { Spinner } from "../components/Spinner";
+import { Error } from "../components/Error";
 
 const UserAccess = () => {
   const dispatch = useDispatch();
   const { idProyecto } = useParams();
 
-  // const { list: users } = useSelector((state) => state.users);
+  const { isFetching, didError, isFetchingUpdate } = useSelector(
+    (state) => state.users
+  );
   const users = useSelector(summaryUsers(idProyecto));
 
   const handleOnClickUsers = (users) => {
@@ -26,11 +30,17 @@ const UserAccess = () => {
   }, [dispatch, idProyecto]);
   return (
     <>
-      <UsersTable
-        list={users}
-        idProyecto={idProyecto}
-        handleOnClickUsers={handleOnClickUsers}
-      />
+      {isFetching || isFetchingUpdate ? (
+        <Spinner />
+      ) : didError ? (
+        <Error />
+      ) : (
+        <UsersTable
+          list={users}
+          idProyecto={idProyecto}
+          handleOnClickUsers={handleOnClickUsers}
+        />
+      )}
     </>
   );
 };

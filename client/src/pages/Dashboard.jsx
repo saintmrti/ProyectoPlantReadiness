@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import _ from "lodash";
 
@@ -12,7 +13,7 @@ import SolidGauge from "../components/GaugeCharts/SolidGauge";
 import StackedBar from "../components/BarCharts/StackedBar";
 import ColumnChart from "../components/BarCharts/ColumnChart";
 import MachineTable from "../components/Tables/MachineTable";
-import { FilterButton } from "../components/ButtonGroup/FilterButton";
+import { FilterButton } from "../components/FilterButton";
 import { fetchKpisRequest } from "../slices/kpis";
 import { fetchChampionsRequest } from "../slices/champions";
 import { fetchPhaseRequest } from "../slices/phase";
@@ -94,9 +95,13 @@ const Dashboard = () => {
           </>
         ) : (
           <>
-            <button className="ml-2" onClick={toggleFilterButton}>
+            <Button
+              variant="text"
+              onClick={toggleFilterButton}
+              sx={{ ml: 1, padding: 0 }}
+            >
               Mostrar / Ocultar
-            </button>
+            </Button>
             {isFilterButtonVisible && (
               <FilterButton
                 setSelectedFilter={setSelectedFilter}
