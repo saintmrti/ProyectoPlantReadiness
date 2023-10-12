@@ -11,7 +11,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import _ from "lodash";
 
 import { insertAdvanceRequest } from "../../slices/advance";
-import { textFieldValidation, numberFieldValidation } from "./validated";
+import {
+  textFieldValidation,
+  numberFieldValidation,
+  textFieldValidationV2,
+} from "./validated";
 
 const MachinesForm = ({
   idEntregable,
@@ -212,8 +216,10 @@ const MachinesForm = ({
             label="Comentarios"
             defaultValue={advanceState.comentarios}
             disabled={!checkboxStates[machine.maquina]}
-            inputProps={{ maxLength: 255 }}
-            {...register(`comments_${index}`, { required: false })}
+            {...register(`comments_${index}`, {
+              required: false,
+              validate: (value) => textFieldValidationV2(value, 255),
+            })}
           />
         </div>
       ))}

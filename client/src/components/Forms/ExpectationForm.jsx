@@ -46,52 +46,43 @@ const ExpectationForm = ({ setOpen, data, editExp, idProyecto }) => {
         <h1 className="text-3xl mb-3 w-full text-center mt-5">
           {editExp ? "Editar expectativa" : "Nueva expectativa"}
         </h1>
-        <div>
-          <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4">Nombre</label>
-            <TextField
-              sx={{ width: "15rem" }}
-              type="text"
-              label="Expectativa"
-              autoComplete="off"
-              defaultValue={expectancy?.expectativa || ""}
-              error={Boolean(errors.expectancy)}
-              helperText={errors.expectancy?.message}
-              {...register("expectancy", {
-                required: true,
-                validate: (value) => textFieldValidation(value, 60),
-              })}
-            />
-          </div>
+        <div className="flex flex-col justify-end items-center w-full mb-3">
+          <TextField
+            sx={{ width: "15rem", mb: 2 }}
+            type="text"
+            label="Expectativa"
+            autoComplete="off"
+            defaultValue={expectancy?.expectativa || ""}
+            error={Boolean(errors.expectancy)}
+            helperText={errors.expectancy?.message}
+            {...register("expectancy", {
+              required: true,
+              validate: (value) => textFieldValidation(value, 60),
+            })}
+          />
           {!editExp && (
-            <div className="flex justify-end items-center w-full mb-3">
-              <label className="px-4">Rubro</label>
-              <FormControl sx={{ minWidth: "15rem" }}>
-                <InputLabel id="demo">Seleccionar rubro</InputLabel>
-                <Select
-                  labelId="demo"
-                  id="demo-simple-select"
-                  label="Seleccionar rubro"
-                  autoComplete="off"
-                  defaultValue=""
-                  {...register("area", { required: true })}
-                >
-                  <MenuItem value="">
-                    <em>Seleccionar rubro</em>
+            <FormControl sx={{ minWidth: "15rem" }}>
+              <InputLabel id="demo">Rubro</InputLabel>
+              <Select
+                labelId="demo"
+                id="demo-simple-select"
+                label="Rubro"
+                error={Boolean(errors.area)}
+                autoComplete="off"
+                {...register("area", { required: true })}
+              >
+                {_.map(data, (item) => (
+                  <MenuItem key={item.id} value={item.id}>
+                    {item.rubro}
                   </MenuItem>
-                  {_.map(data, (item) => (
-                    <MenuItem key={item.id} value={item.id}>
-                      {item.rubro}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
+                ))}
+              </Select>
+            </FormControl>
           )}
         </div>
         <div className="w-full flex justify-center">
           <Button variant="contained" type="submit">
-            Agregar
+            {editExp ? "Actualizar" : "Agregar"}
           </Button>
         </div>
       </form>

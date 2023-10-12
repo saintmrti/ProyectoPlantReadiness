@@ -42,7 +42,6 @@ const HeadingForm = ({ setOpen, editHead, idProyecto }) => {
           {editHead ? "Editar Rubro" : "Nuevo Rubro"}
         </h1>
         <div className="flex justify-center items-center w-full mb-3">
-          <label className="px-4">Nombre</label>
           <TextField
             sx={{ width: "15rem" }}
             type="text"
@@ -59,7 +58,7 @@ const HeadingForm = ({ setOpen, editHead, idProyecto }) => {
         </div>
         <div className="w-full flex justify-center">
           <Button variant="contained" type="submit">
-            Agregar
+            {editHead ? "Actualizar" : "Agregar"}
           </Button>
         </div>
       </form>

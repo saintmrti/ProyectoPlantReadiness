@@ -156,6 +156,9 @@ const ShippableTable = ({
                 <>
                   <StyledTableCell>Evidencia</StyledTableCell>
                   <StyledTableCell align="center">Prioridad</StyledTableCell>
+                  <StyledTableCell align="center" sx={{ minWidth: "8rem" }}>
+                    Quien Valida
+                  </StyledTableCell>
                   <StyledTableCell align="center">Comentarios</StyledTableCell>
                   <StyledTableCell align="center"></StyledTableCell>
                 </>
@@ -193,6 +196,9 @@ const ShippableTable = ({
                     <StyledTableCell>{item.evidencia}</StyledTableCell>
                     <StyledTableCell align="center">
                       {item.prioridad}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.qn_valida}
                     </StyledTableCell>
                     <StyledTableCell>{item.comentarios}</StyledTableCell>
                     <StyledTableCell>

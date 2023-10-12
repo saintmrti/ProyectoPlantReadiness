@@ -64,6 +64,8 @@ export const ProjectsForm = ({ setOpen, editProject }) => {
               <Select
                 label="Plantilla"
                 autoComplete="off"
+                error={Boolean(errors.idPlantilla)}
+                helperText={errors.idPlantilla?.message}
                 {...register("idPlantilla", { required: true })}
               >
                 <MenuItem value={1}>Planta</MenuItem>

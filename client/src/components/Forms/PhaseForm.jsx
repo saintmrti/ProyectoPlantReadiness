@@ -55,7 +55,6 @@ const PhaseForm = ({ setOpen, idProyecto, editPha }) => {
 
   return (
     <div>
-      {console.log(selectedMachines)}
       <form
         className="flex justify-center items-center flex-wrap"
         onSubmit={handleSubmit(onSubmit)}
@@ -65,7 +64,6 @@ const PhaseForm = ({ setOpen, idProyecto, editPha }) => {
         </h1>
         <div className="mb-10">
           <div className="flex justify-center items-center mb-5">
-            <label className="px-4">Nombre</label>
             <TextField
               sx={{ width: "15rem" }}
               type="text"
@@ -90,7 +88,7 @@ const PhaseForm = ({ setOpen, idProyecto, editPha }) => {
                   No tienes maquinas disponibles
                 </Typography>
               ) : (
-                <div className="grid grid-cols-3 gap-2 mb-5">
+                <div className="grid grid-cols-3 gap-2 mb-5 max-h-64 overflow-y-auto">
                   {_.map(selectedMachines, (item, index) => (
                     <Typography key={index} sx={{ textAlign: "end" }}>
                       {item}
@@ -132,7 +130,7 @@ const PhaseForm = ({ setOpen, idProyecto, editPha }) => {
               editPha ? false : _.isEmpty(selectedMachines) ? true : false
             }
           >
-            Agregar
+            {editPha ? "Actualizar" : "Agregar"}
           </Button>
         </div>
       </form>

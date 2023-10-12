@@ -7,13 +7,21 @@ module.exports.getSummary = async (conn, { idProyecto }) => {
 };
 module.exports.insertShippable = async (
   conn,
-  { nombre, evidencia, prioridad, comentarios, idExpectativa, idProyecto }
+  {
+    nombre,
+    evidencia,
+    qn_valida,
+    prioridad,
+    comentarios,
+    idExpectativa,
+    idProyecto,
+  }
 ) => {
   const {
     info: { insertId },
   } = await conn.query(`
-      INSERT INTO vki40_Readiness_entregables (fecha, nombre, evidencia, prioridad, comentarios, idExpectativa, idProyecto)
-      VALUES (GETDATE(), '${nombre}', '${evidencia}', '${prioridad}','${comentarios}', ${idExpectativa}, ${idProyecto});
+      INSERT INTO vki40_Readiness_entregables (fecha, nombre, evidencia, qn_valida, prioridad, comentarios, idExpectativa, idProyecto)
+      VALUES (GETDATE(), '${nombre}', '${evidencia}', '${qn_valida}', '${prioridad}','${comentarios}', ${idExpectativa}, ${idProyecto});
     `);
 
   const { data } = await conn.query(`
@@ -24,7 +32,7 @@ module.exports.insertShippable = async (
 };
 module.exports.updateShippable = async (
   conn,
-  { nombre, evidencia, prioridad, comentarios, idEntregable }
+  { nombre, evidencia, qn_valida, prioridad, comentarios, idEntregable }
 ) => {
   await conn.query(`
       UPDATE vki40_Readiness_entregables
@@ -32,6 +40,7 @@ module.exports.updateShippable = async (
         fecha = GETDATE(),
         nombre = '${nombre}',
         evidencia = '${evidencia}',
+        qn_valida = '${qn_valida}',
         prioridad = '${prioridad}',
         comentarios = '${comentarios}'
       WHERE id= ${idEntregable};

@@ -9,7 +9,7 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import { textFieldValidation } from "./validated";
+import { textFieldValidationV2 } from "./validated";
 import { changeAdvance } from "../../slices/setAdvance";
 import { getAdvance } from "../../selectors/advance";
 import { updateAdvanceRequest } from "../../slices/advance";
@@ -87,7 +87,7 @@ const AdvanceForm = ({
               helperText={errors.responsable?.message}
               {...register("responsable", {
                 required: false,
-                validate: (value) => textFieldValidation(value, 30),
+                validate: (value) => textFieldValidationV2(value, 30),
               })}
             />
           </div>
@@ -95,18 +95,17 @@ const AdvanceForm = ({
             <div className="flex justify-end items-center w-full mb-3">
               <label className="px-4">Fase</label>
               <FormControl sx={{ width: "16rem" }}>
-                <InputLabel id="fase">Seleccionar fase</InputLabel>
+                <InputLabel id="fase">Fase</InputLabel>
                 <Select
                   labelId="fase"
                   id="select-phase"
-                  label="Seleccionar fase"
+                  label="Fase"
+                  error={Boolean(errors.idFase)}
+                  helperText={errors.idFase?.message}
                   autoComplete="off"
                   defaultValue=""
                   {...register("idFase", { required: true })}
                 >
-                  <MenuItem value="">
-                    <em>Seleccionar fase</em>
-                  </MenuItem>
                   {_.map(phases, (item) => (
                     <MenuItem key={item.id} value={item.id}>
                       {item.fase}
@@ -166,13 +165,17 @@ const AdvanceForm = ({
           <div className="flex justify-end w-full">
             <label className="px-4">Comentarios</label>
             <TextField
-              label="Ingresar comentarios..."
+              label="Comentarios"
               multiline
               rows={3}
+              error={Boolean(errors.comentarios)}
+              helperText={errors.comentarios?.message}
               className="w-64"
               autoComplete="off"
-              inputProps={{ maxLength: 255 }}
-              {...register("comentarios", { required: false })}
+              {...register("comentarios", {
+                required: false,
+                validate: (value) => textFieldValidationV2(value, 255),
+              })}
             />
           </div>
         </div>
