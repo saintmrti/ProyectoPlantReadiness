@@ -79,7 +79,7 @@ function* deleteProducts({ payload: { idMaquina } }) {
   try {
     const { data, isError } = yield call(deleteProductsApi.run, idMaquina);
     if (isError) throw new Error();
-    yield put(deleteProductsSuccess({ data }));
+    yield put(deleteProductsSuccess({ idMaquina: data }));
   } catch (e) {
     yield put(deleteProductsError());
   } finally {

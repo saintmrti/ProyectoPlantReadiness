@@ -245,7 +245,6 @@ const Register = () => {
                 style={{ backgroundColor: theme.palette.primary.main }}
               ></div>
             </div>
-            {console.log(products)}
             <div className="flex mb-3 justify-between items-center">
               <div>
                 {tokenData?.n_pr === 2 && (

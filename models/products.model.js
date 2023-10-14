@@ -73,11 +73,11 @@ module.exports.updateProducts = async (
 
 module.exports.deleteProducts = async (conn, { idMaquina }) => {
   await conn.query(`
-    DELETE FROM vki40_Readiness_productos WHERE idMaquina = ${idMaquina};
+      DELETE FROM vki40_Readiness_productos WHERE idMaquina = ${idMaquina};
   `);
 
   await conn.query(`
-    DELETE FROM vki40_Readiness_maquinas_productos WHERE idMaquina = ${idMaquina};
+      DELETE FROM vki40_Readiness_maquinas_productos WHERE id = ${idMaquina};
   `);
 
   return idMaquina;

@@ -20,7 +20,6 @@ export const ProductsAlert = ({ open, onClose, deleteProd, setDeleteProd }) => {
   };
   return (
     <Dialog open={open} onClose={onClose}>
-      {console.log(machine)}
       <DialogTitle>
         ¿Estás seguro que quieres eliminar la maquina junto con sus productos?
       </DialogTitle>

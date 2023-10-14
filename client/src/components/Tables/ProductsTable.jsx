@@ -38,7 +38,6 @@ export default function ProductsTable({
                   <EditIcon fontSize="small" />
                 </IconButton>
                 <IconButton
-                  sx={{ ml: 1 }}
                   onClick={() => handleOnClickDeleteProd(parseInt(idMaquina))}
                 >
                   <DeleteIcon fontSize="small" />

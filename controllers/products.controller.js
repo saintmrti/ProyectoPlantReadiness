@@ -28,7 +28,6 @@ module.exports.createProducts = (req, res) => {
       maquina,
       idProyecto: parseInt(idProyecto),
     };
-    console.log(newProducts);
     response(res, false, insertProducts, newProducts);
   } catch (error) {
     console.error(error);
