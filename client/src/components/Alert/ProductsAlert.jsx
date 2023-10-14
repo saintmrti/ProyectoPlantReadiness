@@ -7,29 +7,28 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
-import { deleteShippableRequest } from "../../slices/shippable";
-import { getShippable } from "../../selectors/shippable";
+import { deleteProductsRequest } from "../../slices/products";
+import { getMachine } from "../../selectors/products";
 
-export const ShippableAlert = ({ open, onClose, deleteShi, setDeleteShi }) => {
+export const ProductsAlert = ({ open, onClose, deleteProd, setDeleteProd }) => {
   const dispatch = useDispatch();
-
-  const shippable = useSelector((state) => getShippable(state, deleteShi));
-
+  const machine = useSelector((state) => getMachine(state, deleteProd));
   const handleOnConfirm = () => {
-    dispatch(deleteShippableRequest({ idEntregable: deleteShi }));
-    setDeleteShi(null);
+    dispatch(deleteProductsRequest({ idMaquina: deleteProd }));
+    setDeleteProd(null);
     onClose();
   };
-
   return (
     <Dialog open={open} onClose={onClose}>
+      {console.log(machine)}
       <DialogTitle>
-        ¿Estás seguro que quieres eliminar el entregable?
+        ¿Estás seguro que quieres eliminar la maquina junto con sus productos?
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
           Esta acción no se puede deshacer. Por favor, confirma si estás seguro
-          de eliminar <span className="font-semibold">{shippable?.nombre}</span>
+          de eliminar{" "}
+          <span className="font-semibold">{machine[0]?.nombre}</span>
         </DialogContentText>
       </DialogContent>
       <DialogActions>

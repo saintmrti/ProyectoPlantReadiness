@@ -97,25 +97,23 @@ const ShippableTable = ({
                 <StyledTableCell colSpan={7} sx={{ textAlign: "center" }}>
                   {activeIndex && machines[activeIndex] && (
                     <div className="flex items-center justify-center">
-                      <div className="flex items-center justify-center">
-                        <IconButton
-                          aria-label="back"
-                          size="small"
-                          onClick={() => handlePrev(idExpectancy.id)}
-                        >
-                          <ArrowBackIcon />
-                        </IconButton>
-                        <div className="w-56">
-                          {`${machines[activeIndex]?.fase} - ${machines[activeIndex]?.maquina}`}
-                        </div>
-                        <IconButton
-                          aria-label="forward"
-                          size="small"
-                          onClick={() => handleNext(idExpectancy.id)}
-                        >
-                          <ArrowForwardIcon />
-                        </IconButton>
+                      <IconButton
+                        aria-label="back"
+                        size="small"
+                        onClick={() => handlePrev(idExpectancy.id)}
+                      >
+                        <ArrowBackIcon />
+                      </IconButton>
+                      <div className="w-56">
+                        {`${machines[activeIndex]?.fase} - ${machines[activeIndex]?.maquina}`}
                       </div>
+                      <IconButton
+                        aria-label="forward"
+                        size="small"
+                        onClick={() => handleNext(idExpectancy.id)}
+                      >
+                        <ArrowForwardIcon />
+                      </IconButton>
                     </div>
                   )}
                 </StyledTableCell>

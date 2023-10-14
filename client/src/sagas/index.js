@@ -46,3 +46,9 @@ export {
   deleteChampionsSaga,
 } from "./champions";
 export { fetchUsersSaga, updateUsersSaga } from "./users";
+export {
+  fetchProductsSaga,
+  insertProductsSaga,
+  updateProductsSaga,
+  deleteProductsSaga,
+} from "./products";

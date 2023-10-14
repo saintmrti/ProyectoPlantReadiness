@@ -39,7 +39,7 @@ export const ExpectancyAlert = ({ open, onClose, deleteExp, setDeleteExp }) => {
           Cancelar
         </Button>
         <Button onClick={handleOnConfirm} color="primary" variant="contained">
-          Confirmar
+          Eliminar
         </Button>
       </DialogActions>
     </Dialog>

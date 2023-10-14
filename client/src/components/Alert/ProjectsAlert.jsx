@@ -43,7 +43,7 @@ export const ProjectsAlert = ({
           Cancelar
         </Button>
         <Button onClick={handleOnConfirm} color="primary" variant="contained">
-          Confirmar
+          Eliminar
         </Button>
       </DialogActions>
     </Dialog>

@@ -25,6 +25,7 @@ import AdvanceForm from "../components/Forms/AdvanceForm";
 import HeadingForm from "../components/Forms/HeadingForm";
 import ProductsForm from "../components/Forms/ProductsForm";
 import ShippableTable from "../components/Tables/ShippableTable";
+import ProductsTable from "../components/Tables/ProductsTable";
 import { fetchExpectancyRequest } from "../slices/expectancy";
 import { fetchShippableRequest } from "../slices/shippable";
 import { fetchAdvanceRequest } from "../slices/advance";
@@ -32,6 +33,7 @@ import { fetchProjectsRequest } from "../slices/projects";
 import { fetchHeadingsRequest } from "../slices/headings";
 import { fetchMachinesRequest } from "../slices/machines";
 import { fetchPhaseRequest } from "../slices/phase";
+import { fetchProductsRequest } from "../slices/products";
 import { groupedByIdExpectancy } from "../selectors/expectancy";
 import { summaryHeadings } from "../selectors/headings";
 import { summaryAdvanced } from "../selectors/advance";
@@ -46,6 +48,7 @@ import { ExpectancyAlert } from "../components/Alert/ExpectancyAlert";
 import { AdvanceAlert } from "../components/Alert/AdvanceAlert";
 import { HeadingsAlert } from "../components/Alert/HeadingsAlert";
 import { PhaseAlert } from "../components/Alert/PhaseAlert";
+import { ProductsAlert } from "../components/Alert/ProductsAlert";
 
 const style = {
   position: "absolute",
@@ -79,15 +82,18 @@ const Register = () => {
   const [editExp, setEditExp] = useState(null);
   const [editHead, setEditHead] = useState(null);
   const [editPha, setEditPha] = useState(null);
+  const [editProd, setEditProd] = useState(null);
   const [deleteShi, setDeleteShi] = useState(null);
   const [deleteExp, setDeleteExp] = useState(null);
   const [deleteHead, setDeleteHead] = useState(null);
   const [deletePha, setDeletePha] = useState(null);
+  const [deleteProd, setDeleteProd] = useState(null);
   const [alertShi, setAlertShi] = useState(false);
   const [alertExp, setAlertExp] = useState(false);
   const [alertHead, setAlertHead] = useState(false);
   const [alertAdv, setAlertAdv] = useState(false);
   const [alertPha, setAlertPha] = useState(false);
+  const [alertProd, setAlertProd] = useState(false);
   const [selectedPhases, setSelectedPhases] = useState(null);
 
   const expectancy = useSelector(groupedByIdExpectancy);
@@ -97,9 +103,12 @@ const Register = () => {
   const project = useSelector((state) => getProject(state, idProyecto));
   const { list: phases } = useSelector((state) => state.phase);
   const { isFetching, didError } = useSelector((state) => state.advance);
+  const { data: products } = useSelector((state) => state.products);
   const { tokenData } = useSelector((state) => state.auth);
   const arrayPhases = _.values(phases);
   const [value, setValue] = useState(0);
+
+  const groupedProductsByIdMaquina = _.groupBy(products, "idMaquina");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -124,6 +133,11 @@ const Register = () => {
   const handleOnClickPha = () => {
     setEditPha(null);
     setOpenPha(true);
+  };
+
+  const handleOnClickProd = () => {
+    setEditProd(null);
+    setOpenProd(true);
   };
 
   const handleOnClickAdv = (id, advance) => {
@@ -173,6 +187,11 @@ const Register = () => {
     setOpenPha(true);
   };
 
+  const handleOnClickEditProd = (id) => {
+    setEditProd(id);
+    setOpenProd(true);
+  };
+
   const handleOnClickDeleteShi = (id) => {
     setDeleteShi(id);
     setAlertShi(true);
@@ -193,6 +212,11 @@ const Register = () => {
     setAlertPha(true);
   };
 
+  const handleOnClickDeleteProd = (id) => {
+    setDeleteProd(id);
+    setAlertProd(true);
+  };
+
   useEffect(() => {
     dispatch(fetchProjectsRequest());
     dispatch(fetchPhaseRequest({ idProyecto }));
@@ -201,6 +225,7 @@ const Register = () => {
     dispatch(fetchExpectancyRequest({ idProyecto }));
     dispatch(fetchHeadingsRequest({ idProyecto }));
     dispatch(fetchAdvanceRequest({ idProyecto }));
+    dispatch(fetchProductsRequest({ idProyecto }));
   }, [dispatch, idProyecto]);
   return (
     <>
@@ -220,6 +245,7 @@ const Register = () => {
                 style={{ backgroundColor: theme.palette.primary.main }}
               ></div>
             </div>
+            {console.log(products)}
             <div className="flex mb-3 justify-between items-center">
               <div>
                 {tokenData?.n_pr === 2 && (
@@ -273,10 +299,10 @@ const Register = () => {
                       {...a11yProps(parseInt(index))}
                     />
                   ))}
-                  {/* <Tab
+                  <Tab
                     label="Productos Commissioning"
                     {...a11yProps(headings.length || 0)}
-                  /> */}
+                  />
                 </Tabs>
               </Box>
               {_.map(headings, (rubro, index) => (
@@ -393,14 +419,30 @@ const Register = () => {
                   </div>
                 </CustomTabPanel>
               ))}
-              {/* <CustomTabPanel value={value} index={headings.length || 0}>
+              <CustomTabPanel value={value} index={headings.length || 0}>
                 <div className="flex justify-end">
-                  <Button variant="contained" onClick={() => setOpenProd(true)}>
+                  <Button variant="contained" onClick={handleOnClickProd}>
                     Nueva Maquina
                   </Button>
                 </div>
-                <div>Hola mundo</div>
-              </CustomTabPanel> */}
+                <div>
+                  {_.isEmpty(products) ? (
+                    <div></div>
+                  ) : (
+                    <div className="grid gap-4 grid-cols-2 md:grid-cols-4 mt-5">
+                      {_.map(groupedProductsByIdMaquina, (item, index) => (
+                        <ProductsTable
+                          key={index}
+                          idMaquina={index}
+                          data={item}
+                          handleOnClickEditProd={handleOnClickEditProd}
+                          handleOnClickDeleteProd={handleOnClickDeleteProd}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </CustomTabPanel>
             </Box>
             <Modal open={openHead} onClose={() => setOpenHead(false)}>
               <Box sx={style}>
@@ -526,8 +568,8 @@ const Register = () => {
                   <CloseIcon />
                 </IconButton>
                 <ProductsForm
-                  setOpen={setOpenHead}
-                  editHead={editHead}
+                  setOpen={setOpenProd}
+                  editProd={editProd}
                   idProyecto={idProyecto}
                 />
               </Box>
@@ -557,6 +599,12 @@ const Register = () => {
               onClose={() => setAlertPha(false)}
               deletePha={deletePha}
               setDeletePha={setDeletePha}
+            />
+            <ProductsAlert
+              open={alertProd}
+              onClose={() => setAlertProd(false)}
+              deleteProd={deleteProd}
+              setDeleteProd={setDeleteProd}
             />
           </>
         )}

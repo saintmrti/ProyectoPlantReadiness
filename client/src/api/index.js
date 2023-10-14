@@ -43,3 +43,10 @@ export {
 } from "./champions";
 
 export { fetchUsersApi, updateUsersApi } from "./users";
+
+export {
+  fetchProductsApi,
+  insertProductsApi,
+  updateProductsApi,
+  deleteProductsApi,
+} from "./products";

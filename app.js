@@ -12,7 +12,8 @@ const phaseRoutes = require("./routes/phase.routes");
 const kpisRoutes = require("./routes/kpis.routes");
 const projectsRoutes = require("./routes/projects.routes");
 const championRoutes = require("./routes/champion.routes");
-const users = require("./routes/users.routes");
+const usersRoutes = require("./routes/users.routes");
+const productsRoutes = require("./routes/products.routes");
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -35,7 +36,8 @@ app.use("/api/fases", phaseRoutes);
 app.use("/api/kpis", kpisRoutes);
 app.use("/api/proyectos", projectsRoutes);
 app.use("/api/champions", championRoutes);
-app.use("/api/usuarios", users);
+app.use("/api/usuarios", usersRoutes);
+app.use("/api/productos", productsRoutes);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client/dist/index.html"));
