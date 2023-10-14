@@ -299,10 +299,12 @@ const Register = () => {
                       {...a11yProps(parseInt(index))}
                     />
                   ))}
-                  <Tab
-                    label="Productos Commissioning"
-                    {...a11yProps(headings.length || 0)}
-                  />
+                  {tokenData?.n_pr === 2 && (
+                    <Tab
+                      label="Productos Commissioning"
+                      {...a11yProps(headings.length || 0)}
+                    />
+                  )}
                 </Tabs>
               </Box>
               {_.map(headings, (rubro, index) => (
@@ -419,30 +421,32 @@ const Register = () => {
                   </div>
                 </CustomTabPanel>
               ))}
-              <CustomTabPanel value={value} index={headings.length || 0}>
-                <div className="flex justify-end">
-                  <Button variant="contained" onClick={handleOnClickProd}>
-                    Nueva Maquina
-                  </Button>
-                </div>
-                <div>
-                  {_.isEmpty(products) ? (
-                    <div></div>
-                  ) : (
-                    <div className="grid gap-4 grid-cols-2 md:grid-cols-4 mt-5">
-                      {_.map(groupedProductsByIdMaquina, (item, index) => (
-                        <ProductsTable
-                          key={index}
-                          idMaquina={index}
-                          data={item}
-                          handleOnClickEditProd={handleOnClickEditProd}
-                          handleOnClickDeleteProd={handleOnClickDeleteProd}
-                        />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </CustomTabPanel>
+              {tokenData?.n_pr === 2 && (
+                <CustomTabPanel value={value} index={headings.length || 0}>
+                  <div className="flex justify-end">
+                    <Button variant="contained" onClick={handleOnClickProd}>
+                      Nueva Maquina
+                    </Button>
+                  </div>
+                  <div>
+                    {_.isEmpty(products) ? (
+                      <div></div>
+                    ) : (
+                      <div className="grid gap-4 grid-cols-2 md:grid-cols-4 mt-5">
+                        {_.map(groupedProductsByIdMaquina, (item, index) => (
+                          <ProductsTable
+                            key={index}
+                            idMaquina={index}
+                            data={item}
+                            handleOnClickEditProd={handleOnClickEditProd}
+                            handleOnClickDeleteProd={handleOnClickDeleteProd}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </CustomTabPanel>
+              )}
             </Box>
             <Modal open={openHead} onClose={() => setOpenHead(false)}>
               <Box sx={style}>
