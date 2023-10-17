@@ -13,7 +13,6 @@ export const summaryUsers = (idProyecto) =>
       const filteredAccess = _.filter(dataAccess, {
         idProyecto: parseInt(idProyecto),
       });
-
       const usersList = _.map(dataUsers, (user) => {
         const access = _.find(filteredAccess, { idUsuario: user.idUsuario });
         const hasAccess = access ? true : false;
@@ -29,3 +28,14 @@ export const summaryUsers = (idProyecto) =>
       return usersList;
     }
   );
+
+export const getUserAccessById = (idProyecto, userId) =>
+  createSelector(summaryUsers(idProyecto), (usersList) => {
+    const user = _.find(usersList, { id: userId });
+    if (user) {
+      if (user.gerente || user.access) {
+        return true;
+      }
+    }
+    return false;
+  });

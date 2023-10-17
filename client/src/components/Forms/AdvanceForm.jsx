@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, Fragment } from "react";
 import _ from "lodash";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,6 +25,7 @@ const AdvanceForm = ({
   const navigate = useNavigate();
 
   const advance = useSelector((state) => getAdvance(state, editAdv));
+  const { tokenData } = useSelector((state) => state.auth);
   const {
     register,
     handleSubmit,
@@ -76,77 +77,81 @@ const AdvanceForm = ({
           {editAdv ? "Editar avances" : "Agregar avances"}
         </h1>
         <div className="mb-10">
-          <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4">Nombre</label>
-            <TextField
-              sx={{ width: "16rem" }}
-              type="text"
-              label="Responsable"
-              autoComplete="off"
-              error={Boolean(errors.responsable)}
-              helperText={errors.responsable?.message}
-              {...register("responsable", {
-                required: false,
-                validate: (value) => textFieldValidationV2(value, 30),
-              })}
-            />
-          </div>
-          {!editAdv && (
-            <div className="flex justify-end items-center w-full mb-3">
-              <label className="px-4">Fase</label>
-              <FormControl sx={{ width: "16rem" }}>
-                <InputLabel id="fase">Fase</InputLabel>
-                <Select
-                  labelId="fase"
-                  id="select-phase"
-                  label="Fase"
-                  error={Boolean(errors.idFase)}
-                  helperText={errors.idFase?.message}
+          {tokenData?.n_pr === 2 && (
+            <Fragment>
+              <div className="flex justify-end items-center w-full mb-3">
+                <label className="px-4">Nombre</label>
+                <TextField
+                  sx={{ width: "16rem" }}
+                  type="text"
+                  label="Responsable"
                   autoComplete="off"
-                  defaultValue=""
-                  {...register("idFase", { required: true })}
-                >
-                  {_.map(phases, (item) => (
-                    <MenuItem key={item.id} value={item.id}>
-                      {item.fase}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </div>
+                  error={Boolean(errors.responsable)}
+                  helperText={errors.responsable?.message}
+                  {...register("responsable", {
+                    required: false,
+                    validate: (value) => textFieldValidationV2(value, 30),
+                  })}
+                />
+              </div>
+              {!editAdv && (
+                <div className="flex justify-end items-center w-full mb-3">
+                  <label className="px-4">Fase</label>
+                  <FormControl sx={{ width: "16rem" }}>
+                    <InputLabel id="fase">Fase</InputLabel>
+                    <Select
+                      labelId="fase"
+                      id="select-phase"
+                      label="Fase"
+                      error={Boolean(errors.idFase)}
+                      helperText={errors.idFase?.message}
+                      autoComplete="off"
+                      defaultValue=""
+                      {...register("idFase", { required: true })}
+                    >
+                      {_.map(phases, (item) => (
+                        <MenuItem key={item.id} value={item.id}>
+                          {item.fase}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
+              )}
+              <div className="flex justify-end items-center w-full mb-3">
+                <label className="px-4">Fecha Inicio</label>
+                <TextField
+                  sx={{ width: "16rem" }}
+                  type="date"
+                  error={Boolean(errors.fecha_inicio)}
+                  helperText={errors.fecha_inicio?.message}
+                  {...register("fecha_inicio", {
+                    required: false,
+                  })}
+                />
+              </div>
+              <div className="flex justify-end items-center w-full mb-3">
+                <label className="px-4">Fecha Termino</label>
+                <TextField
+                  sx={{ width: "16rem" }}
+                  type="date"
+                  error={Boolean(errors.fecha_termino)}
+                  helperText={errors.fecha_termino?.message}
+                  {...register("fecha_termino", {
+                    required: false,
+                  })}
+                />
+              </div>
+              <div className="flex justify-end items-center w-full mb-3">
+                <label className="px-4">Fecha Real</label>
+                <TextField
+                  sx={{ width: "16rem" }}
+                  type="date"
+                  {...register("fecha_real", { required: false })}
+                />
+              </div>
+            </Fragment>
           )}
-          <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4">Fecha Inicio</label>
-            <TextField
-              sx={{ width: "16rem" }}
-              type="date"
-              error={Boolean(errors.fecha_inicio)}
-              helperText={errors.fecha_inicio?.message}
-              {...register("fecha_inicio", {
-                required: false,
-              })}
-            />
-          </div>
-          <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4">Fecha Termino</label>
-            <TextField
-              sx={{ width: "16rem" }}
-              type="date"
-              error={Boolean(errors.fecha_termino)}
-              helperText={errors.fecha_termino?.message}
-              {...register("fecha_termino", {
-                required: false,
-              })}
-            />
-          </div>
-          <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4">Fecha Real</label>
-            <TextField
-              sx={{ width: "16rem" }}
-              type="date"
-              {...register("fecha_real", { required: false })}
-            />
-          </div>
           <div className="flex justify-end items-center w-full mb-3">
             <label className="px-4">Avance</label>
             <TextField
@@ -181,7 +186,7 @@ const AdvanceForm = ({
         </div>
         <div className="w-full flex justify-center">
           <Button variant="contained" type="submit">
-            Agregar
+            {editAdv ? "Actualizar" : "Agregar"}
           </Button>
         </div>
       </form>

@@ -3,6 +3,7 @@ import jwtDecode from "jwt-decode";
 
 const getInitialState = () => {
   const token = localStorage.getItem("vki40_token");
+  const hasAccess = localStorage.getItem("vki40_hasAccess");
   const state = {
     isAuth: false,
     token: null,
@@ -10,6 +11,7 @@ const getInitialState = () => {
     isFetching: false,
     didError: false,
     status: null,
+    hasAccess: hasAccess ? hasAccess : "false",
   };
   if (token) {
     state.isAuth = true;
@@ -44,9 +46,19 @@ const Slice = createSlice({
       state.token = null;
       state.tokenData = {};
     },
+    changeAccess: (state, action) => {
+      console.log(action.payload);
+      localStorage.setItem("vki40_hasAccess", action.payload);
+      state.hasAccess = action.payload;
+    },
   },
 });
 
-export const { authRequest, authSuccess, authError, authSignOut } =
-  Slice.actions;
+export const {
+  authRequest,
+  authSuccess,
+  authError,
+  authSignOut,
+  changeAccess,
+} = Slice.actions;
 export default Slice.reducer;

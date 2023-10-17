@@ -304,23 +304,21 @@ const ShippableTable = ({
                             //   )
                             // )
                             <Fragment>
-                              {tokenData?.n_pr === 2 && (
-                                <IconButton
-                                  aria-label="edit"
-                                  size="small"
-                                  onClick={() =>
-                                    handleOnClickEditAdv(
-                                      advance[item.id].find(
-                                        (obj) =>
-                                          obj.idMaquina ===
-                                          machines[activeIndex]?.id
-                                      )?.id
-                                    )
-                                  }
-                                >
-                                  <EditIcon />
-                                </IconButton>
-                              )}
+                              <IconButton
+                                aria-label="edit"
+                                size="small"
+                                onClick={() =>
+                                  handleOnClickEditAdv(
+                                    advance[item.id].find(
+                                      (obj) =>
+                                        obj.idMaquina ===
+                                        machines[activeIndex]?.id
+                                    )?.id
+                                  )
+                                }
+                              >
+                                <EditIcon />
+                              </IconButton>
                             </Fragment>
                           )}
                         </StyledTableCell>

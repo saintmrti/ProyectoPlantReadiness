@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 
 import UsersTable from "../components/Tables/UsersTable";
 import { fetchUsersRequest, updateUsersRequest } from "../slices/users";
@@ -15,6 +15,7 @@ const UserAccess = () => {
   const { isFetching, didError, isFetchingUpdate } = useSelector(
     (state) => state.users
   );
+  const { tokenData } = useSelector((state) => state.auth);
   const users = useSelector(summaryUsers(idProyecto));
 
   const handleOnClickUsers = (users) => {
@@ -26,20 +27,24 @@ const UserAccess = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchUsersRequest({ idProyecto }));
-  }, [dispatch, idProyecto]);
+    dispatch(fetchUsersRequest());
+  }, [dispatch]);
   return (
     <>
       {isFetching || isFetchingUpdate ? (
         <Spinner />
       ) : didError ? (
         <Error />
+      ) : tokenData?.n_pr !== 2 ? (
+        <Navigate to="/notfound" />
       ) : (
-        <UsersTable
-          list={users}
-          idProyecto={idProyecto}
-          handleOnClickUsers={handleOnClickUsers}
-        />
+        <>
+          <UsersTable
+            list={users}
+            idProyecto={idProyecto}
+            handleOnClickUsers={handleOnClickUsers}
+          />
+        </>
       )}
     </>
   );

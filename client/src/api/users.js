@@ -2,11 +2,10 @@ import axios, { CancelToken } from "axios";
 
 export const fetchUsersApi = {
   cancel: null,
-  run: (idProyecto) =>
+  run: () =>
     axios
       .get("/api/usuarios", {
         cancelToken: new CancelToken((c) => (fetchUsersApi.cancel = c)),
-        params: { idProyecto },
       })
       .then(({ data }) => data),
 };

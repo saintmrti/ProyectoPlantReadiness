@@ -54,7 +54,7 @@ const Projects = () => {
 
   useEffect(() => {
     dispatch(fetchProjectsRequest());
-    dispatch(fetchUsersRequest({ idProyecto: 1 }));
+    dispatch(fetchUsersRequest());
   }, [dispatch]);
 
   return (
