@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import _ from "lodash";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
@@ -5,11 +6,14 @@ import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import TableContainer from "@mui/material/TableContainer";
+import { useTheme } from "@mui/material/styles";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.white,
-    color: theme.palette.common.black,
+    backgroundColor: theme.palette.common.hover,
+    // color: theme.palette.common.black,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 12,
@@ -25,195 +29,102 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 //   },
 // }));
 
-const MachineTable = ({ tableValues }) => (
-  <div style={{ padding: "0px 10px" }}>
-    <Table size="small">
-      <TableHead>
-        <TableRow>
-          <StyledTableCell sx={{ width: "140px" }}></StyledTableCell>
-          <StyledTableCell
-            align="center"
-            colSpan={2}
-            sx={{ fontSize: 10, padding: 0 }}
-          >
-            Seguridad
-          </StyledTableCell>
-          <StyledTableCell
-            align="center"
-            colSpan={2}
-            sx={{ fontSize: 10, padding: 0 }}
-          >
-            Calidad
-          </StyledTableCell>
-          <StyledTableCell
-            align="center"
-            colSpan={2}
-            sx={{ fontSize: 10, padding: 0 }}
-          >
-            RH
-          </StyledTableCell>
-          <StyledTableCell
-            align="center"
-            colSpan={2}
-            sx={{ fontSize: 10, padding: 0 }}
-          >
-            Producción
-          </StyledTableCell>
-          <StyledTableCell
-            align="center"
-            colSpan={2}
-            sx={{ fontSize: 10, padding: 0 }}
-          >
-            Mtto
-          </StyledTableCell>
-        </TableRow>
-        <TableRow>
-          <StyledTableCell sx={{ width: "140px" }}></StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Plan
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Real
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Plan
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Real
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Plan
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Real
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Plan
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Real
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Plan
-          </StyledTableCell>
-          <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-            Real
-          </StyledTableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {tableValues &&
-          _.map(tableValues, (item, i) => (
-            <TableRow
-              key={i}
-              sx={{
-                "&:last-child td, &:last-child th": {
-                  border: 0,
-                },
-                backgroundColor: item?.tipo === 1 ? "#F0F0F0" : "inherit",
-              }}
-            >
-              <StyledTableCell
-                component="th"
-                scope="row"
-                sx={{ fontSize: 10, padding: 0 }}
-              >
-                {item.name}
-              </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.Seguridad?.plan ? `${item.Seguridad.plan}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-                sx={{
-                  fontSize: 10,
-                  padding: 0,
-                  color: item?.Seguridad
-                    ? item?.Seguridad?.plan > item?.Seguridad?.real
-                      ? "#d32f2f"
-                      : "#2e7d32"
-                    : "inherit",
-                }}
-              >
-                {item?.Seguridad?.real ? `${item.Seguridad.real}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.Calidad?.plan ? `${item.Calidad.plan}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-                sx={{
-                  fontSize: 10,
-                  padding: 0,
-                  color: item?.Calidad
-                    ? item?.Calidad?.plan > item?.Calidad?.real
-                      ? "#d32f2f"
-                      : "#2e7d32"
-                    : "inherit",
-                }}
-              >
-                {item?.Calidad?.real ? `${item.Calidad.real}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.Rh?.plan ? `${item.rh.plan}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-                sx={{
-                  fontSize: 10,
-                  padding: 0,
-                  color: item?.Rh
-                    ? item?.Rh?.plan > item?.Rh?.real
-                      ? "#d32f2f"
-                      : "#2e7d32"
-                    : "inherit",
-                }}
-              >
-                {item?.Rh?.real ? `${item.rh.real}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.Produccion?.plan ? `${item.produccion.plan}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-                sx={{
-                  fontSize: 10,
-                  padding: 0,
-                  color: item?.Produccion
-                    ? item?.Produccion?.plan > item?.Produccion?.real
-                      ? "#d32f2f"
-                      : "#2e7d32"
-                    : "inherit",
-                }}
-              >
-                {item?.Produccion?.real ? `${item.produccion.real}%` : "0%"}
-              </StyledTableCell>
-              <StyledTableCell align="center" sx={{ fontSize: 10, padding: 0 }}>
-                {item?.mantenimiento?.plan
-                  ? `${item.Mantenimiento.plan}%`
-                  : "0%"}
-              </StyledTableCell>
-              <StyledTableCell
-                align="center"
-                sx={{
-                  fontSize: 10,
-                  padding: 0,
-                  color: item?.mantenimiento
-                    ? item?.mantenimiento?.plan > item?.mantenimiento?.real
-                      ? "#d32f2f"
-                      : "#2e7d32"
-                    : "inherit",
-                }}
-              >
-                {item?.mantenimiento?.real
-                  ? `${item.Mantenimiento.real}%`
-                  : "0%"}
-              </StyledTableCell>
+const MachineTable = ({ data, rubros }) => {
+  const theme = useTheme();
+  return (
+    <Paper style={{ width: "100%" }}>
+      <TableContainer sx={{ maxHeight: 400 }}>
+        <Table stickyHeader aria-label="sticky table">
+          <TableHead>
+            <TableRow>
+              <StyledTableCell sx={{ width: "140px" }}></StyledTableCell>
+              {_.map(rubros, (rubro) => (
+                <StyledTableCell
+                  key={rubro}
+                  align="center"
+                  colSpan={2}
+                  sx={{ fontSize: 10, padding: 0 }}
+                >
+                  {rubro}
+                </StyledTableCell>
+              ))}
             </TableRow>
-          ))}
-      </TableBody>
-    </Table>
-  </div>
-);
+            <TableRow>
+              <StyledTableCell sx={{ width: "140px" }}></StyledTableCell>
+              {_.map(rubros, (rubro) => (
+                <Fragment key={rubro}>
+                  <StyledTableCell
+                    align="center"
+                    sx={{ fontSize: 10, padding: 0 }}
+                  >
+                    Plan
+                  </StyledTableCell>
+                  <StyledTableCell
+                    align="center"
+                    sx={{ fontSize: 10, padding: 0 }}
+                  >
+                    Real
+                  </StyledTableCell>
+                </Fragment>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data &&
+              _.map(data, (item, i) => (
+                <TableRow
+                  key={i}
+                  sx={{
+                    "&:last-child td, &:last-child th": {
+                      border: 0,
+                    },
+                    backgroundColor:
+                      item?.tipo === 1
+                        ? theme.palette.mode === "light"
+                          ? "#F0F0F0"
+                          : "#424242"
+                        : "inherit",
+                  }}
+                >
+                  <StyledTableCell
+                    component="th" 
+                    scope="row"
+                    sx={{ fontSize: 10, padding: "0 10px" }}
+                  >
+                    {item.name}
+                  </StyledTableCell>
+                  {_.map(item?.rubros, (rubro, i) => (
+                    <Fragment key={i}>
+                      <StyledTableCell
+                        align="center"
+                        sx={{ fontSize: 10, padding: 0 }}
+                      >
+                        {`${rubro[1]}%`}
+                      </StyledTableCell>
+                      <StyledTableCell
+                        align="center"
+                        sx={{
+                          fontSize: 10,
+                          padding: 0,
+                          color:
+                            rubro[0] !== 0
+                              ? rubro[1] > rubro[0]
+                                ? "#d32f2f"
+                                : "#2e7d32"
+                              : "inherit",
+                        }}
+                      >
+                        {`${rubro[0]}%`}
+                      </StyledTableCell>
+                    </Fragment>
+                  ))}
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
+  );
+};
 
 export default MachineTable;

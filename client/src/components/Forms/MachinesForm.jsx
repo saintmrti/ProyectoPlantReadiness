@@ -13,8 +13,8 @@ import _ from "lodash";
 import { insertAdvanceRequest } from "../../slices/advance";
 import {
   textFieldValidation,
-  dateFieldValidation,
   numberFieldValidation,
+  textFieldValidationV2,
 } from "./validated";
 
 const MachinesForm = ({
@@ -56,15 +56,15 @@ const MachinesForm = ({
     }
   };
 
-  const validateDateField = (name, index) => {
-    return checkboxStates[fases[index].maquina]
-      ? register(name, {
-          validate: (value) => dateFieldValidation(value),
-        })
-      : register(name, {
-          required: false,
-        });
-  };
+  // const validateDateField = (name, index) => {
+  //   return checkboxStates[fases[index].maquina]
+  //     ? register(name, {
+  //         validate: (value) => dateFieldValidation(value),
+  //       })
+  //     : register(name, {
+  //         required: false,
+  //       });
+  // };
 
   const validateTextField = (name, index, maxLength) => {
     return checkboxStates[fases[index].maquina]
@@ -178,7 +178,7 @@ const MachinesForm = ({
             error={Boolean(errors[`startDate_${index}`])}
             defaultValue={advanceState.fecha_inicio}
             helperText={errors[`startDate_${index}`]?.message}
-            {...validateDateField(`startDate_${index}`, index)}
+            {...register(`startDate_${index}`, { required: false })}
           />
           <TextField
             sx={{ width: "11rem" }}
@@ -187,7 +187,7 @@ const MachinesForm = ({
             defaultValue={advanceState.fecha_termino}
             disabled={!checkboxStates[machine.maquina]}
             helperText={errors[`endDate_${index}`]?.message}
-            {...validateDateField(`endDate_${index}`, index)}
+            {...register(`endDate_${index}`, { required: false })}
           />
           <TextField
             sx={{ width: "11rem" }}
@@ -216,8 +216,10 @@ const MachinesForm = ({
             label="Comentarios"
             defaultValue={advanceState.comentarios}
             disabled={!checkboxStates[machine.maquina]}
-            inputProps={{ maxLength: 120 }}
-            {...register(`comments_${index}`, { required: false })}
+            {...register(`comments_${index}`, {
+              required: false,
+              validate: (value) => textFieldValidationV2(value, 255),
+            })}
           />
         </div>
       ))}

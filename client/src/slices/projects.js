@@ -60,6 +60,10 @@ const Slice = createSlice({
       delete state.list[idProyecto];
       state.isFetchingDelete = false;
     },
+    deleteProjectError: (state) => {
+      state.isFetchingDelete = false;
+      state.didErrorDelete = true;
+    },
   },
 });
 

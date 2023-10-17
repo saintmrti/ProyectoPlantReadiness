@@ -37,7 +37,7 @@ export const ShippableAlert = ({ open, onClose, deleteShi, setDeleteShi }) => {
           Cancelar
         </Button>
         <Button onClick={handleOnConfirm} color="primary" variant="contained">
-          Confirmar
+          Eliminar
         </Button>
       </DialogActions>
     </Dialog>

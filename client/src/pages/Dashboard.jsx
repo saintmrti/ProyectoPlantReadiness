@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import _ from "lodash";
 
@@ -11,7 +13,7 @@ import SolidGauge from "../components/GaugeCharts/SolidGauge";
 import StackedBar from "../components/BarCharts/StackedBar";
 import ColumnChart from "../components/BarCharts/ColumnChart";
 import MachineTable from "../components/Tables/MachineTable";
-import { FilterButton } from "../components/ButtonGroup/FilterButton";
+import { FilterButton } from "../components/FilterButton";
 import { fetchKpisRequest } from "../slices/kpis";
 import { fetchChampionsRequest } from "../slices/champions";
 import { fetchPhaseRequest } from "../slices/phase";
@@ -22,11 +24,13 @@ import { Error } from "../components/Error";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
   const { idProyecto } = useParams();
   const summaryKpis = useSelector(getSummaryKpis);
   const { isFetching, didError } = useSelector((state) => state.kpis);
   const { list: champions } = useSelector((state) => state.champions);
   const { list: phases } = useSelector((state) => state.phase);
+  const { tokenData } = useSelector((state) => state.auth);
 
   const arrayPhases = _.map(phases, "id");
 
@@ -80,6 +84,7 @@ const Dashboard = () => {
                 handleBtnClickFilter={handleBtnClickFilter}
                 idProyecto={idProyecto}
                 phases={arrayPhases}
+                tokenData={tokenData}
               />
             )}
             <div className="h-80 flex items-end justify-center">
@@ -90,9 +95,13 @@ const Dashboard = () => {
           </>
         ) : (
           <>
-            <button className="ml-2" onClick={toggleFilterButton}>
+            <Button
+              variant="text"
+              onClick={toggleFilterButton}
+              sx={{ ml: 1, padding: 0 }}
+            >
               Mostrar / Ocultar
-            </button>
+            </Button>
             {isFilterButtonVisible && (
               <FilterButton
                 setSelectedFilter={setSelectedFilter}
@@ -100,6 +109,7 @@ const Dashboard = () => {
                 handleBtnClickFilter={handleBtnClickFilter}
                 idProyecto={idProyecto}
                 phases={arrayPhases}
+                tokenData={tokenData}
               />
             )}
             <div className="grid grid-cols-9 gap-2">
@@ -110,11 +120,12 @@ const Dashboard = () => {
                   </div>
                   {_.map(summaryKpis?.shippable_total, (item) => (
                     <DashboardBar
-                      key={item.Id}
-                      rubro={item.rubro}
-                      real={item.reales}
-                      plan={item.planes}
-                      total={item.totales}
+                      key={item?.Id}
+                      rubro={item?.rubro}
+                      real={item?.reales}
+                      plan={item?.planes}
+                      total={item?.totales}
+                      date={item?.fechaHoy}
                     />
                   ))}
                 </Card>
@@ -149,10 +160,10 @@ const Dashboard = () => {
                       <SolidGauge
                         key={item.Id}
                         height={130}
-                        name={item.rubro}
-                        value={item.completados}
-                        total={item.totales}
-                        rate={item.porcentaje}
+                        name={item?.rubro || ""}
+                        value={item?.completados || 0}
+                        total={item?.totales || 0}
+                        rate={item?.porcentaje || 0}
                       />
                     ))}
                   </div>
@@ -175,15 +186,18 @@ const Dashboard = () => {
                         }}
                       >
                         <Avatar
-                          alt={item.nombre}
-                          src={item.imagen}
+                          alt={item?.nombre}
+                          src={item?.imagen}
                           sx={{ width: 40, height: 40 }}
                         />
                         <div className="w-full flex justify-center">
                           <div className="w-36">
-                            <p className="text-sm">{item.nombre}</p>
-                            <p className="text-sm text-gray-600">
-                              {item.rubro}
+                            <p className="text-sm">{item?.nombre}</p>
+                            <p
+                              className="text-sm"
+                              style={{ color: theme.palette.text.secondary }}
+                            >
+                              {item?.rubro}
                             </p>
                           </div>
                         </div>
@@ -265,12 +279,16 @@ const Dashboard = () => {
                 </Card>
               </div>
               <div className="col-span-6">
-                <Card sx={{ height: "100%" }}>
+                <Card sx={{ height: "100%", padding: "0px 10px" }}>
                   <div className="text-base text-center mt-2 mb-2">
                     Avance por máquina
                   </div>
-                  <MachineTable tableValues={summaryKpis?.advanceMachines} />
+                  <MachineTable
+                    data={summaryKpis?.advanceMachines}
+                    rubros={summaryKpis?.headingMachines}
+                  />
                 </Card>
+                {/* {console.log(summaryKpis)} */}
               </div>
             </div>
           </>

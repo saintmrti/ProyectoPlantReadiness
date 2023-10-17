@@ -24,6 +24,7 @@ module.exports.createShippable = (req, res) => {
     const {
       nombre,
       evidencia,
+      qn_valida,
       prioridad,
       comentarios,
       idExpectativa,
@@ -33,6 +34,7 @@ module.exports.createShippable = (req, res) => {
     const newRegister = {
       nombre,
       evidencia,
+      qn_valida,
       prioridad,
       comentarios,
       idExpectativa: parseInt(idExpectativa),
@@ -47,11 +49,13 @@ module.exports.createShippable = (req, res) => {
 
 module.exports.modifyShippable = (req, res) => {
   try {
-    const { nombre, evidencia, prioridad, comentarios, id } = req.body;
+    const { nombre, evidencia, qn_valida, prioridad, comentarios, id } =
+      req.body;
 
     const newRegister = {
       nombre,
       evidencia,
+      qn_valida,
       prioridad,
       comentarios,
       idEntregable: parseInt(id),

@@ -18,12 +18,14 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
 import { ProjectBar } from "../ProgressBar/ProjectBar";
+import { Fragment } from "react";
 
 const ProjectsTable = ({
   handleClickProject,
   list,
   handleClickEditProject,
   handleDeleteProject,
+  tokenData,
 }) => {
   const navigate = useNavigate();
   const handleClickNav = (id) => {
@@ -41,11 +43,13 @@ const ProjectsTable = ({
           >
             Proyectos
           </Typography>
-          <Tooltip title="Agregar proyecto">
-            <IconButton onClick={handleClickProject}>
-              <AddIcon />
-            </IconButton>
-          </Tooltip>
+          {tokenData?.n_pr === 2 && (
+            <Tooltip title="Agregar proyecto">
+              <IconButton onClick={handleClickProject}>
+                <AddIcon />
+              </IconButton>
+            </Tooltip>
+          )}
         </Toolbar>
         <TableContainer>
           <Table size="small">
@@ -95,7 +99,7 @@ const ProjectsTable = ({
                   </TableCell>
                   {/* <TableCell>{item.planta}</TableCell>
                                     <TableCell>{item.c_url}</TableCell> */}
-                  <TableCell width={140}>
+                  <TableCell width={140} align="center">
                     <Tooltip title="Ir al proyecto">
                       <IconButton
                         aria-label="Registrar"
@@ -104,22 +108,26 @@ const ProjectsTable = ({
                         <ExitToAppIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Editar">
-                      <IconButton
-                        aria-label="Editar"
-                        onClick={() => handleClickEditProject(item.id)}
-                      >
-                        <EditIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Eliminar">
-                      <IconButton
-                        aria-label="Eliminar"
-                        onClick={() => handleDeleteProject(item.id)}
-                      >
-                        <DeleteIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
+                    {tokenData?.n_pr === 2 && (
+                      <Fragment>
+                        <Tooltip title="Editar">
+                          <IconButton
+                            aria-label="Editar"
+                            onClick={() => handleClickEditProject(item.id)}
+                          >
+                            <EditIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Eliminar">
+                          <IconButton
+                            aria-label="Eliminar"
+                            onClick={() => handleDeleteProject(item.id)}
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </Tooltip>
+                      </Fragment>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { styled } from "@mui/material/styles";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -48,6 +48,7 @@ const ShippableTable = ({
   handleOnClickDeleteShi,
   handleOnClickEditPha,
   handleOnClickDeletePha,
+  tokenData,
 }) => {
   const [activeIndex, setActiveIndex] = useState(null);
 
@@ -96,51 +97,53 @@ const ShippableTable = ({
                 <StyledTableCell colSpan={7} sx={{ textAlign: "center" }}>
                   {activeIndex && machines[activeIndex] && (
                     <div className="flex items-center justify-center">
-                      <div className="flex items-center justify-center">
-                        <IconButton
-                          aria-label="back"
-                          size="small"
-                          onClick={() => handlePrev(idExpectancy.id)}
-                        >
-                          <ArrowBackIcon />
-                        </IconButton>
-                        <div className="w-56">
-                          {`${machines[activeIndex]?.fase} - ${machines[activeIndex]?.maquina}`}
-                        </div>
-                        <IconButton
-                          aria-label="forward"
-                          size="small"
-                          onClick={() => handleNext(idExpectancy.id)}
-                        >
-                          <ArrowForwardIcon />
-                        </IconButton>
+                      <IconButton
+                        aria-label="back"
+                        size="small"
+                        onClick={() => handlePrev(idExpectancy.id)}
+                      >
+                        <ArrowBackIcon />
+                      </IconButton>
+                      <div className="w-56">
+                        {`${machines[activeIndex]?.fase} - ${machines[activeIndex]?.maquina}`}
                       </div>
+                      <IconButton
+                        aria-label="forward"
+                        size="small"
+                        onClick={() => handleNext(idExpectancy.id)}
+                      >
+                        <ArrowForwardIcon />
+                      </IconButton>
                     </div>
                   )}
                 </StyledTableCell>
                 <StyledTableCell align="right" sx={{ width: "100px" }}>
-                  {activeIndex && machines[activeIndex] && (
-                    <div>
-                      <IconButton
-                        aria-label="edit"
-                        size="small"
-                        onClick={() =>
-                          handleOnClickEditPha(machines[activeIndex]?.idFase)
-                        }
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <IconButton
-                        aria-label="delete"
-                        size="small"
-                        onClick={() =>
-                          handleOnClickDeletePha(machines[activeIndex]?.idFase)
-                        }
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </div>
-                  )}
+                  {activeIndex &&
+                    machines[activeIndex] &&
+                    tokenData?.n_pr === 2 && (
+                      <Fragment>
+                        <IconButton
+                          aria-label="edit"
+                          size="small"
+                          onClick={() =>
+                            handleOnClickEditPha(machines[activeIndex]?.idFase)
+                          }
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          aria-label="delete"
+                          size="small"
+                          onClick={() =>
+                            handleOnClickDeletePha(
+                              machines[activeIndex]?.idFase
+                            )
+                          }
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Fragment>
+                    )}
                 </StyledTableCell>
               </TableRow>
             )}
@@ -151,6 +154,9 @@ const ShippableTable = ({
                 <>
                   <StyledTableCell>Evidencia</StyledTableCell>
                   <StyledTableCell align="center">Prioridad</StyledTableCell>
+                  <StyledTableCell align="center" sx={{ minWidth: "8rem" }}>
+                    Quien Valida
+                  </StyledTableCell>
                   <StyledTableCell align="center">Comentarios</StyledTableCell>
                   <StyledTableCell align="center"></StyledTableCell>
                 </>
@@ -189,6 +195,9 @@ const ShippableTable = ({
                     <StyledTableCell align="center">
                       {item.prioridad}
                     </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {item.qn_valida}
+                    </StyledTableCell>
                     <StyledTableCell>{item.comentarios}</StyledTableCell>
                     <StyledTableCell>
                       <Box sx={{ display: "flex", justifyContent: "end" }}>
@@ -199,20 +208,24 @@ const ShippableTable = ({
                         >
                           <AddCircleOutlineIcon />
                         </IconButton>
-                        <IconButton
-                          aria-label="edit"
-                          size="small"
-                          onClick={() => handleOnClickEditShi(item.id)}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                        <IconButton
-                          aria-label="delete"
-                          size="small"
-                          onClick={() => handleOnClickDeleteShi(item.id)}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
+                        {tokenData?.n_pr === 2 && (
+                          <Fragment>
+                            <IconButton
+                              aria-label="edit"
+                              size="small"
+                              onClick={() => handleOnClickEditShi(item.id)}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                            <IconButton
+                              aria-label="delete"
+                              size="small"
+                              onClick={() => handleOnClickDeleteShi(item.id)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Fragment>
+                        )}
                       </Box>
                     </StyledTableCell>
                   </>
@@ -290,21 +303,25 @@ const ShippableTable = ({
                             //     </IconButton>
                             //   )
                             // )
-                            <IconButton
-                              aria-label="edit"
-                              size="small"
-                              onClick={() =>
-                                handleOnClickEditAdv(
-                                  advance[item.id].find(
-                                    (obj) =>
-                                      obj.idMaquina ===
-                                      machines[activeIndex]?.id
-                                  )?.id
-                                )
-                              }
-                            >
-                              <EditIcon />
-                            </IconButton>
+                            <Fragment>
+                              {tokenData?.n_pr === 2 && (
+                                <IconButton
+                                  aria-label="edit"
+                                  size="small"
+                                  onClick={() =>
+                                    handleOnClickEditAdv(
+                                      advance[item.id].find(
+                                        (obj) =>
+                                          obj.idMaquina ===
+                                          machines[activeIndex]?.id
+                                      )?.id
+                                    )
+                                  }
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                              )}
+                            </Fragment>
                           )}
                         </StyledTableCell>
                       </>

@@ -1,4 +1,4 @@
-export const DashboardBar = ({ rubro, real, plan, total }) => {
+export const DashboardBar = ({ rubro, real, plan, total, date }) => {
   const percentReal = Math.round((real / total) * 100);
   const percentPlan = Math.round((plan / total) * 100);
 
@@ -45,7 +45,7 @@ export const DashboardBar = ({ rubro, real, plan, total }) => {
             </div>
           </div>
         </div>
-        <div className="text-sm w-16 text-end">10 Ago.</div>
+        <div className="text-sm w-16 text-end">{date}</div>
       </div>
     </div>
   );

@@ -11,6 +11,7 @@ export function FilterButton({
   handleBtnClickFilter,
   idProyecto,
   phases,
+  tokenData,
 }) {
   const navigate = useNavigate();
   const handleBtnClick = (button, key) => {
@@ -31,7 +32,7 @@ export function FilterButton({
   };
 
   return (
-    <div className="flex justify-between items-center mb-2 transition ease-in-out delay-150">
+    <div className="flex justify-between items-center mb-2 transition-transform duration-500 ease-in-out mt-2">
       <div className="flex justify-center items-center">
         <div className="flex items-center mx-3">
           <p className="xs mr-3">Fase</p>
@@ -54,7 +55,7 @@ export function FilterButton({
             ))}
           </ButtonGroup>
         </div>
-        <div className="flex items-center mx-3">
+        <div className="flex items-center">
           <p className="xs mr-3">Prioridad</p>
           <ButtonGroup
             variant="outlined"
@@ -75,7 +76,7 @@ export function FilterButton({
             ))}
           </ButtonGroup>
         </div>
-        <div className="ml-2">
+        <div className="ml-5">
           <Button
             variant="contained"
             className="bg-primary text-white"
@@ -87,14 +88,16 @@ export function FilterButton({
       </div>
       <div className="flex justify-center items-center">
         <div>
-          <Button
-            variant="contained"
-            className="bg-primary text-white"
-            onClick={() => navigate(`/proyectos/${idProyecto}/champions`)}
-            sx={{ mr: 2 }}
-          >
-            Champions
-          </Button>
+          {tokenData?.n_pr === 2 && (
+            <Button
+              variant="contained"
+              className="bg-primary text-white"
+              onClick={() => navigate(`/proyectos/${idProyecto}/champions`)}
+              sx={{ mr: 2 }}
+            >
+              Champions Pilares
+            </Button>
+          )}
         </div>
         <div>
           <Button
@@ -102,7 +105,7 @@ export function FilterButton({
             className="bg-primary text-white"
             onClick={() => navigate("/")}
           >
-            Inicio
+            Proyectos
           </Button>
         </div>
         <div className="ml-5">

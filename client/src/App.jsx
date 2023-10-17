@@ -1,6 +1,7 @@
-// import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import DarkUnica from "highcharts/themes/dark-unica";
 import Highcharts from "highcharts";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -9,7 +10,7 @@ import moment from "moment";
 
 import { Root } from "./components/routes";
 import { getTheme } from "./utilities/getTheme";
-// import { changeTheme } from "./slices/settings";
+import { changeTheme } from "./slices/settings";
 
 Highcharts.setOptions({
   time: {
@@ -20,9 +21,21 @@ Highcharts.setOptions({
 });
 
 const App = () => {
-  // const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.settings);
-  if (theme !== "light") DarkUnica(Highcharts);
+  const dispatch = useDispatch();
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const urlTheme = urlParams.get("theme");
+
+  useEffect(() => {
+    if (urlTheme && urlTheme !== theme) dispatch(changeTheme(urlTheme));
+  }, [urlTheme, theme, dispatch]);
+
+  useEffect(() => {
+    if (theme !== "light") {
+      DarkUnica(Highcharts);
+    }
+  }, [theme]);
 
   return (
     <>

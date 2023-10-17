@@ -27,7 +27,6 @@ export const ChampionsForm = ({ idProyecto, setOpen, editCham }) => {
   } = useForm();
 
   const onSubmit = (values) => {
-    console.log(selectedFiles);
     if (selectedFiles === null) {
       setMissingImage(true);
     } else {
@@ -82,7 +81,7 @@ export const ChampionsForm = ({ idProyecto, setOpen, editCham }) => {
                 helperText={errors.nombre?.message}
                 {...register("nombre", {
                   required: true,
-                  validate: (value) => textFieldValidation(value, 25),
+                  validate: (value) => textFieldValidation(value, 50),
                 })}
               />
             </div>
@@ -97,7 +96,7 @@ export const ChampionsForm = ({ idProyecto, setOpen, editCham }) => {
                 helperText={errors.rubro?.message}
                 {...register("rubro", {
                   required: true,
-                  validate: (value) => textFieldValidation(value, 25),
+                  validate: (value) => textFieldValidation(value, 20),
                 })}
               />
             </div>

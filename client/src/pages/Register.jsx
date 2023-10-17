@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useTheme } from "@mui/material/styles";
 import _ from "lodash";
 import Button from "@mui/material/Button";
 import Accordion from "@mui/material/Accordion";
@@ -22,7 +23,9 @@ import ShippableForm from "../components/Forms/ShippableForm";
 import PhaseForm from "../components/Forms/PhaseForm";
 import AdvanceForm from "../components/Forms/AdvanceForm";
 import HeadingForm from "../components/Forms/HeadingForm";
+import ProductsForm from "../components/Forms/ProductsForm";
 import ShippableTable from "../components/Tables/ShippableTable";
+import ProductsTable from "../components/Tables/ProductsTable";
 import { fetchExpectancyRequest } from "../slices/expectancy";
 import { fetchShippableRequest } from "../slices/shippable";
 import { fetchAdvanceRequest } from "../slices/advance";
@@ -30,6 +33,7 @@ import { fetchProjectsRequest } from "../slices/projects";
 import { fetchHeadingsRequest } from "../slices/headings";
 import { fetchMachinesRequest } from "../slices/machines";
 import { fetchPhaseRequest } from "../slices/phase";
+import { fetchProductsRequest } from "../slices/products";
 import { groupedByIdExpectancy } from "../selectors/expectancy";
 import { summaryHeadings } from "../selectors/headings";
 import { summaryAdvanced } from "../selectors/advance";
@@ -44,6 +48,7 @@ import { ExpectancyAlert } from "../components/Alert/ExpectancyAlert";
 import { AdvanceAlert } from "../components/Alert/AdvanceAlert";
 import { HeadingsAlert } from "../components/Alert/HeadingsAlert";
 import { PhaseAlert } from "../components/Alert/PhaseAlert";
+import { ProductsAlert } from "../components/Alert/ProductsAlert";
 
 const style = {
   position: "absolute",
@@ -60,6 +65,7 @@ const style = {
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
   const { idProyecto } = useParams();
 
   const [openExp, setOpenExp] = useState(false);
@@ -67,6 +73,7 @@ const Register = () => {
   const [openPha, setOpenPha] = useState(false);
   const [openAdv, setOpenAdv] = useState(false);
   const [openHead, setOpenHead] = useState(false);
+  const [openProd, setOpenProd] = useState(false);
   const [idExpectancy, setIdExpectancy] = useState(null);
   const [activeComment, setActiveComment] = useState(true);
   const [changeShi, setChangeShi] = useState(null);
@@ -75,15 +82,18 @@ const Register = () => {
   const [editExp, setEditExp] = useState(null);
   const [editHead, setEditHead] = useState(null);
   const [editPha, setEditPha] = useState(null);
+  const [editProd, setEditProd] = useState(null);
   const [deleteShi, setDeleteShi] = useState(null);
   const [deleteExp, setDeleteExp] = useState(null);
   const [deleteHead, setDeleteHead] = useState(null);
   const [deletePha, setDeletePha] = useState(null);
+  const [deleteProd, setDeleteProd] = useState(null);
   const [alertShi, setAlertShi] = useState(false);
   const [alertExp, setAlertExp] = useState(false);
   const [alertHead, setAlertHead] = useState(false);
   const [alertAdv, setAlertAdv] = useState(false);
   const [alertPha, setAlertPha] = useState(false);
+  const [alertProd, setAlertProd] = useState(false);
   const [selectedPhases, setSelectedPhases] = useState(null);
 
   const expectancy = useSelector(groupedByIdExpectancy);
@@ -93,9 +103,12 @@ const Register = () => {
   const project = useSelector((state) => getProject(state, idProyecto));
   const { list: phases } = useSelector((state) => state.phase);
   const { isFetching, didError } = useSelector((state) => state.advance);
-
+  const { data: products } = useSelector((state) => state.products);
+  const { tokenData } = useSelector((state) => state.auth);
   const arrayPhases = _.values(phases);
   const [value, setValue] = useState(0);
+
+  const groupedProductsByIdMaquina = _.groupBy(products, "idMaquina");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -120,6 +133,11 @@ const Register = () => {
   const handleOnClickPha = () => {
     setEditPha(null);
     setOpenPha(true);
+  };
+
+  const handleOnClickProd = () => {
+    setEditProd(null);
+    setOpenProd(true);
   };
 
   const handleOnClickAdv = (id, advance) => {
@@ -169,6 +187,11 @@ const Register = () => {
     setOpenPha(true);
   };
 
+  const handleOnClickEditProd = (id) => {
+    setEditProd(id);
+    setOpenProd(true);
+  };
+
   const handleOnClickDeleteShi = (id) => {
     setDeleteShi(id);
     setAlertShi(true);
@@ -189,6 +212,11 @@ const Register = () => {
     setAlertPha(true);
   };
 
+  const handleOnClickDeleteProd = (id) => {
+    setDeleteProd(id);
+    setAlertProd(true);
+  };
+
   useEffect(() => {
     dispatch(fetchProjectsRequest());
     dispatch(fetchPhaseRequest({ idProyecto }));
@@ -197,6 +225,7 @@ const Register = () => {
     dispatch(fetchExpectancyRequest({ idProyecto }));
     dispatch(fetchHeadingsRequest({ idProyecto }));
     dispatch(fetchAdvanceRequest({ idProyecto }));
+    dispatch(fetchProductsRequest({ idProyecto }));
   }, [dispatch, idProyecto]);
   return (
     <>
@@ -211,30 +240,49 @@ const Register = () => {
               <h1 className="text-3xl font-bold text-center">
                 {project?.nombre}
               </h1>
-              <div className="w-2/3 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent"></div>
+              <div
+                className="w-full h-1 bg-gradient-to-r from-transparent to-transparent"
+                style={{ backgroundColor: theme.palette.primary.main }}
+              ></div>
             </div>
             <div className="flex mb-3 justify-between items-center">
-              <div className="flex">
-                <div className="mr-2">
-                  <Button variant="contained" onClick={handleOnClickHead}>
-                    Agregar rubro
-                  </Button>
-                </div>
-                <div className="mr-2">
-                  <Button variant="contained" onClick={handleOnClickExp}>
-                    Agregar expectativa
-                  </Button>
-                </div>
-                <div>
-                  <Button variant="contained" onClick={handleOnClickPha}>
-                    Agregar fase
-                  </Button>
-                </div>
+              <div>
+                {tokenData?.n_pr === 2 && (
+                  <div className="flex">
+                    <div className="mr-5">
+                      <Button variant="contained" onClick={handleOnClickHead}>
+                        Agregar rubro
+                      </Button>
+                    </div>
+                    <div className="mr-5">
+                      <Button variant="contained" onClick={handleOnClickExp}>
+                        Agregar expectativa
+                      </Button>
+                    </div>
+                    <div>
+                      <Button variant="contained" onClick={handleOnClickPha}>
+                        Agregar fase
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="flex items-center justify-center">
+                {tokenData?.n_pr === 2 && (
+                  <div className="mr-5">
+                    <Button
+                      variant="contained"
+                      onClick={() =>
+                        navigate(`/proyectos/${idProyecto}/usuarios`)
+                      }
+                    >
+                      Champions
+                    </Button>
+                  </div>
+                )}
                 <div className="mr-5">
                   <Button variant="contained" onClick={() => navigate("/")}>
-                    Inicio
+                    Proyectos
                   </Button>
                 </div>
                 <Toggle idProyecto={idProyecto} />
@@ -250,6 +298,12 @@ const Register = () => {
                       {...a11yProps(parseInt(index))}
                     />
                   ))}
+                  {tokenData?.n_pr === 2 && (
+                    <Tab
+                      label="Productos Commissioning"
+                      {...a11yProps(headings.length || 0)}
+                    />
+                  )}
                 </Tabs>
               </Box>
               {_.map(headings, (rubro, index) => (
@@ -270,31 +324,41 @@ const Register = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                           <div className="flex justify-between mb-3">
-                            <div className="flex">
-                              <IconButton
-                                aria-label="add"
-                                size="small"
-                                onClick={() => handleOnClickEditExp(item.id)}
-                              >
-                                <EditIcon />
-                              </IconButton>
-                              <IconButton
-                                aria-label="add"
-                                size="small"
-                                onClick={() => handleOnClickDeleteExp(item.id)}
-                              >
-                                <DeleteIcon />
-                              </IconButton>
+                            <div>
+                              {tokenData?.n_pr === 2 && (
+                                <div className="flex">
+                                  <IconButton
+                                    aria-label="add"
+                                    size="small"
+                                    onClick={() =>
+                                      handleOnClickEditExp(item.id)
+                                    }
+                                  >
+                                    <EditIcon />
+                                  </IconButton>
+                                  <IconButton
+                                    aria-label="add"
+                                    size="small"
+                                    onClick={() =>
+                                      handleOnClickDeleteExp(item.id)
+                                    }
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </div>
+                              )}
                             </div>
                             <div className="flex">
-                              <Button
-                                variant="contained"
-                                size="small"
-                                onClick={() => handleOnClickShi(item.id)}
-                                sx={{ mr: 1 }}
-                              >
-                                Agregar Entregable
-                              </Button>
+                              {tokenData?.n_pr === 2 && (
+                                <Button
+                                  variant="contained"
+                                  size="small"
+                                  onClick={() => handleOnClickShi(item.id)}
+                                  sx={{ mr: 1 }}
+                                >
+                                  Agregar Entregable
+                                </Button>
+                              )}
                               {item.shippables &&
                                 item.shippables.length > 0 &&
                                 Object.keys(machines).length > 0 && (
@@ -329,30 +393,59 @@ const Register = () => {
                                 handleOnClickDeleteShi={handleOnClickDeleteShi}
                                 handleOnClickEditPha={handleOnClickEditPha}
                                 handleOnClickDeletePha={handleOnClickDeletePha}
+                                tokenData={tokenData}
                               />
                             </div>
                           )}
                         </AccordionDetails>
                       </Accordion>
                     ))}
-                    <div className="flex justify-end mt-3">
-                      <Button
-                        variant="outlined"
-                        onClick={() => handleOnClickEditHead(rubro.id)}
-                        sx={{ mr: 1 }}
-                      >
-                        Editar Rubro
-                      </Button>
-                      <Button
-                        variant="text"
-                        onClick={() => handleOnClickDeleteHead(rubro.id)}
-                      >
-                        Eliminar Rubro
-                      </Button>
-                    </div>
+                    {tokenData?.n_pr === 2 && (
+                      <div className="flex justify-end mt-3">
+                        <Button
+                          variant="outlined"
+                          onClick={() => handleOnClickEditHead(rubro.id)}
+                          sx={{ mr: 1 }}
+                        >
+                          Editar Rubro
+                        </Button>
+                        <Button
+                          variant="text"
+                          onClick={() => handleOnClickDeleteHead(rubro.id)}
+                        >
+                          Eliminar Rubro
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </CustomTabPanel>
               ))}
+              {tokenData?.n_pr === 2 && (
+                <CustomTabPanel value={value} index={headings.length || 0}>
+                  <div className="flex justify-end">
+                    <Button variant="contained" onClick={handleOnClickProd}>
+                      Nueva Maquina
+                    </Button>
+                  </div>
+                  <div>
+                    {_.isEmpty(products) ? (
+                      <div></div>
+                    ) : (
+                      <div className="grid gap-4 grid-cols-2 md:grid-cols-4 mt-5">
+                        {_.map(groupedProductsByIdMaquina, (item, index) => (
+                          <ProductsTable
+                            key={index}
+                            idMaquina={index}
+                            data={item}
+                            handleOnClickEditProd={handleOnClickEditProd}
+                            handleOnClickDeleteProd={handleOnClickDeleteProd}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </CustomTabPanel>
+              )}
             </Box>
             <Modal open={openHead} onClose={() => setOpenHead(false)}>
               <Box sx={style}>
@@ -463,6 +556,27 @@ const Register = () => {
                 />
               </Box>
             </Modal>
+            <Modal open={openProd} onClose={() => setOpenProd(false)}>
+              <Box sx={style}>
+                <IconButton
+                  aria-label="close"
+                  size="small"
+                  onClick={() => setOpenProd(false)}
+                  sx={{
+                    position: "absolute",
+                    right: 8,
+                    top: 8,
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+                <ProductsForm
+                  setOpen={setOpenProd}
+                  editProd={editProd}
+                  idProyecto={idProyecto}
+                />
+              </Box>
+            </Modal>
             <ShippableAlert
               open={alertShi}
               onClose={() => setAlertShi(false)}
@@ -488,6 +602,12 @@ const Register = () => {
               onClose={() => setAlertPha(false)}
               deletePha={deletePha}
               setDeletePha={setDeletePha}
+            />
+            <ProductsAlert
+              open={alertProd}
+              onClose={() => setAlertProd(false)}
+              deleteProd={deleteProd}
+              setDeleteProd={setDeleteProd}
             />
           </>
         )}

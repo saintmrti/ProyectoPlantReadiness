@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { auth } = require("../middlewares/auth");
 
 const {
   getShippables,
@@ -8,9 +9,9 @@ const {
 } = require("../controllers/shippable.controller");
 const router = Router();
 
-router.get("/", getShippables);
-router.post("/", createShippable);
-router.put("/", modifyShippable);
-router.delete("/", eliminateShippable);
+router.get("/", auth, getShippables);
+router.post("/", auth, createShippable);
+router.put("/", auth, modifyShippable);
+router.delete("/", auth, eliminateShippable);
 
 module.exports = router;

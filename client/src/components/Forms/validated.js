@@ -14,6 +14,15 @@ export const textFieldValidation = (value, maxLength) => {
   }
 };
 
+export const textFieldValidationV2 = (value, maxLength) => {
+  if (typeof value !== "undefined" && value !== null) {
+    if (typeof value !== "string") {
+      return "Debe ser un texto";
+    }
+    return value.length <= maxLength || `Máximo ${maxLength} caracteres`;
+  }
+};
+
 export const dateFieldValidation = (value) => {
   if (typeof value !== "undefined" && value !== null) {
     const regex = /^\d{4}-\d{2}-\d{2}$/;
