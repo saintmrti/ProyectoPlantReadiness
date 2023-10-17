@@ -77,7 +77,7 @@ const AdvanceForm = ({
           {editAdv ? "Editar avances" : "Agregar avances"}
         </h1>
         <div className="mb-10">
-          {tokenData?.n_pr === 2 && (
+          {(tokenData?.n_pr === 2 || editAdv === null) && (
             <Fragment>
               <div className="flex justify-end items-center w-full mb-3">
                 <label className="px-4">Nombre</label>
@@ -153,7 +153,6 @@ const AdvanceForm = ({
             </Fragment>
           )}
           <div className="flex justify-end items-center w-full mb-3">
-            {tokenData?.n_pr === 2 && <label className="px-4">Avance</label>}
             <TextField
               sx={{ width: "16rem" }}
               type="number"
@@ -168,9 +167,6 @@ const AdvanceForm = ({
             />
           </div>
           <div className="flex justify-end w-full">
-            {tokenData?.n_pr === 2 && (
-              <label className="px-4">Comentarios</label>
-            )}
             <TextField
               label="Comentarios"
               multiline
