@@ -13,7 +13,7 @@ import Paper from "@mui/material/Paper";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: theme.palette.action.hover,
   },
 }));
 

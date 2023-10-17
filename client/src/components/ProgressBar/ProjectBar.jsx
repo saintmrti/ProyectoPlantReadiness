@@ -9,7 +9,7 @@ export const ProjectBar = ({ percentage }) => {
       <LinearProgress
         variant="determinate"
         value={percentage}
-        sx={{ width: "200px", mt: 2 }}
+        sx={{ width: "200px", mb: 1, mt: 1 }}
       />
     </Box>
   );

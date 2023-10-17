@@ -153,7 +153,7 @@ const AdvanceForm = ({
             </Fragment>
           )}
           <div className="flex justify-end items-center w-full mb-3">
-            <label className="px-4">Avance</label>
+            {tokenData?.n_pr === 2 && <label className="px-4">Avance</label>}
             <TextField
               sx={{ width: "16rem" }}
               type="number"
@@ -168,7 +168,9 @@ const AdvanceForm = ({
             />
           </div>
           <div className="flex justify-end w-full">
-            <label className="px-4">Comentarios</label>
+            {tokenData?.n_pr === 2 && (
+              <label className="px-4">Comentarios</label>
+            )}
             <TextField
               label="Comentarios"
               multiline
