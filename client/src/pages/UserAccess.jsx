@@ -35,9 +35,7 @@ const UserAccess = () => {
         <Spinner />
       ) : didError ? (
         <Error />
-      ) : tokenData?.n_pr !== 2 ? (
-        <Navigate to="/notfound" />
-      ) : (
+      ) : tokenData?.n_pr === 2 ? (
         <>
           <UsersTable
             list={users}
@@ -45,6 +43,8 @@ const UserAccess = () => {
             handleOnClickUsers={handleOnClickUsers}
           />
         </>
+      ) : (
+        <Navigate to="/notfound" />
       )}
     </>
   );

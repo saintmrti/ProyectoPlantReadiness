@@ -8,6 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import ProjectsTable from "../components/Tables/ProjectsTable";
 import { fetchProjectsRequest } from "../slices/projects";
 import { fetchUsersRequest } from "../slices/users";
+import { changeAccess } from "../slices/auth";
 import { summaryProjects } from "../selectors/projects";
 import { ProjectsForm } from "../components/Forms/ProjectsForm";
 import { ProjectsAlert } from "../components/Alert/ProjectsAlert";
@@ -55,6 +56,7 @@ const Projects = () => {
   useEffect(() => {
     dispatch(fetchProjectsRequest());
     dispatch(fetchUsersRequest());
+    dispatch(changeAccess("false"));
   }, [dispatch]);
 
   return (

@@ -2,7 +2,7 @@ module.exports.getSummary = async (conn) => {
   const { data: dataUsers } = await conn.query(`
       SELECT idUsuario, c_nombre, c_apellido_pat, c_apellido_mat, n_pr
       FROM vki40_usuarios
-      WHERE n_pr IN (1,2);
+      WHERE n_pr IN (1,2,3);
     `);
 
   const { data: dataAccess } = await conn.query(`
@@ -33,7 +33,7 @@ module.exports.updateUsers = async (conn, { users, idProyecto }) => {
   const { data: dataUsers } = await conn.query(`
       SELECT idUsuario, c_nombre, c_apellido_pat, c_apellido_mat, n_pr
       FROM vki40_usuarios
-      WHERE n_pr IN (1,2);
+      WHERE n_pr IN (1,2,3);
     `);
 
   const { data: dataAccess } = await conn.query(`

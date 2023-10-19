@@ -32,8 +32,9 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
   //   }
   // };
 
-  const handleSelectClick = (event, itemId, isManager) => {
+  const handleSelectClick = (event, itemId, isManager, isReading) => {
     if (isManager) return;
+    if (isReading) return;
     const selectedIndex = selectedItems.indexOf(itemId);
     let newSelectedItems = [];
 
@@ -56,7 +57,7 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
   useEffect(() => {
     setSelectedItems([]);
     _.map(list, (item) => {
-      if (item.access && item.rol !== "Champion Gerente") {
+      if (item.access && !item.gerente && !item.lectura) {
         setSelectedItems((prevState) => {
           if (prevState.includes(item.id)) {
             return prevState;
@@ -70,6 +71,7 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
 
   return (
     <Box sx={{ height: "calc(100vh - 24px)", position: "relative" }}>
+      {console.log(selectedItems)}
       <Paper sx={{ width: "100%", height: "100%", mb: 2 }}>
         <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 } }}>
           <Typography
@@ -117,15 +119,21 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
             <TableBody>
               {_.map(list, (item) => {
                 const isItemSelected = selectedItems.indexOf(item.id) !== -1;
-
                 return (
                   <TableRow key={item.id}>
                     <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
-                        checked={isItemSelected || item?.gerente}
+                        checked={
+                          isItemSelected || item?.gerente || item?.lectura
+                        }
                         onChange={(event) =>
-                          handleSelectClick(event, item.id, item?.gerente)
+                          handleSelectClick(
+                            event,
+                            item.id,
+                            item?.gerente,
+                            item?.lectura
+                          )
                         }
                       />
                     </TableCell>

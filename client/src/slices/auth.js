@@ -47,7 +47,6 @@ const Slice = createSlice({
       state.tokenData = {};
     },
     changeAccess: (state, action) => {
-      console.log(action.payload);
       localStorage.setItem("vki40_hasAccess", action.payload);
       state.hasAccess = action.payload;
     },

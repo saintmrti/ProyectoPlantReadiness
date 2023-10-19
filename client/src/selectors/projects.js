@@ -8,7 +8,7 @@ export const summaryProjects = createSelector(
   (projects, auth, users) => {
     if (_.isEmpty(projects)) return {};
     const userAccess = users?.dataAccess;
-    if (auth && auth.n_pr === 2) return projects;
+    if (auth && auth.n_pr !== 1) return projects;
 
     const projectsWithAccess = _.filter(
       userAccess,

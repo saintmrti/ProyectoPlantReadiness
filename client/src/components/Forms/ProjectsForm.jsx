@@ -36,15 +36,15 @@ export const ProjectsForm = ({ setOpen, editProject }) => {
   return (
     <div className="max-w-lg">
       <form
-        className="flex justify-center items-center flex-wrap h-60"
+        className="flex justify-center items-center flex-wrap h-80"
         onSubmit={handleSubmit(onSubmit)}
       >
         <h1 className="text-3xl mb-3 w-full text-center">
           {editProject ? "Editar Proyecto" : "Nuevo Proyecto"}
         </h1>
-        <div className="flex justify-center items-center w-full mb-3">
+        <div className="flex flex-col justify-center items-center w-full mb-3">
           <TextField
-            sx={{ width: "15rem" }}
+            sx={{ width: "15rem", mb: 2 }}
             type="text"
             label="Nombre"
             autoComplete="off"
@@ -56,9 +56,7 @@ export const ProjectsForm = ({ setOpen, editProject }) => {
               validate: (value) => textFieldValidation(value, 50),
             })}
           />
-        </div>
-        {!editProject && (
-          <div className="flex justify-center items-center w-full mb-3">
+          {!editProject && (
             <FormControl sx={{ width: "15rem" }}>
               <InputLabel id="fase">Plantilla</InputLabel>
               <Select
@@ -72,8 +70,8 @@ export const ProjectsForm = ({ setOpen, editProject }) => {
                 <MenuItem value={2}>Serie de maquinas</MenuItem>
               </Select>
             </FormControl>
-          </div>
-        )}
+          )}
+        </div>
         <div className="w-full flex justify-center">
           <Button variant="contained" type="submit">
             Agregar

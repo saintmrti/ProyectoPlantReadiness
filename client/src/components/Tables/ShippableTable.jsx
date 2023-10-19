@@ -201,13 +201,15 @@ const ShippableTable = ({
                     <StyledTableCell>{item.comentarios}</StyledTableCell>
                     <StyledTableCell>
                       <Box sx={{ display: "flex", justifyContent: "end" }}>
-                        <IconButton
-                          aria-label="add"
-                          size="small"
-                          onClick={() => handleOnClickAdv(item.id, advance)}
-                        >
-                          <AddCircleOutlineIcon />
-                        </IconButton>
+                        {tokenData?.n_pr !== 3 && (
+                          <IconButton
+                            aria-label="add"
+                            size="small"
+                            onClick={() => handleOnClickAdv(item.id, advance)}
+                          >
+                            <AddCircleOutlineIcon />
+                          </IconButton>
+                        )}
                         {tokenData?.n_pr === 2 && (
                           <Fragment>
                             <IconButton
@@ -304,21 +306,23 @@ const ShippableTable = ({
                             //   )
                             // )
                             <Fragment>
-                              <IconButton
-                                aria-label="edit"
-                                size="small"
-                                onClick={() =>
-                                  handleOnClickEditAdv(
-                                    advance[item.id].find(
-                                      (obj) =>
-                                        obj.idMaquina ===
-                                        machines[activeIndex]?.id
-                                    )?.id
-                                  )
-                                }
-                              >
-                                <EditIcon />
-                              </IconButton>
+                              {tokenData?.n_pr !== 3 && (
+                                <IconButton
+                                  aria-label="edit"
+                                  size="small"
+                                  onClick={() =>
+                                    handleOnClickEditAdv(
+                                      advance[item.id].find(
+                                        (obj) =>
+                                          obj.idMaquina ===
+                                          machines[activeIndex]?.id
+                                      )?.id
+                                    )
+                                  }
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                              )}
                             </Fragment>
                           )}
                         </StyledTableCell>

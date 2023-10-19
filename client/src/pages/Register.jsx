@@ -236,7 +236,7 @@ const Register = () => {
           <Error />
         ) : (
           <>
-            <div className="flex flex-col items-center mb-6">
+            <div className="flex flex-col items-center mb-2">
               <h1 className="text-3xl font-bold text-center">
                 {project?.nombre}
               </h1>
@@ -245,7 +245,7 @@ const Register = () => {
                 style={{ backgroundColor: theme.palette.primary.main }}
               ></div>
             </div>
-            <div className="flex mb-3 justify-between items-center">
+            <div className="flex justify-between items-center">
               <div>
                 {tokenData?.n_pr === 2 && (
                   <div className="flex">
@@ -323,7 +323,7 @@ const Register = () => {
                           <Typography>{item.expectativa}</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                          <div className="flex justify-between mb-3">
+                          <div className="flex justify-between mb-2">
                             <div>
                               {tokenData?.n_pr === 2 && (
                                 <div className="flex">

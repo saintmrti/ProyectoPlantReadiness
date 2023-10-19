@@ -46,7 +46,7 @@ const ExpectationForm = ({ setOpen, data, editExp, idProyecto }) => {
         <h1 className="text-3xl mb-3 w-full text-center mt-5">
           {editExp ? "Editar expectativa" : "Nueva expectativa"}
         </h1>
-        <div className="flex flex-col justify-end items-center w-full mb-3">
+        <div className="flex flex-col justify-center items-center w-full mb-3">
           <TextField
             sx={{ width: "15rem", mb: 2 }}
             type="text"
