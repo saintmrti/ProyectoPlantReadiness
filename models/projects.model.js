@@ -66,6 +66,12 @@ module.exports.deleteProject = async (conn, { idProyecto }) => {
 
     DELETE FROM vki40_Readiness_maquinas WHERE idProyecto = @proyectoID;
 
+    DELETE FROM vki40_Readiness_productos WHERE idProyecto = @proyectoID;
+
+    DELETE FROM vki40_Readiness_maquinas_productos WHERE idProyecto = @proyectoID;
+
+    DELETE FROM vki40_Readiness_usuarios_proyectos WHERE idProyecto = @proyectoID;
+
     DELETE FROM vki40_Readiness_proyectos WHERE id = @proyectoID;
   `);
 

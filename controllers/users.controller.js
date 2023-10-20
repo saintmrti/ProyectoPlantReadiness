@@ -18,7 +18,6 @@ module.exports.modifyUsers = (req, res) => {
       users,
       idProyecto: parseInt(idProyecto),
     };
-    console.log(newRegister);
     response(res, false, updateUsers, newRegister);
   } catch (error) {
     console.error(error);
