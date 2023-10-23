@@ -38,6 +38,7 @@ import { groupedByIdExpectancy } from "../selectors/expectancy";
 import { summaryHeadings } from "../selectors/headings";
 import { summaryAdvanced } from "../selectors/advance";
 import { summaryMachines } from "../selectors/machines";
+import { summaryProducts } from "../selectors/products";
 import { getProject } from "../selectors/projects";
 import { CustomTabPanel, a11yProps } from "../components/Tabs/CustomTabPanel";
 import { Spinner } from "../components/Spinner";
@@ -95,20 +96,19 @@ const Register = () => {
   const [alertPha, setAlertPha] = useState(false);
   const [alertProd, setAlertProd] = useState(false);
   const [selectedPhases, setSelectedPhases] = useState(null);
+  const [tooling, setTooling] = useState(false);
 
   const expectancy = useSelector(groupedByIdExpectancy);
   const advance = useSelector(summaryAdvanced);
   const headings = useSelector(summaryHeadings);
   const machines = useSelector(summaryMachines);
+  const products = useSelector(summaryProducts);
   const project = useSelector((state) => getProject(state, idProyecto));
   const { list: phases } = useSelector((state) => state.phase);
   const { isFetching, didError } = useSelector((state) => state.advance);
-  const { data: products } = useSelector((state) => state.products);
   const { tokenData } = useSelector((state) => state.auth);
   const arrayPhases = _.values(phases);
   const [value, setValue] = useState(0);
-
-  const groupedProductsByIdMaquina = _.groupBy(products, "idMaquina");
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -137,6 +137,13 @@ const Register = () => {
 
   const handleOnClickProd = () => {
     setEditProd(null);
+    setTooling(false);
+    setOpenProd(true);
+  };
+
+  const handleOnClickTool = () => {
+    setEditProd(null);
+    setTooling(true);
     setOpenProd(true);
   };
 
@@ -187,8 +194,12 @@ const Register = () => {
     setOpenPha(true);
   };
 
-  const handleOnClickEditProd = (id) => {
+  const handleOnClickEditProd = (id, isTooling) => {
     setEditProd(id);
+    console.log(isTooling);
+    {
+      isTooling ? setTooling(true) : setTooling(false);
+    }
     setOpenProd(true);
   };
 
@@ -229,389 +240,418 @@ const Register = () => {
   }, [dispatch, idProyecto]);
   return (
     <>
-      <div className="">
-        {isFetching ? (
-          <Spinner />
-        ) : didError ? (
-          <Error />
-        ) : (
-          <>
-            <div className="flex flex-col items-center mb-2">
-              <h1 className="text-3xl font-bold text-center">
-                {project?.nombre}
-              </h1>
-              <div
-                className="w-full h-1 bg-gradient-to-r from-transparent to-transparent"
-                style={{ backgroundColor: theme.palette.primary.main }}
-              ></div>
-            </div>
-            <div className="flex justify-between items-center">
-              <div>
-                {tokenData?.n_pr === 2 && (
-                  <div className="flex">
-                    <div className="mr-5">
-                      <Button variant="contained" onClick={handleOnClickHead}>
-                        Agregar rubro
-                      </Button>
-                    </div>
-                    <div className="mr-5">
-                      <Button variant="contained" onClick={handleOnClickExp}>
-                        Agregar expectativa
-                      </Button>
-                    </div>
-                    <div>
-                      <Button variant="contained" onClick={handleOnClickPha}>
-                        Agregar fase
-                      </Button>
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className="flex items-center justify-center">
-                {tokenData?.n_pr === 2 && (
+      {isFetching ? (
+        <Spinner />
+      ) : didError ? (
+        <Error />
+      ) : (
+        <>
+          <div className="flex flex-col items-center mb-2">
+            <h1 className="text-3xl font-bold text-center">
+              {project?.nombre}
+            </h1>
+            <div
+              className="w-full h-1 bg-gradient-to-r from-transparent to-transparent"
+              style={{ backgroundColor: theme.palette.primary.main }}
+            ></div>
+          </div>
+          <div className="flex justify-between items-center">
+            <div>
+              {tokenData?.n_pr === 2 && (
+                <div className="flex">
                   <div className="mr-5">
-                    <Button
-                      variant="contained"
-                      onClick={() =>
-                        navigate(`/proyectos/${idProyecto}/usuarios`)
-                      }
-                    >
-                      Champions
+                    <Button variant="contained" onClick={handleOnClickHead}>
+                      Agregar rubro
                     </Button>
                   </div>
-                )}
+                  <div className="mr-5">
+                    <Button variant="contained" onClick={handleOnClickExp}>
+                      Agregar expectativa
+                    </Button>
+                  </div>
+                  <div>
+                    <Button variant="contained" onClick={handleOnClickPha}>
+                      Agregar fase
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div className="flex items-center justify-center">
+              {tokenData?.n_pr === 2 && (
                 <div className="mr-5">
-                  <Button variant="contained" onClick={() => navigate("/")}>
-                    Proyectos
+                  <Button
+                    variant="contained"
+                    onClick={() =>
+                      navigate(`/proyectos/${idProyecto}/usuarios`)
+                    }
+                  >
+                    Champions
                   </Button>
                 </div>
-                <Toggle idProyecto={idProyecto} />
+              )}
+              <div className="mr-5">
+                <Button variant="contained" onClick={() => navigate("/")}>
+                  Proyectos
+                </Button>
               </div>
+              <Toggle idProyecto={idProyecto} />
             </div>
-            <Box sx={{ width: "100%" }}>
-              <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs value={value} onChange={handleChange}>
-                  {_.map(headings, (item, index) => (
-                    <Tab
-                      key={item.id}
-                      label={item.rubro}
-                      {...a11yProps(parseInt(index))}
-                    />
+          </div>
+          <Box sx={{ width: "100%" }}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <Tabs value={value} onChange={handleChange}>
+                {_.map(headings, (item, index) => (
+                  <Tab
+                    key={item.id}
+                    label={item.rubro}
+                    {...a11yProps(parseInt(index))}
+                  />
+                ))}
+                {tokenData?.n_pr === 2 && (
+                  <Tab
+                    label="Herramental"
+                    {...a11yProps(headings.length || 0)}
+                  />
+                )}
+                {tokenData?.n_pr === 2 && (
+                  <Tab
+                    label="Productos Commissioning"
+                    {...a11yProps(headings.length + 1 || 0)}
+                  />
+                )}
+              </Tabs>
+            </Box>
+            {_.map(headings, (rubro, index) => (
+              <CustomTabPanel
+                value={value}
+                key={rubro.id}
+                index={parseInt(index)}
+              >
+                <div>
+                  {_.map(expectancy[rubro.id], (item, index) => (
+                    <Accordion anchor={`item-${index}`} key={index}>
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                      >
+                        <Typography>{item.expectativa}</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <div className="flex justify-between mb-2">
+                          <div>
+                            {tokenData?.n_pr === 2 && (
+                              <div className="flex">
+                                <IconButton
+                                  aria-label="add"
+                                  size="small"
+                                  onClick={() => handleOnClickEditExp(item.id)}
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                                <IconButton
+                                  aria-label="add"
+                                  size="small"
+                                  onClick={() =>
+                                    handleOnClickDeleteExp(item.id)
+                                  }
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex">
+                            {tokenData?.n_pr === 2 && (
+                              <Button
+                                variant="contained"
+                                size="small"
+                                onClick={() => handleOnClickShi(item.id)}
+                                sx={{ mr: 1 }}
+                              >
+                                Agregar Entregable
+                              </Button>
+                            )}
+                            {item.shippables &&
+                              item.shippables.length > 0 &&
+                              Object.keys(machines).length > 0 && (
+                                <>
+                                  <Button
+                                    variant="text"
+                                    size="small"
+                                    onClick={() =>
+                                      setActiveComment(!activeComment)
+                                    }
+                                  >
+                                    {activeComment
+                                      ? "Mostrar Avances"
+                                      : "Ocultar Avances"}
+                                  </Button>
+                                </>
+                              )}
+                          </div>
+                        </div>
+                        {item.shippables && item.shippables.length > 0 && (
+                          <div className="mb-3">
+                            <ShippableTable
+                              data={item.shippables}
+                              idExpectancy={item.id}
+                              machines={machines}
+                              advance={advance[item?.id]}
+                              activeComment={activeComment}
+                              setActiveComment={setActiveComment}
+                              handleOnClickAdv={handleOnClickAdv}
+                              handleOnClickEditShi={handleOnClickEditShi}
+                              handleOnClickEditAdv={handleOnClickEditAdv}
+                              handleOnClickDeleteShi={handleOnClickDeleteShi}
+                              handleOnClickEditPha={handleOnClickEditPha}
+                              handleOnClickDeletePha={handleOnClickDeletePha}
+                              tokenData={tokenData}
+                            />
+                          </div>
+                        )}
+                      </AccordionDetails>
+                    </Accordion>
                   ))}
                   {tokenData?.n_pr === 2 && (
-                    <Tab
-                      label="Productos Commissioning"
-                      {...a11yProps(headings.length || 0)}
-                    />
+                    <div className="flex justify-end mt-3">
+                      <Button
+                        variant="outlined"
+                        onClick={() => handleOnClickEditHead(rubro.id)}
+                        sx={{ mr: 1 }}
+                      >
+                        Editar Rubro
+                      </Button>
+                      <Button
+                        variant="text"
+                        onClick={() => handleOnClickDeleteHead(rubro.id)}
+                      >
+                        Eliminar Rubro
+                      </Button>
+                    </div>
                   )}
-                </Tabs>
-              </Box>
-              {_.map(headings, (rubro, index) => (
-                <CustomTabPanel
-                  value={value}
-                  key={rubro.id}
-                  index={parseInt(index)}
-                >
-                  <div>
-                    {_.map(expectancy[rubro.id], (item, index) => (
-                      <Accordion anchor={`item-${index}`} key={index}>
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls="panel1a-content"
-                          id="panel1a-header"
-                        >
-                          <Typography>{item.expectativa}</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          <div className="flex justify-between mb-2">
-                            <div>
-                              {tokenData?.n_pr === 2 && (
-                                <div className="flex">
-                                  <IconButton
-                                    aria-label="add"
-                                    size="small"
-                                    onClick={() =>
-                                      handleOnClickEditExp(item.id)
-                                    }
-                                  >
-                                    <EditIcon />
-                                  </IconButton>
-                                  <IconButton
-                                    aria-label="add"
-                                    size="small"
-                                    onClick={() =>
-                                      handleOnClickDeleteExp(item.id)
-                                    }
-                                  >
-                                    <DeleteIcon />
-                                  </IconButton>
-                                </div>
-                              )}
-                            </div>
-                            <div className="flex">
-                              {tokenData?.n_pr === 2 && (
-                                <Button
-                                  variant="contained"
-                                  size="small"
-                                  onClick={() => handleOnClickShi(item.id)}
-                                  sx={{ mr: 1 }}
-                                >
-                                  Agregar Entregable
-                                </Button>
-                              )}
-                              {item.shippables &&
-                                item.shippables.length > 0 &&
-                                Object.keys(machines).length > 0 && (
-                                  <>
-                                    <Button
-                                      variant="text"
-                                      size="small"
-                                      onClick={() =>
-                                        setActiveComment(!activeComment)
-                                      }
-                                    >
-                                      {activeComment
-                                        ? "Mostrar Avances"
-                                        : "Ocultar Avances"}
-                                    </Button>
-                                  </>
-                                )}
-                            </div>
-                          </div>
-                          {item.shippables && item.shippables.length > 0 && (
-                            <div className="mb-3">
-                              <ShippableTable
-                                data={item.shippables}
-                                idExpectancy={item.id}
-                                machines={machines}
-                                advance={advance[item?.id]}
-                                activeComment={activeComment}
-                                setActiveComment={setActiveComment}
-                                handleOnClickAdv={handleOnClickAdv}
-                                handleOnClickEditShi={handleOnClickEditShi}
-                                handleOnClickEditAdv={handleOnClickEditAdv}
-                                handleOnClickDeleteShi={handleOnClickDeleteShi}
-                                handleOnClickEditPha={handleOnClickEditPha}
-                                handleOnClickDeletePha={handleOnClickDeletePha}
-                                tokenData={tokenData}
-                              />
-                            </div>
-                          )}
-                        </AccordionDetails>
-                      </Accordion>
-                    ))}
-                    {tokenData?.n_pr === 2 && (
-                      <div className="flex justify-end mt-3">
-                        <Button
-                          variant="outlined"
-                          onClick={() => handleOnClickEditHead(rubro.id)}
-                          sx={{ mr: 1 }}
-                        >
-                          Editar Rubro
-                        </Button>
-                        <Button
-                          variant="text"
-                          onClick={() => handleOnClickDeleteHead(rubro.id)}
-                        >
-                          Eliminar Rubro
-                        </Button>
-                      </div>
-                    )}
-                  </div>
-                </CustomTabPanel>
-              ))}
-              {tokenData?.n_pr === 2 && (
-                <CustomTabPanel value={value} index={headings.length || 0}>
-                  <div className="flex justify-end">
-                    <Button variant="contained" onClick={handleOnClickProd}>
-                      Nueva Maquina
-                    </Button>
-                  </div>
-                  <div>
-                    {_.isEmpty(products) ? (
-                      <div></div>
-                    ) : (
-                      <div className="grid gap-4 grid-cols-2 md:grid-cols-4 mt-5">
-                        {_.map(groupedProductsByIdMaquina, (item, index) => (
-                          <ProductsTable
-                            key={index}
-                            idMaquina={index}
-                            data={item}
-                            handleOnClickEditProd={handleOnClickEditProd}
-                            handleOnClickDeleteProd={handleOnClickDeleteProd}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </CustomTabPanel>
-              )}
+                </div>
+              </CustomTabPanel>
+            ))}
+            {tokenData?.n_pr === 2 && (
+              <CustomTabPanel value={value} index={headings.length || 0}>
+                <div className="flex justify-end">
+                  <Button variant="contained" onClick={handleOnClickTool}>
+                    Nueva Maquina
+                  </Button>
+                </div>
+                <div>
+                  {_.isEmpty(products) ? (
+                    <div></div>
+                  ) : (
+                    <div className="grid gap-4 grid-cols-2 md:grid-cols-4 mt-5">
+                      {_.map(products?.productsHerramental, (item, index) => (
+                        <ProductsTable
+                          key={index}
+                          idMaquina={index}
+                          data={item}
+                          handleOnClickEditProd={handleOnClickEditProd}
+                          handleOnClickDeleteProd={handleOnClickDeleteProd}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </CustomTabPanel>
+            )}
+            {tokenData?.n_pr === 2 && (
+              <CustomTabPanel value={value} index={headings.length + 1 || 0}>
+                <div className="flex justify-end">
+                  <Button variant="contained" onClick={handleOnClickProd}>
+                    Nueva Maquina
+                  </Button>
+                </div>
+                <div>
+                  {_.isEmpty(products) ? (
+                    <div></div>
+                  ) : (
+                    <div className="grid gap-4 grid-cols-2 md:grid-cols-4 mt-5">
+                      {_.map(products?.productsMts, (item, index) => (
+                        <ProductsTable
+                          key={index}
+                          idMaquina={index}
+                          data={item}
+                          handleOnClickEditProd={handleOnClickEditProd}
+                          handleOnClickDeleteProd={handleOnClickDeleteProd}
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </CustomTabPanel>
+            )}
+          </Box>
+          <Modal open={openHead} onClose={() => setOpenHead(false)}>
+            <Box sx={style}>
+              <IconButton
+                aria-label="close"
+                size="small"
+                onClick={() => setOpenHead(false)}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+              <HeadingForm
+                setOpen={setOpenHead}
+                editHead={editHead}
+                idProyecto={idProyecto}
+              />
             </Box>
-            <Modal open={openHead} onClose={() => setOpenHead(false)}>
-              <Box sx={style}>
-                <IconButton
-                  aria-label="close"
-                  size="small"
-                  onClick={() => setOpenHead(false)}
-                  sx={{
-                    position: "absolute",
-                    right: 8,
-                    top: 8,
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <HeadingForm
-                  setOpen={setOpenHead}
-                  editHead={editHead}
-                  idProyecto={idProyecto}
-                />
-              </Box>
-            </Modal>
-            <Modal open={openExp} onClose={() => setOpenExp(false)}>
-              <Box sx={style}>
-                <IconButton
-                  aria-label="close"
-                  size="small"
-                  onClick={() => setOpenExp(false)}
-                  sx={{
-                    position: "absolute",
-                    right: 8,
-                    top: 8,
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <ExpectationForm
-                  data={headings}
-                  setOpen={setOpenExp}
-                  editExp={editExp}
-                  idProyecto={idProyecto}
-                />
-              </Box>
-            </Modal>
-            <Modal open={openPha} onClose={() => setOpenPha(false)}>
-              <Box sx={style}>
-                <IconButton
-                  aria-label="close"
-                  size="small"
-                  onClick={() => setOpenPha(false)}
-                  sx={{
-                    position: "absolute",
-                    right: 8,
-                    top: 8,
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <PhaseForm
-                  setOpen={setOpenPha}
-                  idProyecto={idProyecto}
-                  editPha={editPha}
-                />
-              </Box>
-            </Modal>
-            <Modal open={openShi} onClose={() => setOpenShi(false)}>
-              <Box sx={style}>
-                <IconButton
-                  aria-label="close"
-                  size="small"
-                  onClick={() => setOpenShi(false)}
-                  sx={{
-                    position: "absolute",
-                    right: 8,
-                    top: 8,
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <ShippableForm
-                  setOpen={setOpenShi}
-                  idExpectancy={idExpectancy}
-                  editShi={editShi}
-                  idProyecto={idProyecto}
-                />
-              </Box>
-            </Modal>
-            <Modal open={openAdv} onClose={() => setOpenAdv(false)}>
-              <Box sx={style}>
-                <IconButton
-                  aria-label="close"
-                  size="small"
-                  onClick={() => setOpenAdv(false)}
-                  sx={{
-                    position: "absolute",
-                    right: 8,
-                    top: 8,
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <AdvanceForm
-                  setOpen={setOpenAdv}
-                  idEntregable={changeShi}
-                  phases={selectedPhases}
-                  editAdv={editAdv}
-                  idProyecto={idProyecto}
-                />
-              </Box>
-            </Modal>
-            <Modal open={openProd} onClose={() => setOpenProd(false)}>
-              <Box sx={style}>
-                <IconButton
-                  aria-label="close"
-                  size="small"
-                  onClick={() => setOpenProd(false)}
-                  sx={{
-                    position: "absolute",
-                    right: 8,
-                    top: 8,
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-                <ProductsForm
-                  setOpen={setOpenProd}
-                  editProd={editProd}
-                  idProyecto={idProyecto}
-                />
-              </Box>
-            </Modal>
-            <ShippableAlert
-              open={alertShi}
-              onClose={() => setAlertShi(false)}
-              deleteShi={deleteShi}
-              setDeleteShi={setDeleteShi}
-            />
-            <ExpectancyAlert
-              open={alertExp}
-              onClose={() => setAlertExp(false)}
-              deleteExp={deleteExp}
-              setDeleteExp={setDeleteExp}
-            />
-            <HeadingsAlert
-              open={alertHead}
-              onClose={() => setAlertHead(false)}
-              deleteHead={deleteHead}
-              setDeleteHead={setDeleteHead}
-              setValue={setValue}
-            />
-            <AdvanceAlert open={alertAdv} setOpen={setAlertAdv} />
-            <PhaseAlert
-              open={alertPha}
-              onClose={() => setAlertPha(false)}
-              deletePha={deletePha}
-              setDeletePha={setDeletePha}
-            />
-            <ProductsAlert
-              open={alertProd}
-              onClose={() => setAlertProd(false)}
-              deleteProd={deleteProd}
-              setDeleteProd={setDeleteProd}
-            />
-          </>
-        )}
-      </div>
+          </Modal>
+          <Modal open={openExp} onClose={() => setOpenExp(false)}>
+            <Box sx={style}>
+              <IconButton
+                aria-label="close"
+                size="small"
+                onClick={() => setOpenExp(false)}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+              <ExpectationForm
+                data={headings}
+                setOpen={setOpenExp}
+                editExp={editExp}
+                idProyecto={idProyecto}
+              />
+            </Box>
+          </Modal>
+          <Modal open={openPha} onClose={() => setOpenPha(false)}>
+            <Box sx={style}>
+              <IconButton
+                aria-label="close"
+                size="small"
+                onClick={() => setOpenPha(false)}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+              <PhaseForm
+                setOpen={setOpenPha}
+                idProyecto={idProyecto}
+                editPha={editPha}
+              />
+            </Box>
+          </Modal>
+          <Modal open={openShi} onClose={() => setOpenShi(false)}>
+            <Box sx={style}>
+              <IconButton
+                aria-label="close"
+                size="small"
+                onClick={() => setOpenShi(false)}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+              <ShippableForm
+                setOpen={setOpenShi}
+                idExpectancy={idExpectancy}
+                editShi={editShi}
+                idProyecto={idProyecto}
+              />
+            </Box>
+          </Modal>
+          <Modal open={openAdv} onClose={() => setOpenAdv(false)}>
+            <Box sx={style}>
+              <IconButton
+                aria-label="close"
+                size="small"
+                onClick={() => setOpenAdv(false)}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+              <AdvanceForm
+                setOpen={setOpenAdv}
+                idEntregable={changeShi}
+                phases={selectedPhases}
+                editAdv={editAdv}
+                idProyecto={idProyecto}
+              />
+            </Box>
+          </Modal>
+          <Modal open={openProd} onClose={() => setOpenProd(false)}>
+            <Box sx={style}>
+              <IconButton
+                aria-label="close"
+                size="small"
+                onClick={() => setOpenProd(false)}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 8,
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+              <ProductsForm
+                setOpen={setOpenProd}
+                editProd={editProd}
+                idProyecto={idProyecto}
+                tooling={tooling}
+              />
+            </Box>
+          </Modal>
+          <ShippableAlert
+            open={alertShi}
+            onClose={() => setAlertShi(false)}
+            deleteShi={deleteShi}
+            setDeleteShi={setDeleteShi}
+          />
+          <ExpectancyAlert
+            open={alertExp}
+            onClose={() => setAlertExp(false)}
+            deleteExp={deleteExp}
+            setDeleteExp={setDeleteExp}
+          />
+          <HeadingsAlert
+            open={alertHead}
+            onClose={() => setAlertHead(false)}
+            deleteHead={deleteHead}
+            setDeleteHead={setDeleteHead}
+            setValue={setValue}
+          />
+          <AdvanceAlert open={alertAdv} setOpen={setAlertAdv} />
+          <PhaseAlert
+            open={alertPha}
+            onClose={() => setAlertPha(false)}
+            deletePha={deletePha}
+            setDeletePha={setDeletePha}
+          />
+          <ProductsAlert
+            open={alertProd}
+            onClose={() => setAlertProd(false)}
+            deleteProd={deleteProd}
+            setDeleteProd={setDeleteProd}
+          />
+        </>
+      )}
     </>
   );
 };
