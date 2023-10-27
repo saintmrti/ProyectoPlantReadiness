@@ -56,6 +56,20 @@ export const ProjectsForm = ({ setOpen, editProject }) => {
               validate: (value) => textFieldValidation(value, 50),
             })}
           />
+          <TextField
+            sx={{ width: "15rem", mb: 2 }}
+            type="number"
+            label="ADI"
+            autoComplete="off"
+            error={Boolean(errors.adi)}
+            defaultValue={project?.adi || ""}
+            helperText={errors.adi?.message}
+            {...register("adi", {
+              required: true,
+              validate: (value) =>
+                parseFloat(value) >= 0 || "Ingrese un número positivo",
+            })}
+          />
           {!editProject && (
             <FormControl sx={{ width: "15rem" }}>
               <InputLabel id="fase">Plantilla</InputLabel>
@@ -74,7 +88,7 @@ export const ProjectsForm = ({ setOpen, editProject }) => {
         </div>
         <div className="w-full flex justify-center">
           <Button variant="contained" type="submit">
-            Agregar
+            {editProject ? "Actualizar" : "Agregar"}
           </Button>
         </div>
       </form>

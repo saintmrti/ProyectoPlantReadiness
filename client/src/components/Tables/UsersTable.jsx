@@ -70,8 +70,7 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
   }, [list]);
 
   return (
-    <Box sx={{ height: "calc(100vh - 24px)", position: "relative" }}>
-      {console.log(selectedItems)}
+    <Box sx={{ height: "calc(100vh - 24px)" }}>
       <Paper sx={{ width: "100%", height: "100%", mb: 2 }}>
         <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 } }}>
           <Typography
@@ -90,8 +89,8 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
             </IconButton>
           </Tooltip>
         </Toolbar>
-        <TableContainer>
-          <Table>
+        <TableContainer sx={{ maxHeight: "calc(100% - 64px)" }}>
+          <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">
@@ -153,13 +152,13 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
           </Table>
         </TableContainer>
       </Paper>
-      <Button
+      {/* <Button
         variant="contained"
         onClick={() => handleOnClickUsers(selectedItems)}
         sx={{ position: "absolute", bottom: 20, right: 20 }}
       >
         Guardar
-      </Button>
+      </Button> */}
     </Box>
   );
 };

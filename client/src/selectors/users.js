@@ -31,7 +31,18 @@ export const summaryUsers = (idProyecto) =>
         };
       });
 
-      return usersList;
+      const sortedUsersList = _.orderBy(
+        usersList,
+        [
+          (user) => {
+            if (user.rol === "Champion Gerente") return 1;
+            else if (user.rol === "Champion Pilar") return 2;
+            else return 3;
+          },
+        ],
+        ["asc"]
+      );
+      return sortedUsersList;
     }
   );
 

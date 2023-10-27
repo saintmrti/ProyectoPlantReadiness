@@ -196,10 +196,7 @@ const Register = () => {
 
   const handleOnClickEditProd = (id, isTooling) => {
     setEditProd(id);
-    console.log(isTooling);
-    {
-      isTooling ? setTooling(true) : setTooling(false);
-    }
+    isTooling ? setTooling(true) : setTooling(false);
     setOpenProd(true);
   };
 
