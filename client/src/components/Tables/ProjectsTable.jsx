@@ -57,7 +57,7 @@ const ProjectsTable = ({
               <TableRow>
                 {/* <TableCell><b>ID</b></TableCell> */}
                 <TableCell>
-                  <b>ADI</b>
+                  <b>Adi</b>
                 </TableCell>
                 <TableCell>
                   <b>Nombre</b>

@@ -81,6 +81,14 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
           >
             Acceso Champions
           </Typography>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => handleOnClickUsers(selectedItems)}
+            sx={{ mr: 1 }}
+          >
+            Guardar
+          </Button>
           <Tooltip title="Ir al registro">
             <IconButton
               onClick={() => navigate(`/proyectos/${idProyecto}/registro`)}
@@ -152,13 +160,6 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
           </Table>
         </TableContainer>
       </Paper>
-      {/* <Button
-        variant="contained"
-        onClick={() => handleOnClickUsers(selectedItems)}
-        sx={{ position: "absolute", bottom: 20, right: 20 }}
-      >
-        Guardar
-      </Button> */}
     </Box>
   );
 };

@@ -59,7 +59,7 @@ export const ProjectsForm = ({ setOpen, editProject }) => {
           <TextField
             sx={{ width: "15rem", mb: 2 }}
             type="number"
-            label="ADI"
+            label="Adi"
             autoComplete="off"
             error={Boolean(errors.adi)}
             defaultValue={project?.adi || ""}
