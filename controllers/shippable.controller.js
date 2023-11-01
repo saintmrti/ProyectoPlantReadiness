@@ -36,7 +36,7 @@ module.exports.createShippable = (req, res) => {
       evidencia,
       qn_valida,
       prioridad,
-      comentarios,
+      comentarios: comentarios === "" ? null : `'${comentarios}'`,
       idExpectativa: parseInt(idExpectativa),
       idProyecto: parseInt(idProyecto),
     };
@@ -55,9 +55,9 @@ module.exports.modifyShippable = (req, res) => {
     const newRegister = {
       nombre,
       evidencia,
-      qn_valida,
+      qn_valida: qn_valida || null,
       prioridad,
-      comentarios,
+      comentarios: comentarios || null,
       idEntregable: parseInt(id),
     };
     response(res, false, updateShippable, newRegister);

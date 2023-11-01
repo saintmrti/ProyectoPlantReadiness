@@ -21,7 +21,7 @@ module.exports.insertShippable = async (
     info: { insertId },
   } = await conn.query(`
       INSERT INTO vki40_Readiness_entregables (fecha, nombre, evidencia, qn_valida, prioridad, comentarios, idExpectativa, idProyecto)
-      VALUES (GETDATE(), '${nombre}', '${evidencia}', '${qn_valida}', '${prioridad}','${comentarios}', ${idExpectativa}, ${idProyecto});
+      VALUES (GETDATE(), '${nombre}', '${evidencia}', '${qn_valida}', '${prioridad}',${comentarios}, ${idExpectativa}, ${idProyecto});
     `);
 
   const { data } = await conn.query(`
@@ -40,9 +40,9 @@ module.exports.updateShippable = async (
         fecha = GETDATE(),
         nombre = '${nombre}',
         evidencia = '${evidencia}',
-        qn_valida = '${qn_valida}',
+        qn_valida = ${qn_valida !== null ? `'${qn_valida}'` : null},
         prioridad = '${prioridad}',
-        comentarios = '${comentarios}'
+        comentarios = ${comentarios !== null ? `'${comentarios}'` : null}
       WHERE id= ${idEntregable};
     `);
 

@@ -23,7 +23,6 @@ module.exports.getAdvances = (req, res) => {
 module.exports.createAdvance = (req, res) => {
   try {
     const { advance } = req.body;
-
     const modifiedArray = _.map(advance, (item) => {
       return {
         idEntregable: parseInt(item.idEntregable),
@@ -61,7 +60,7 @@ module.exports.modifyAdvance = (req, res) => {
       fecha_inicio: fecha_inicio || null,
       fecha_termino: fecha_termino || null,
       fecha_real: fecha_real || null,
-      avance: avance || null,
+      avance: parseInt(avance),
       comentarios: comentarios || null,
     };
     response(res, false, updateAdvance, modifiedRegister);

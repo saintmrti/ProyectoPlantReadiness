@@ -63,7 +63,7 @@ module.exports.updateAdvance = async (conn, modifiedArray) => {
         fecha_inicio = ${fecha_inicio !== null ? `'${fecha_inicio}'` : null},
         fecha_termino = ${fecha_termino !== null ? `'${fecha_termino}'` : null},
         fecha_real = ${fecha_real !== null ? `'${fecha_real}'` : null},
-        avance = ${avance !== null ? avance : null},
+        avance = ${avance},
         comentarios = ${comentarios !== null ? `'${comentarios}'` : null}
       WHERE id = ${idAvance};
     `);

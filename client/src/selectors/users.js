@@ -27,7 +27,9 @@ export const summaryUsers = (idProyecto) =>
               : "Champion Gerente",
           access: user.n_pr === 1 ? hasAccess : true,
           gerente: user.n_pr === 2 ? true : false,
+          pilar: user.n_pr === 1 ? true : false,
           lectura: user.n_pr === 3 ? true : false,
+          n_activo: access ? access.n_activo : false,
         };
       });
 
@@ -56,3 +58,17 @@ export const getUserAccessById = (idProyecto, userId) =>
     }
     return false;
   });
+
+export const getAccessDate = (idProyecto, userId) =>
+  createSelector(
+    ({ users }) => users.list,
+    (users) => {
+      if (_.isEmpty(users)) return false;
+      const dataAccess = users?.dataAccess;
+      const accessDate = _.find(dataAccess, {
+        idUsuario: userId,
+        idProyecto: parseInt(idProyecto),
+      });
+      return accessDate ? accessDate.n_activo : true;
+    }
+  );

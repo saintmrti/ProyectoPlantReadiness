@@ -590,6 +590,8 @@ const Register = () => {
                 phases={selectedPhases}
                 editAdv={editAdv}
                 idProyecto={idProyecto}
+                machines={machines}
+                tokenData={tokenData}
               />
             </Box>
           </Modal>
