@@ -34,6 +34,7 @@ import { fetchHeadingsRequest } from "../slices/headings";
 import { fetchMachinesRequest } from "../slices/machines";
 import { fetchPhaseRequest } from "../slices/phase";
 import { fetchProductsRequest } from "../slices/products";
+import { fetchUsersRequest } from "../slices/users";
 import { groupedByIdExpectancy } from "../selectors/expectancy";
 import { summaryHeadings } from "../selectors/headings";
 import { summaryAdvanced } from "../selectors/advance";
@@ -234,6 +235,7 @@ const Register = () => {
     dispatch(fetchHeadingsRequest({ idProyecto }));
     dispatch(fetchAdvanceRequest({ idProyecto }));
     dispatch(fetchProductsRequest({ idProyecto }));
+    dispatch(fetchUsersRequest());
   }, [dispatch, idProyecto]);
   return (
     <>

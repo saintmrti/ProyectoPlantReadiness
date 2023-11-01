@@ -12,7 +12,6 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { useNavigate } from "react-router-dom";
 import { textFieldValidationV2 } from "./validated";
-import { fetchUsersRequest } from "../../slices/users";
 import { changeAdvance } from "../../slices/setAdvance";
 import { getAdvance } from "../../selectors/advance";
 import { getAccessDate } from "../../selectors/users";
@@ -34,6 +33,7 @@ const AdvanceForm = ({
   const navigate = useNavigate();
 
   const advance = useSelector((state) => getAdvance(state, editAdv));
+  const { data } = useSelector((state) => state.advance);
   const accessDate = useSelector(getAccessDate(idProyecto, tokenData.userId));
   const [checked, setChecked] = useState(false);
   const {
@@ -91,9 +91,10 @@ const AdvanceForm = ({
     setChecked(event.target.checked);
   };
 
+  const isData = _.some(data, { idEntregable: idEntregable });
+
   useEffect(() => {
     advance && reset(advance);
-    dispatch(fetchUsersRequest());
   }, [advance, reset, dispatch]);
 
   return (
@@ -105,6 +106,7 @@ const AdvanceForm = ({
         <h1 className="text-3xl mb-5 w-full text-center">
           {editAdv ? "Editar avances" : "Agregar avances"}
         </h1>
+        {console.log(data)}
         <div className="mb-10">
           {tokenData?.n_pr === 2 && (
             <div className="flex justify-end items-center w-full mb-3">
@@ -153,6 +155,7 @@ const AdvanceForm = ({
                   <Checkbox
                     checked={checked}
                     onChange={handleChange}
+                    disabled={isData}
                     inputProps={{ "aria-label": "controlled" }}
                   />
                 }
