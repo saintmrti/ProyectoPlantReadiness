@@ -278,15 +278,27 @@ const Register = () => {
             </div>
             <div className="flex items-center justify-center">
               {tokenData?.n_pr === 2 && (
-                <div className="mr-5">
-                  <Button
-                    variant="contained"
-                    onClick={() =>
-                      navigate(`/proyectos/${idProyecto}/usuarios`)
-                    }
-                  >
-                    Champions
-                  </Button>
+                <div className="flex">
+                  <div className="mr-5">
+                    <Button
+                      variant="contained"
+                      onClick={() =>
+                        navigate(`/proyectos/${idProyecto}/log`)
+                      }
+                    >
+                      Backlog
+                    </Button>
+                  </div>
+                  <div className="mr-5">
+                    <Button
+                      variant="contained"
+                      onClick={() =>
+                        navigate(`/proyectos/${idProyecto}/usuarios`)
+                      }
+                    >
+                      Champions
+                    </Button>
+                  </div>
                 </div>
               )}
               <div className="mr-5">

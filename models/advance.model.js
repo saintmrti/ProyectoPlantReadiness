@@ -49,13 +49,26 @@ module.exports.insertAdvance = async (conn, modifiedArray) => {
 module.exports.updateAdvance = async (conn, modifiedArray) => {
   const {
     idAvance,
+    idUsuario,
     responsable,
     fecha_inicio,
     fecha_termino,
     fecha_real,
     avance,
     comentarios,
+    ult_fecha,
   } = modifiedArray;
+  if (ult_fecha.length > 0) {
+    await Promise.all(
+      ult_fecha.map((item) => {
+        if (item[0] !== null) {
+          return conn.query(
+            `exec sp_vki40_Readiness_logEntregables ${idAvance}, ${idUsuario}, ${item[1]},'${item[0]}'`
+          );
+        }
+      })
+    );
+  }
   await conn.query(`
       UPDATE vki40_Readiness_avances
       SET

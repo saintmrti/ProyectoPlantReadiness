@@ -53,15 +53,21 @@ module.exports.modifyAdvance = (req, res) => {
       avance,
       comentarios,
       idAvance,
+      idUsuario,
+      ult_fecha_inicio,
+      ult_fecha_termino,
+      ult_fecha_real,
     } = req.body;
     const modifiedRegister = {
       idAvance,
+      idUsuario,
       responsable: responsable || null,
       fecha_inicio: fecha_inicio || null,
       fecha_termino: fecha_termino || null,
       fecha_real: fecha_real || null,
       avance: parseInt(avance),
       comentarios: comentarios || null,
+      ult_fecha: [[ult_fecha_inicio, 1], [ult_fecha_termino, 2], [ult_fecha_real, 3]]
     };
     response(res, false, updateAdvance, modifiedRegister);
   } catch (error) {

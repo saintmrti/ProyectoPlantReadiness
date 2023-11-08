@@ -11,6 +11,7 @@ import Dashboard from "../../pages/Dashboard";
 import Advance from "../../pages/Advance";
 import Champions from "../../pages/Champions";
 import UserAccess from "../../pages/UserAccess";
+import LogView from "../../pages/LogView";
 import PrivateRoute from "../PrivateRoute";
 import ProjectAccessRoute from "../ProjectAccessRoute";
 import Authentication from "../Authentication";
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
             <Route
               path="/proyectos/:idProyecto/usuarios"
               element={<UserAccess />}
+            />
+            <Route
+              path="/proyectos/:idProyecto/log"
+              element={<LogView />}
             />
           </Route>
         </Route>

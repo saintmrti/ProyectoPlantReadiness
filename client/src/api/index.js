@@ -50,3 +50,5 @@ export {
   updateProductsApi,
   deleteProductsApi,
 } from "./products";
+
+export { fetchLogsApi } from "./logs";

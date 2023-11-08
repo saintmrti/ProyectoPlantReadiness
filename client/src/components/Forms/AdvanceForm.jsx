@@ -53,8 +53,6 @@ const AdvanceForm = ({
       avance,
       comentarios,
     } = values;
-    setOpen(false);
-    reset();
     const saveAdvance = {
       responsable,
       fecha_inicio,
@@ -63,9 +61,15 @@ const AdvanceForm = ({
       avance: avance === "" ? "0" : avance,
       comentarios,
       idAvance: editAdv,
+      idUsuario: tokenData.userId,
     };
     if (editAdv) {
-      dispatch(updateAdvanceRequest(saveAdvance));
+      const logAdvance = {
+        ult_fecha_inicio: advance?.fecha_inicio !== fecha_inicio ? advance?.fecha_inicio : null,
+        ult_fecha_termino: advance?.fecha_termino !== fecha_termino ? advance?.fecha_termino : null,
+        ult_fecha_real: advance?.fecha_real !== fecha_real ? advance?.fecha_real : null,
+      }
+      dispatch(updateAdvanceRequest({ ...saveAdvance, ...logAdvance }));
     } else {
       if (checked) {
         const filteredArray = _.map(machines, (item) => ({
@@ -85,6 +89,8 @@ const AdvanceForm = ({
         navigate(`/proyectos/${idProyecto}/avances/${idEntregable}/${idFase}`);
       }
     }
+    setOpen(false);
+    reset();
   };
 
   const handleChange = (event) => {
@@ -106,7 +112,7 @@ const AdvanceForm = ({
         <h1 className="text-3xl mb-5 w-full text-center">
           {editAdv ? "Editar avances" : "Agregar avances"}
         </h1>
-        {console.log(data)}
+        {console.log(tokenData.userId)}
         <div className="mb-10">
           {tokenData?.n_pr === 2 && (
             <div className="flex justify-end items-center w-full mb-3">

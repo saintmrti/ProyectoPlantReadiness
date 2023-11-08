@@ -14,6 +14,7 @@ const projectsRoutes = require("./routes/projects.routes");
 const championRoutes = require("./routes/champion.routes");
 const usersRoutes = require("./routes/users.routes");
 const productsRoutes = require("./routes/products.routes");
+const logsRoutes = require("./routes/logs.routes");
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -38,6 +39,7 @@ app.use("/api/proyectos", projectsRoutes);
 app.use("/api/champions", championRoutes);
 app.use("/api/usuarios", usersRoutes);
 app.use("/api/productos", productsRoutes);
+app.use("/api/logs", logsRoutes);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client/dist/index.html"));
