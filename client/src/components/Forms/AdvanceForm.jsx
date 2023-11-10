@@ -22,12 +22,14 @@ import {
 
 const AdvanceForm = ({
   setOpen,
+  oneAdv,
   phases,
   idEntregable,
   editAdv,
   idProyecto,
   machines,
   tokenData,
+  selectedMachine,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -54,39 +56,58 @@ const AdvanceForm = ({
       comentarios,
     } = values;
     const saveAdvance = {
-      responsable,
-      fecha_inicio,
-      fecha_termino,
-      fecha_real,
-      avance: avance === "" ? "0" : avance,
-      comentarios,
+      responsible: responsable,
+      startDate: fecha_inicio,
+      endDate: fecha_termino,
+      realDate: fecha_real,
+      advance: avance === "" ? "0" : avance,
+      comments: comentarios,
       idAvance: editAdv,
       idUsuario: tokenData.userId,
+      idEntregable,
+      idProyecto,
     };
     if (editAdv) {
       const logAdvance = {
-        ult_fecha_inicio: advance?.fecha_inicio !== fecha_inicio ? advance?.fecha_inicio : null,
-        ult_fecha_termino: advance?.fecha_termino !== fecha_termino ? advance?.fecha_termino : null,
-        ult_fecha_real: advance?.fecha_real !== fecha_real ? advance?.fecha_real : null,
-      }
+        ult_fecha_inicio:
+          advance?.fecha_inicio !== fecha_inicio ? advance?.fecha_inicio : null,
+        ult_fecha_termino:
+          advance?.fecha_termino !== fecha_termino
+            ? advance?.fecha_termino
+            : null,
+        ult_fecha_real:
+          advance?.fecha_real !== fecha_real ? advance?.fecha_real : null,
+      };
       dispatch(updateAdvanceRequest({ ...saveAdvance, ...logAdvance }));
     } else {
-      if (checked) {
-        const filteredArray = _.map(machines, (item) => ({
-          responsible: responsable,
-          startDate: fecha_inicio,
-          endDate: fecha_termino,
-          realDate: fecha_real,
-          advance: avance,
-          comments: comentarios,
-          idMaquina: item.id,
-          idProyecto,
-          idEntregable,
-        }));
-        dispatch(insertAdvanceRequest({ advance: filteredArray, idProyecto }));
+      if (oneAdv) {
+        dispatch(
+          insertAdvanceRequest({
+            advance: [{ ...saveAdvance, idMaquina: selectedMachine }],
+          })
+        );
       } else {
-        dispatch(changeAdvance(saveAdvance));
-        navigate(`/proyectos/${idProyecto}/avances/${idEntregable}/${idFase}`);
+        if (checked) {
+          const filteredArray = _.map(machines, (item) => ({
+            responsible: responsable,
+            startDate: fecha_inicio,
+            endDate: fecha_termino,
+            realDate: fecha_real,
+            advance: advance === "" ? "0" : advance,
+            comments: comentarios,
+            idMaquina: item.id,
+            idProyecto,
+            idEntregable,
+          }));
+          dispatch(
+            insertAdvanceRequest({ advance: filteredArray, idProyecto })
+          );
+        } else {
+          dispatch(changeAdvance(saveAdvance));
+          navigate(
+            `/proyectos/${idProyecto}/avances/${idEntregable}/${idFase}`
+          );
+        }
       }
     }
     setOpen(false);
@@ -112,7 +133,7 @@ const AdvanceForm = ({
         <h1 className="text-3xl mb-5 w-full text-center">
           {editAdv ? "Editar avances" : "Agregar avances"}
         </h1>
-        {console.log(tokenData.userId)}
+        {console.log(idEntregable)}
         <div className="mb-10">
           {tokenData?.n_pr === 2 && (
             <div className="flex justify-end items-center w-full mb-3">
@@ -131,7 +152,7 @@ const AdvanceForm = ({
               />
             </div>
           )}
-          {!editAdv && (
+          {!editAdv && !oneAdv && (
             <div className="flex justify-end items-center w-full mb-3">
               <label className="px-4">Fase</label>
               <FormControl sx={{ width: "160px", mr: 1 }}>

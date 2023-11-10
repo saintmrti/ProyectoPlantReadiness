@@ -78,7 +78,9 @@ const Register = () => {
   const [openProd, setOpenProd] = useState(false);
   const [idExpectancy, setIdExpectancy] = useState(null);
   const [activeComment, setActiveComment] = useState(true);
+  const [oneAdv, setOneAdv] = useState(false);
   const [changeShi, setChangeShi] = useState(null);
+  const [selectedMachine, setSelectedMachine] = useState(null);
   const [editShi, setEditShip] = useState(null);
   const [editAdv, setEditAdv] = useState(null);
   const [editExp, setEditExp] = useState(null);
@@ -121,6 +123,13 @@ const Register = () => {
     setOpenShi(true);
   };
 
+  const handleOnClickAdvOne = (id, idMaquina) => {
+    setSelectedMachine(idMaquina);
+    setChangeShi(id);
+    setOneAdv(true);
+    setOpenAdv(true);
+  };
+
   const handleOnClickExp = () => {
     setEditExp(null);
     setOpenExp(true);
@@ -151,6 +160,7 @@ const Register = () => {
   const handleOnClickAdv = (id, advance) => {
     setChangeShi(id);
     setEditAdv(null);
+    setOneAdv(false);
     if (advance && advance[id] && advance[id].length > 0) {
       const arrayAdv = advance[id];
       const removePhase = arrayPhases.filter(
@@ -246,7 +256,7 @@ const Register = () => {
       ) : (
         <>
           <div className="flex flex-col items-center mb-2">
-            <h1 className="text-3xl font-bold text-center">
+            <h1 className="text-3xl font-bold text-center ">
               {project?.nombre}
             </h1>
             <div
@@ -282,9 +292,7 @@ const Register = () => {
                   <div className="mr-5">
                     <Button
                       variant="contained"
-                      onClick={() =>
-                        navigate(`/proyectos/${idProyecto}/log`)
-                      }
+                      onClick={() => navigate(`/proyectos/${idProyecto}/log`)}
                     >
                       Backlog
                     </Button>
@@ -413,6 +421,7 @@ const Register = () => {
                               activeComment={activeComment}
                               setActiveComment={setActiveComment}
                               handleOnClickAdv={handleOnClickAdv}
+                              handleOnClickAdvOne={handleOnClickAdvOne}
                               handleOnClickEditShi={handleOnClickEditShi}
                               handleOnClickEditAdv={handleOnClickEditAdv}
                               handleOnClickDeleteShi={handleOnClickDeleteShi}
@@ -606,6 +615,8 @@ const Register = () => {
                 idProyecto={idProyecto}
                 machines={machines}
                 tokenData={tokenData}
+                oneAdv={oneAdv}
+                selectedMachine={selectedMachine}
               />
             </Box>
           </Modal>
