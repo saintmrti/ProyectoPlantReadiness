@@ -125,6 +125,7 @@ const Register = () => {
 
   const handleOnClickAdvOne = (id, idMaquina) => {
     setSelectedMachine(idMaquina);
+    setEditAdv(null);
     setChangeShi(id);
     setOneAdv(true);
     setOpenAdv(true);
