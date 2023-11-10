@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
@@ -26,7 +25,6 @@ const MachinesForm = ({
   idProyecto,
 }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -115,8 +113,7 @@ const MachinesForm = ({
 
     const filteredArray = _.values(groupedValues);
 
-    dispatch(insertAdvanceRequest({ advance: filteredArray }));
-    navigate(`/proyectos/${idProyecto}/registro`);
+    dispatch(insertAdvanceRequest({ advance: filteredArray, idProyecto }));
     reset();
   };
 

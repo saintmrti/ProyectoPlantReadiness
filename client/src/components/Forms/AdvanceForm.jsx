@@ -133,6 +133,7 @@ const AdvanceForm = ({
         <h1 className="text-3xl mb-5 w-full text-center">
           {editAdv ? "Editar avances" : "Agregar avances"}
         </h1>
+        {console.log(advance)}
         <div className="mb-10">
           {tokenData?.n_pr === 2 && (
             <div className="flex justify-end items-center w-full mb-3">
@@ -225,6 +226,18 @@ const AdvanceForm = ({
               </div>
             </Fragment>
           )}
+          {tokenData?.n_pr === 1 &&
+            !accessDate &&
+            advance?.fecha_real === null && (
+              <div className="flex justify-end items-center w-full mb-3">
+                <label className="px-4">Fecha Real</label>
+                <TextField
+                  sx={{ width: "16rem" }}
+                  type="date"
+                  {...register("fecha_real", { required: false })}
+                />
+              </div>
+            )}
           <div className="flex justify-end items-center w-full mb-3">
             <TextField
               sx={{ width: "16rem" }}
