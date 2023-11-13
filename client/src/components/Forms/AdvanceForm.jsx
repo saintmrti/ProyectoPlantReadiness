@@ -23,6 +23,7 @@ import {
 const AdvanceForm = ({
   setOpen,
   oneAdv,
+  allAdv,
   phases,
   idEntregable,
   editAdv,
@@ -133,9 +134,8 @@ const AdvanceForm = ({
         <h1 className="text-3xl mb-5 w-full text-center">
           {editAdv ? "Editar avances" : "Agregar avances"}
         </h1>
-        {console.log(advance)}
         <div className="mb-10">
-          {tokenData?.n_pr === 2 && (
+          {(tokenData?.n_pr === 2 || oneAdv || allAdv) && (
             <div className="flex justify-end items-center w-full mb-3">
               <label className="px-4">Nombre</label>
               <TextField
@@ -152,7 +152,7 @@ const AdvanceForm = ({
               />
             </div>
           )}
-          {!editAdv && !oneAdv && (
+          {!editAdv && !oneAdv && allAdv && (
             <div className="flex justify-end items-center w-full mb-3">
               <label className="px-4">Fase</label>
               <FormControl sx={{ width: "160px", mr: 1 }}>
@@ -190,7 +190,7 @@ const AdvanceForm = ({
               />
             </div>
           )}
-          {(accessDate || tokenData?.n_pr === 2) && (
+          {(accessDate || tokenData?.n_pr === 2 || oneAdv || allAdv) && (
             <Fragment>
               <div className="flex justify-end items-center w-full mb-3">
                 <label className="px-4">Fecha Inicio</label>
@@ -227,6 +227,7 @@ const AdvanceForm = ({
             </Fragment>
           )}
           {tokenData?.n_pr === 1 &&
+            !oneAdv &&
             !accessDate &&
             advance?.fecha_real === null && (
               <div className="flex justify-end items-center w-full mb-3">

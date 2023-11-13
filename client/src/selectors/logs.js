@@ -18,9 +18,15 @@ export const getSummaryLogs = createSelector(
       cont_FechaInicio: item.cont_FechaInicio,
       cont_FechaFin: item.cont_FechaFin,
       cont_FechaReal: item.cont_FechaReal,
-      ult_FechaInicio: moment(item.ult_FechaInicio).format("DD/MM/YYYY"),
-      ult_FechaFin: moment(item.ult_FechaFin).format("DD/MM/YYYY"),
-      ult_FechaReal: moment(item.ult_FechaReal).format("DD/MM/YYYY"),
+      ult_FechaInicio: item.ult_FechaInicio
+        ? moment.utc(item.ult_FechaInicio).format("DD/MM/YYYY")
+        : null,
+      ult_FechaFin: item.ult_FechaFin
+        ? moment.utc(item.ult_FechaFin).format("DD/MM/YYYY")
+        : null,
+      ult_FechaReal: item.ult_FechaReal
+        ? moment.utc(item.ult_FechaReal).format("DD/MM/YYYY")
+        : null,
     }));
 
     return data;

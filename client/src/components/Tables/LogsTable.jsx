@@ -28,6 +28,7 @@ const LogsTable = ({ idProyecto, list }) => {
           >
             Backlog Avances Entregables
           </Typography>
+          {console.log(list)}
           <Tooltip title="Ir al registro">
             <IconButton
               onClick={() => navigate(`/proyectos/${idProyecto}/registro`)}
@@ -67,13 +68,19 @@ const LogsTable = ({ idProyecto, list }) => {
                   <TableCell>{item?.usuario}</TableCell>
                   <TableCell align="center">{`${item?.fase} - ${item?.maquina}`}</TableCell>
                   <TableCell align="center">
-                    {`${item?.ult_FechaInicio} (${item?.cont_FechaInicio})`}
+                    {item?.ult_FechaInicio
+                      ? `${item?.ult_FechaInicio} (${item?.cont_FechaInicio})`
+                      : ""}
                   </TableCell>
                   <TableCell align="center">
-                    {`${item?.ult_FechaFin} (${item?.cont_FechaFin})`}
+                    {item?.ult_FechaFin
+                      ? `${item?.ult_FechaFin} (${item?.cont_FechaFin})`
+                      : ""}
                   </TableCell>
                   <TableCell align="center">
-                    {`${item?.ult_FechaReal} (${item?.cont_FechaReal})`}
+                    {item?.ult_FechaReal
+                      ? `${item?.ult_FechaReal} (${item?.cont_FechaReal})`
+                      : ""}
                   </TableCell>
                 </TableRow>
               ))}

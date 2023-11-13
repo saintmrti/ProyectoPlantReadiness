@@ -79,6 +79,7 @@ const Register = () => {
   const [idExpectancy, setIdExpectancy] = useState(null);
   const [activeComment, setActiveComment] = useState(true);
   const [oneAdv, setOneAdv] = useState(false);
+  const [allAdv, setAllAdv] = useState(false);
   const [changeShi, setChangeShi] = useState(null);
   const [selectedMachine, setSelectedMachine] = useState(null);
   const [editShi, setEditShip] = useState(null);
@@ -128,6 +129,7 @@ const Register = () => {
     setEditAdv(null);
     setChangeShi(id);
     setOneAdv(true);
+    setAllAdv(false);
     setOpenAdv(true);
   };
 
@@ -162,6 +164,7 @@ const Register = () => {
     setChangeShi(id);
     setEditAdv(null);
     setOneAdv(false);
+    setAllAdv(true);
     if (advance && advance[id] && advance[id].length > 0) {
       const arrayAdv = advance[id];
       const removePhase = arrayPhases.filter(
@@ -194,6 +197,8 @@ const Register = () => {
   const handleOnClickEditAdv = (id) => {
     setEditAdv(id);
     setOpenAdv(true);
+    setAllAdv(false);
+    setOneAdv(false);
   };
 
   const handleOnClickEditHead = (id) => {
@@ -617,6 +622,7 @@ const Register = () => {
                 machines={machines}
                 tokenData={tokenData}
                 oneAdv={oneAdv}
+                allAdv={allAdv}
                 selectedMachine={selectedMachine}
               />
             </Box>
