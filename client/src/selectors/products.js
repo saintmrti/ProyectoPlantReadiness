@@ -9,3 +9,22 @@ export const getMachine = createSelector(
     return products;
   }
 );
+
+export const summaryProducts = createSelector(
+  ({ products }) => products.data,
+  (products) => {
+    if (!products) return {};
+
+    const filteredByMts = _.filter(products, { disHerramental: false });
+
+    const filteredByHerramental = _.filter(products, { disHerramental: true });
+
+    const productsMts = _.groupBy(filteredByMts, "idMaquina");
+
+    const productsHerramental = _.groupBy(filteredByHerramental, "idMaquina");
+    return {
+      productsMts,
+      productsHerramental,
+    };
+  }
+);

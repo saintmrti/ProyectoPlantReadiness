@@ -13,7 +13,7 @@ import Paper from "@mui/material/Paper";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.grey[100],
+    backgroundColor: theme.palette.action.hover,
   },
 }));
 
@@ -33,7 +33,12 @@ export default function ProductsTable({
                 <Typography>{data[0]?.nombre}</Typography>
                 <IconButton
                   sx={{ ml: "auto" }}
-                  onClick={() => handleOnClickEditProd(parseInt(idMaquina))}
+                  onClick={() =>
+                    handleOnClickEditProd(
+                      parseInt(idMaquina),
+                      data[0]?.disHerramental
+                    )
+                  }
                 >
                   <EditIcon fontSize="small" />
                 </IconButton>
@@ -47,7 +52,9 @@ export default function ProductsTable({
           </TableRow>
           <TableRow>
             <TableCell>Productos</TableCell>
-            <TableCell align="center">Metros a fabricar</TableCell>
+            <TableCell align="center">
+              {data[0]?.disHerramental ? "Herramental" : "Metros a fabricar"}
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -57,7 +64,9 @@ export default function ProductsTable({
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell>{row?.producto}</TableCell>
-              <TableCell align="center">{row.mts_fabricar}</TableCell>
+              <TableCell align="center">
+                {row?.disHerramental ? row.herramental : row.mts_fabricar}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

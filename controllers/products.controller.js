@@ -1,4 +1,5 @@
 const response = require("../helpers/response");
+const _ = require("lodash");
 
 const {
   getSummary,
@@ -22,10 +23,17 @@ module.exports.getProducts = (req, res) => {
 
 module.exports.createProducts = (req, res) => {
   try {
-    const { products, maquina, idProyecto } = req.body;
+    const { products, maquina, idProyecto, isTooling } = req.body;
     const newProducts = {
-      products,
+      products: _.map(products, (item) => {
+        return {
+          producto: item.producto,
+          mts: item.mts === 0 ? null : item.mts,
+          herramental: item.herramental === "" ? null : `'${item.herramental}'`,
+        };
+      }),
       maquina,
+      isTooling,
       idProyecto: parseInt(idProyecto),
     };
     response(res, false, insertProducts, newProducts);
@@ -39,7 +47,13 @@ module.exports.modifyProducts = (req, res) => {
   try {
     const { products, maquina, idMaquina, idProyecto } = req.body;
     const newProducts = {
-      products,
+      products: _.map(products, (item) => {
+        return {
+          producto: item.producto,
+          mts: item.mts === 0 ? null : item.mts,
+          herramental: item.herramental === "" ? null : `'${item.herramental}'`,
+        };
+      }),
       maquina,
       idMaquina: parseInt(idMaquina),
       idProyecto: parseInt(idProyecto),

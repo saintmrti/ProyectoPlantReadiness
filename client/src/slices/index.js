@@ -12,6 +12,7 @@ import champions from "./champions";
 import auth from "./auth";
 import users from "./users";
 import products from "./products";
+import logs from "./logs";
 
 const reducer = {
   expectancy,
@@ -28,6 +29,7 @@ const reducer = {
   auth,
   users,
   products,
+  logs,
 };
 
 export default reducer;

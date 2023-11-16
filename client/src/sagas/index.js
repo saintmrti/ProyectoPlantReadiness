@@ -52,3 +52,4 @@ export {
   updateProductsSaga,
   deleteProductsSaga,
 } from "./products";
+export { fetchLogsSaga } from "./logs";

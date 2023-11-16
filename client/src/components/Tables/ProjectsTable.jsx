@@ -51,13 +51,13 @@ const ProjectsTable = ({
             </Tooltip>
           )}
         </Toolbar>
-        <TableContainer>
-          <Table size="small">
+        <TableContainer sx={{ maxHeight: "calc(100% - 64px)" }}>
+          <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 {/* <TableCell><b>ID</b></TableCell> */}
                 <TableCell>
-                  <b>ID</b>
+                  <b>Adi</b>
                 </TableCell>
                 <TableCell>
                   <b>Nombre</b>
@@ -79,7 +79,7 @@ const ProjectsTable = ({
               {_.map(list, (item) => (
                 <TableRow key={item.id}>
                   {/* <TableCell>{item.idProyecto}</TableCell> */}
-                  <TableCell>{item?.id}</TableCell>
+                  <TableCell>{item?.adi}</TableCell>
                   <TableCell>{item?.nombre}</TableCell>
                   <TableCell align="center">
                     {item && item.Plan > 0

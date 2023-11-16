@@ -53,8 +53,8 @@ const ChampionsTable = ({
             </Tooltip>
           </div>
         </Toolbar>
-        <TableContainer>
-          <Table size="small">
+        <TableContainer sx={{ maxHeight: "calc(100% - 64px)" }}>
+          <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 {/* <TableCell><b>ID</b></TableCell> */}

@@ -49,13 +49,26 @@ module.exports.insertAdvance = async (conn, modifiedArray) => {
 module.exports.updateAdvance = async (conn, modifiedArray) => {
   const {
     idAvance,
+    idUsuario,
     responsable,
     fecha_inicio,
     fecha_termino,
     fecha_real,
     avance,
     comentarios,
+    ult_fecha,
   } = modifiedArray;
+  if (ult_fecha.length > 0) {
+    await Promise.all(
+      ult_fecha.map((item) => {
+        if (item[0] !== null) {
+          return conn.query(
+            `exec sp_vki40_Readiness_logEntregables ${idAvance}, ${idUsuario}, ${item[1]},'${item[0]}'`
+          );
+        }
+      })
+    );
+  }
   await conn.query(`
       UPDATE vki40_Readiness_avances
       SET
@@ -63,7 +76,7 @@ module.exports.updateAdvance = async (conn, modifiedArray) => {
         fecha_inicio = ${fecha_inicio !== null ? `'${fecha_inicio}'` : null},
         fecha_termino = ${fecha_termino !== null ? `'${fecha_termino}'` : null},
         fecha_real = ${fecha_real !== null ? `'${fecha_real}'` : null},
-        avance = ${avance !== null ? avance : null},
+        avance = ${avance},
         comentarios = ${comentarios !== null ? `'${comentarios}'` : null}
       WHERE id = ${idAvance};
     `);

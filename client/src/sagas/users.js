@@ -10,9 +10,9 @@ import {
   updateUsersError,
 } from "../slices/users";
 
-function* fetchUsers({ payload: { idProyecto } }) {
+function* fetchUsers() {
   try {
-    const { data, isError } = yield call(fetchUsersApi.run, idProyecto);
+    const { data, isError } = yield call(fetchUsersApi.run);
     if (isError) throw new Error();
     yield put(fetchUsersSuccess({ data }));
   } catch (e) {

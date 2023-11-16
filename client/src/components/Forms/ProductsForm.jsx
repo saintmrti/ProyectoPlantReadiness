@@ -14,13 +14,14 @@ import {
 import { textFieldValidation } from "./validated";
 import { getMachine } from "../../selectors/products";
 
-const ProductsForm = ({ setOpen, editProd, idProyecto }) => {
+const ProductsForm = ({ setOpen, editProd, idProyecto, tooling }) => {
   const dispatch = useDispatch();
   const machine = useSelector((state) => getMachine(state, editProd));
   const [products, setProducts] = useState([]);
   const [newProduct, setNewProduct] = useState({
     producto: "",
     mts: 0,
+    herramental: "",
   });
   const {
     register,
@@ -34,6 +35,7 @@ const ProductsForm = ({ setOpen, editProd, idProyecto }) => {
     setNewProduct({
       producto: "",
       mts: 0,
+      herramental: "",
     });
   };
 
@@ -42,6 +44,7 @@ const ProductsForm = ({ setOpen, editProd, idProyecto }) => {
       ...values,
       products,
       idProyecto,
+      isTooling: tooling,
       idMaquina: editProd,
     };
     editProd
@@ -55,7 +58,8 @@ const ProductsForm = ({ setOpen, editProd, idProyecto }) => {
       setProducts(
         _.map(machine, (item) => ({
           producto: item.producto,
-          mts: item.mts_fabricar,
+          mts: item.mts_fabricar === null ? 0 : item.mts_fabricar,
+          herramental: item.herramental === null ? "" : item.herramental,
         }))
       );
       reset({
@@ -115,21 +119,39 @@ const ProductsForm = ({ setOpen, editProd, idProyecto }) => {
                   );
                 }}
               />
-              <TextField
-                sx={{ width: "15rem" }}
-                type="number"
-                label="Mts a fabricar"
-                autoComplete="off"
-                value={producto.mts}
-                onChange={(e) => {
-                  const newValue = e.target.value;
-                  setProducts((prevProductos) =>
-                    prevProductos.map((p, i) =>
-                      i === index ? { ...p, mts: newValue } : p
-                    )
-                  );
-                }}
-              />
+              {tooling ? (
+                <TextField
+                  sx={{ width: "15rem" }}
+                  type="text"
+                  label="Herramental"
+                  autoComplete="off"
+                  value={producto.herramental}
+                  onChange={(e) => {
+                    const newValue = e.target.value;
+                    setProducts((prevProductos) =>
+                      prevProductos.map((p, i) =>
+                        i === index ? { ...p, herramental: newValue } : p
+                      )
+                    );
+                  }}
+                />
+              ) : (
+                <TextField
+                  sx={{ width: "15rem" }}
+                  type="number"
+                  label="Mts a fabricar"
+                  autoComplete="off"
+                  value={producto.mts}
+                  onChange={(e) => {
+                    const newValue = e.target.value;
+                    setProducts((prevProductos) =>
+                      prevProductos.map((p, i) =>
+                        i === index ? { ...p, mts: parseInt(newValue) } : p
+                      )
+                    );
+                  }}
+                />
+              )}
               <IconButton
                 aria-label="Eliminar"
                 onClick={() => {

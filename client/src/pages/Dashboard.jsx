@@ -112,9 +112,9 @@ const Dashboard = () => {
                 tokenData={tokenData}
               />
             )}
-            <div className="grid grid-cols-9 gap-2">
-              <div className="col-span-2">
-                <Card sx={{ height: "100%", padding: 1 }}>
+            <div className="grid grid-cols-12 gap-2">
+              <div className="col-span-4">
+                <Card sx={{ height: "100%", padding: "10px 15px" }}>
                   <div className="text-base text-center">
                     Avance Entregables
                   </div>
@@ -130,46 +130,18 @@ const Dashboard = () => {
                   ))}
                 </Card>
               </div>
+              <div className="col-span-8">
+                <Card sx={{ height: "100%", padding: "10px 10px" }}>
+                  <div className="text-base text-center mb-2">
+                    Avance por máquina
+                  </div>
+                  <MachineTable
+                    data={summaryKpis?.advanceMachines}
+                    rubros={summaryKpis?.headingMachines}
+                  />
+                </Card>
+              </div>
               <div className="col-span-4">
-                <Card sx={{ height: "100%" }}>
-                  <div className="grid grid-cols-2 gap-2 mt-2">
-                    <GaugeSeries
-                      height={280}
-                      title="Cumplimiento Total"
-                      total={summaryKpis?.compliance_total[0]?.totales}
-                      value={summaryKpis?.compliance_total[0]?.completados}
-                      rate={summaryKpis?.compliance_total[0]?.porcentaje}
-                    />
-                    <GaugeSeries
-                      height={280}
-                      title="Cumplimiento YTD"
-                      total={summaryKpis?.compliance_YTD[0]?.totales}
-                      value={summaryKpis?.compliance_YTD[0]?.completados}
-                      rate={summaryKpis?.compliance_YTD[0]?.porcentaje}
-                    />
-                  </div>
-                </Card>
-              </div>
-              <div className="col-span-3">
-                <Card sx={{ height: "100%" }}>
-                  <div className="text-base text-center mt-2">
-                    Avance Rubros
-                  </div>
-                  <div className="grid grid-cols-3 gap-2 gap-y-0">
-                    {_.map(summaryKpis?.compliance_headings, (item) => (
-                      <SolidGauge
-                        key={item.Id}
-                        height={130}
-                        name={item?.rubro || ""}
-                        value={item?.completados || 0}
-                        total={item?.totales || 0}
-                        rate={item?.porcentaje || 0}
-                      />
-                    ))}
-                  </div>
-                </Card>
-              </div>
-              <div className="col-span-2">
                 <Card sx={{ height: "100%", padding: 1 }}>
                   <div className="text-base text-center">Champions Pilares</div>
                   {_.map(champions, (item) => (
@@ -206,6 +178,91 @@ const Dashboard = () => {
                   ))}
                 </Card>
               </div>
+              <div className="col-span-4 space-y-2">
+                <Card sx={{ height: "49%" }}>
+                  <div className="text-base text-center mt-2">
+                    Cumplimiento por fase total
+                  </div>
+                  <ColumnChart
+                    height={186}
+                    series={summaryKpis?.phasesTotal}
+                    categories={summaryKpis?.categoriesPhases?.phasesTotal}
+                  />
+                </Card>
+                <Card sx={{ height: "49%" }}>
+                  <div className="text-base text-center mt-2">
+                    Cumplimiento por fase YTD
+                  </div>
+                  <ColumnChart
+                    height={186}
+                    series={summaryKpis?.phasesYTD}
+                    categories={summaryKpis?.categoriesPhases?.phasesYTD}
+                  />
+                </Card>
+              </div>
+              <div className="col-span-4 space-y-2">
+                <Card sx={{ height: "49%" }}>
+                  <div className="text-base text-center mt-2">
+                    Cumplimiento mensual
+                  </div>
+                  <ColumnChart
+                    height={180}
+                    series={summaryKpis?.shippable_month}
+                    cumplience={summaryKpis?.cumplience_month}
+                    showYear={false}
+                  />
+                </Card>
+                <Card sx={{ height: "49%" }}>
+                  <div className="text-base text-center mt-2">
+                    Cumplimiento anual
+                  </div>
+                  <ColumnChart
+                    height={180}
+                    series={summaryKpis?.shippable_year}
+                    cumplience={summaryKpis?.cumplience_year}
+                    showYear={true}
+                  />
+                </Card>
+              </div>
+              <div className="col-span-3">
+                <Card sx={{ height: "100%" }}>
+                  <div className="text-base text-center mt-2">
+                    Avance Rubros
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 gap-y-0">
+                    {_.map(summaryKpis?.compliance_headings, (item) => (
+                      <SolidGauge
+                        key={item.Id}
+                        height={130}
+                        name={item?.rubro || ""}
+                        value={item?.completados || 0}
+                        total={item?.totales || 0}
+                        rate={item?.porcentaje || 0}
+                      />
+                    ))}
+                  </div>
+                </Card>
+              </div>
+              <div className="col-span-5">
+                <Card sx={{ height: "100%" }}>
+                  <div className="grid grid-cols-2 gap-2 mt-2 px-1">
+                    <GaugeSeries
+                      height={280}
+                      title="Cumplimiento Total"
+                      total={summaryKpis?.compliance_total[0]?.totales}
+                      value={summaryKpis?.compliance_total[0]?.completados}
+                      rate={summaryKpis?.compliance_total[0]?.porcentaje}
+                    />
+                    <GaugeSeries
+                      height={280}
+                      title="Cumplimiento YTD"
+                      total={summaryKpis?.compliance_YTD[0]?.totales}
+                      value={summaryKpis?.compliance_YTD[0]?.completados}
+                      rate={summaryKpis?.compliance_YTD[0]?.porcentaje}
+                    />
+                  </div>
+                </Card>
+              </div>
               <div className="col-span-2">
                 <Card sx={{ height: "100%" }}>
                   <div className="text-base text-center mt-2">
@@ -231,64 +288,6 @@ const Dashboard = () => {
                     series={summaryKpis?.shippable_advance?.series}
                   />
                 </Card>
-              </div>
-              <div className="col-span-3 space-y-2">
-                <Card sx={{ height: "49%" }}>
-                  <div className="text-base text-center mt-2">
-                    Cumplimiento mensual
-                  </div>
-                  <ColumnChart
-                    height={180}
-                    series={summaryKpis?.shippable_month}
-                    cumplience={summaryKpis?.cumplience_month}
-                    showYear={false}
-                  />
-                </Card>
-                <Card sx={{ height: "49%" }}>
-                  <div className="text-base text-center mt-2">
-                    Cumplimiento anual
-                  </div>
-                  <ColumnChart
-                    height={180}
-                    series={summaryKpis?.shippable_year}
-                    cumplience={summaryKpis?.cumplience_year}
-                    showYear={true}
-                  />
-                </Card>
-              </div>
-              <div className="col-span-3 space-y-2">
-                <Card sx={{ height: "49%" }}>
-                  <div className="text-base text-center mt-2">
-                    Cumplimiento por fase total
-                  </div>
-                  <ColumnChart
-                    height={186}
-                    series={summaryKpis?.phasesTotal}
-                    categories={summaryKpis?.categoriesPhases?.phasesTotal}
-                  />
-                </Card>
-                <Card sx={{ height: "49%" }}>
-                  <div className="text-base text-center mt-2">
-                    Cumplimiento por fase YTD
-                  </div>
-                  <ColumnChart
-                    height={186}
-                    series={summaryKpis?.phasesYTD}
-                    categories={summaryKpis?.categoriesPhases?.phasesYTD}
-                  />
-                </Card>
-              </div>
-              <div className="col-span-6">
-                <Card sx={{ height: "100%", padding: "0px 10px" }}>
-                  <div className="text-base text-center mt-2 mb-2">
-                    Avance por máquina
-                  </div>
-                  <MachineTable
-                    data={summaryKpis?.advanceMachines}
-                    rubros={summaryKpis?.headingMachines}
-                  />
-                </Card>
-                {/* {console.log(summaryKpis)} */}
               </div>
             </div>
           </>

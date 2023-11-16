@@ -4,11 +4,7 @@ const { getSummary, updateUsers } = require("../models/users.model");
 
 module.exports.getUsers = (req, res) => {
   try {
-    const { idProyecto } = req.query;
-    const project = {
-      idProyecto: parseInt(idProyecto),
-    };
-    response(res, false, getSummary, project);
+    response(res, false, getSummary);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -22,7 +18,6 @@ module.exports.modifyUsers = (req, res) => {
       users,
       idProyecto: parseInt(idProyecto),
     };
-    console.log(newRegister);
     response(res, false, updateUsers, newRegister);
   } catch (error) {
     console.error(error);

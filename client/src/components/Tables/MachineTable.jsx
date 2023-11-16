@@ -79,15 +79,11 @@ const MachineTable = ({ data, rubros }) => {
                       border: 0,
                     },
                     backgroundColor:
-                      item?.tipo === 1
-                        ? theme.palette.mode === "light"
-                          ? "#F0F0F0"
-                          : "#424242"
-                        : "inherit",
+                      item?.tipo === 1 ? theme.palette.action.hover : "inherit",
                   }}
                 >
                   <StyledTableCell
-                    component="th" 
+                    component="th"
                     scope="row"
                     sx={{ fontSize: 10, padding: "0 10px" }}
                   >

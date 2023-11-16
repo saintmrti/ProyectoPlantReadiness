@@ -15,9 +15,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { Button } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+import BlockIcon from "@mui/icons-material/Block";
 
 const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
   const navigate = useNavigate();
@@ -32,13 +34,33 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
   //   }
   // };
 
-  const handleSelectClick = (event, itemId, isManager) => {
+  const handleAllowClick = (itemId, isManager, isReading) => {
     if (isManager) return;
-    const selectedIndex = selectedItems.indexOf(itemId);
+    if (isReading) return;
+    const updatedList = selectedItems.map((item) => {
+      if (item.id === itemId) {
+        return {
+          ...item,
+          n_activo: !item.n_activo, // Cambia el valor de n_activo a su opuesto
+        };
+      }
+      return item;
+    });
+    // Aquí podrías llamar a una función para manejar los datos actualizados o ejecutar otra lógica necesaria
+    setSelectedItems(updatedList);
+  };
+
+  const handleSelectClick = (event, itemId, isManager, isReading) => {
+    if (isManager) return;
+    if (isReading) return;
+    const selectedIndex = selectedItems.findIndex((item) => item.id === itemId);
     let newSelectedItems = [];
 
     if (selectedIndex === -1) {
-      newSelectedItems = newSelectedItems.concat(selectedItems, itemId);
+      newSelectedItems = newSelectedItems.concat(selectedItems, {
+        id: itemId,
+        n_activo: false,
+      });
     } else if (selectedIndex === 0) {
       newSelectedItems = newSelectedItems.concat(selectedItems.slice(1));
     } else if (selectedIndex === selectedItems.length - 1) {
@@ -56,12 +78,13 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
   useEffect(() => {
     setSelectedItems([]);
     _.map(list, (item) => {
-      if (item.access && item.rol !== "Champion Gerente") {
+      if (item.access && !item.gerente && !item.lectura) {
         setSelectedItems((prevState) => {
-          if (prevState.includes(item.id)) {
+          const selectedItem = { id: item.id, n_activo: item.n_activo };
+          if (prevState.some((prevItem) => prevItem.id === item.id)) {
             return prevState;
           } else {
-            return [...prevState, item.id];
+            return [...prevState, selectedItem];
           }
         });
       }
@@ -69,7 +92,7 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
   }, [list]);
 
   return (
-    <Box sx={{ height: "calc(100vh - 24px)", position: "relative" }}>
+    <Box sx={{ height: "calc(100vh - 24px)" }}>
       <Paper sx={{ width: "100%", height: "100%", mb: 2 }}>
         <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 } }}>
           <Typography
@@ -80,6 +103,14 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
           >
             Acceso Champions
           </Typography>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() => handleOnClickUsers(selectedItems)}
+            sx={{ mr: 1 }}
+          >
+            Guardar
+          </Button>
           <Tooltip title="Ir al registro">
             <IconButton
               onClick={() => navigate(`/proyectos/${idProyecto}/registro`)}
@@ -88,8 +119,8 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
             </IconButton>
           </Tooltip>
         </Toolbar>
-        <TableContainer>
-          <Table>
+        <TableContainer sx={{ maxHeight: "calc(100% - 64px)" }}>
+          <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">
@@ -110,27 +141,93 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
                   <b>Nivel</b>
                 </TableCell>
                 <TableCell align="center">
+                  <b>Gerente</b>
+                </TableCell>
+                <TableCell align="center">
+                  <b>Pilar</b>
+                </TableCell>
+                <TableCell align="center">
+                  <b>Solo Lectura</b>
+                </TableCell>
+                <TableCell align="center">
+                  <b>Fecha</b>
+                </TableCell>
+                <TableCell align="center">
                   <b>Acceso</b>
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {_.map(list, (item) => {
-                const isItemSelected = selectedItems.indexOf(item.id) !== -1;
-
+                const isItemSelected = selectedItems.some(
+                  (selectedItem) => selectedItem.id === item.id
+                );
                 return (
                   <TableRow key={item.id}>
                     <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"
-                        checked={isItemSelected || item?.gerente}
+                        checked={
+                          isItemSelected || item?.gerente || item?.lectura
+                        }
                         onChange={(event) =>
-                          handleSelectClick(event, item.id, item?.gerente)
+                          handleSelectClick(
+                            event,
+                            item.id,
+                            item?.gerente,
+                            item?.lectura
+                          )
                         }
                       />
                     </TableCell>
                     <TableCell>{item.nombre}</TableCell>
                     <TableCell>{item.rol}</TableCell>
+                    <TableCell align="center">
+                      {item?.gerente ? <CheckIcon /> : <div></div>}
+                    </TableCell>
+                    <TableCell align="center">
+                      {item?.pilar ? <CheckIcon /> : <div></div>}
+                    </TableCell>
+                    <TableCell align="center">
+                      {item?.lectura ? <CheckIcon /> : <div></div>}
+                    </TableCell>
+                    <TableCell align="center">
+                      {item.gerente ? (
+                        <IconButton size="small" color="success">
+                          <CheckIcon />
+                        </IconButton>
+                      ) : item.lectura ? (
+                        <IconButton size="small" color="error">
+                          <BlockIcon />
+                        </IconButton>
+                      ) : (
+                        <IconButton
+                          size="small"
+                          color={
+                            selectedItems.find(
+                              (selectedItem) => selectedItem.id === item.id
+                            )?.n_activo
+                              ? "success"
+                              : "error"
+                          }
+                          onClick={() =>
+                            handleAllowClick(
+                              item.id,
+                              item.gerente,
+                              item.lectura
+                            )
+                          }
+                        >
+                          {selectedItems.find(
+                            (selectedItem) => selectedItem.id === item.id
+                          )?.n_activo ? (
+                            <CheckIcon />
+                          ) : (
+                            <BlockIcon />
+                          )}
+                        </IconButton>
+                      )}
+                    </TableCell>
                     <TableCell align="center">
                       {item.access ? (
                         <CheckCircleIcon sx={{ color: "green" }} />
@@ -145,13 +242,6 @@ const UsersTable = ({ list, idProyecto, handleOnClickUsers }) => {
           </Table>
         </TableContainer>
       </Paper>
-      <Button
-        variant="contained"
-        onClick={() => handleOnClickUsers(selectedItems)}
-        sx={{ position: "absolute", bottom: 20, right: 20 }}
-      >
-        Guardar
-      </Button>
     </Box>
   );
 };

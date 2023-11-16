@@ -45,6 +45,7 @@ const ShippableTable = ({
   handleOnClickAdv,
   handleOnClickEditShi,
   handleOnClickEditAdv,
+  handleOnClickAdvOne,
   handleOnClickDeleteShi,
   handleOnClickEditPha,
   handleOnClickDeletePha,
@@ -201,13 +202,15 @@ const ShippableTable = ({
                     <StyledTableCell>{item.comentarios}</StyledTableCell>
                     <StyledTableCell>
                       <Box sx={{ display: "flex", justifyContent: "end" }}>
-                        <IconButton
-                          aria-label="add"
-                          size="small"
-                          onClick={() => handleOnClickAdv(item.id, advance)}
-                        >
-                          <AddCircleOutlineIcon />
-                        </IconButton>
+                        {tokenData?.n_pr !== 3 && (
+                          <IconButton
+                            aria-label="add"
+                            size="small"
+                            onClick={() => handleOnClickAdv(item.id, advance)}
+                          >
+                            <AddCircleOutlineIcon />
+                          </IconButton>
+                        )}
                         {tokenData?.n_pr === 2 && (
                           <Fragment>
                             <IconButton
@@ -286,7 +289,20 @@ const ShippableTable = ({
                         <StyledTableCell align="right">
                           {advance[item.id].find(
                             (obj) => obj.idMaquina === machines[activeIndex]?.id
-                          )?.id === undefined ? null : (
+                          )?.id === undefined ? (
+                            <IconButton
+                              aria-label="add"
+                              size="small"
+                              onClick={() =>
+                                handleOnClickAdvOne(
+                                  item.id,
+                                  machines[activeIndex]?.id
+                                )
+                              }
+                            >
+                              <AddCircleOutlineIcon />
+                            </IconButton>
+                          ) : (
                             // (
                             //   advance[item.id].find(
                             //     (obj) =>
@@ -304,7 +320,7 @@ const ShippableTable = ({
                             //   )
                             // )
                             <Fragment>
-                              {tokenData?.n_pr === 2 && (
+                              {tokenData?.n_pr !== 3 && (
                                 <IconButton
                                   aria-label="edit"
                                   size="small"

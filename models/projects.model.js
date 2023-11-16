@@ -9,12 +9,12 @@ module.exports.getSummary = async (conn) => {
   return data;
 };
 
-module.exports.insertProject = async (conn, { nombre, idPlantilla }) => {
+module.exports.insertProject = async (conn, { nombre, adi, idPlantilla }) => {
   const {
     info: { insertId },
   } = await conn.query(`
-        INSERT INTO vki40_Readiness_proyectos (nombre)
-        VALUES ('${nombre}');
+        INSERT INTO vki40_Readiness_proyectos (nombre, adi)
+        VALUES ('${nombre}', ${adi});
     `);
 
   await conn.query(`
@@ -28,11 +28,12 @@ module.exports.insertProject = async (conn, { nombre, idPlantilla }) => {
   return data[0];
 };
 
-module.exports.updateProject = async (conn, { id, nombre }) => {
+module.exports.updateProject = async (conn, { id, nombre, adi }) => {
   await conn.query(`
           UPDATE vki40_Readiness_proyectos
           SET
-            nombre = '${nombre}'
+            nombre = '${nombre}',
+            adi = ${adi}
           WHERE id= ${id};
       `);
 
@@ -62,9 +63,17 @@ module.exports.deleteProject = async (conn, { idProyecto }) => {
 
     DELETE FROM vki40_Readiness_rubros WHERE idProyecto = @proyectoID;
 
+    DELETE FROM vki40_Readiness_maquinas WHERE idProyecto = @proyectoID;
+
     DELETE FROM vki40_Readiness_fases WHERE idProyecto = @proyectoID;
 
-    DELETE FROM vki40_Readiness_maquinas WHERE idProyecto = @proyectoID;
+    DELETE FROM vki40_Readiness_productos WHERE idProyecto = @proyectoID;
+
+    DELETE FROM vki40_Readiness_maquinas_productos WHERE idProyecto = @proyectoID;
+
+    DELETE FROM vki40_Readiness_usuarios_proyectos WHERE idProyecto = @proyectoID;
+
+    DELETE FROM vki40_Readiness_Champions WHERE idProyecto = @proyectoID;
 
     DELETE FROM vki40_Readiness_proyectos WHERE id = @proyectoID;
   `);
