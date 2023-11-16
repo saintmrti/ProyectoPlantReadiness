@@ -1,43 +1,53 @@
-module.exports.getSummary = async (conn) => {
+module.exports.getSummary = async (conn, { idProyecto }) => {
   const { data } = await conn.query(`
-      SELECT * FROM vki40_entregables;
+      SELECT * FROM vki40_Readiness_entregables
+      WHERE idProyecto = ${idProyecto};
     `);
   return data;
 };
 module.exports.insertShippable = async (
   conn,
-  { nombre, evidencia, prioridad, comentarios, idExpectativa }
+  {
+    nombre,
+    evidencia,
+    qn_valida,
+    prioridad,
+    comentarios,
+    idExpectativa,
+    idProyecto,
+  }
 ) => {
   const {
     info: { insertId },
   } = await conn.query(`
-      INSERT INTO vki40_entregables (fecha, nombre, evidencia, prioridad, comentarios, idExpectativa)
-      VALUES (GETDATE(), '${nombre}', '${evidencia}', '${prioridad}','${comentarios}', ${idExpectativa});
+      INSERT INTO vki40_Readiness_entregables (fecha, nombre, evidencia, qn_valida, prioridad, comentarios, idExpectativa, idProyecto)
+      VALUES (GETDATE(), '${nombre}', '${evidencia}', '${qn_valida}', '${prioridad}',${comentarios}, ${idExpectativa}, ${idProyecto});
     `);
 
   const { data } = await conn.query(`
-      SELECT * FROM vki40_entregables WHERE id = ${insertId};
+      SELECT * FROM vki40_Readiness_entregables WHERE id = ${insertId};
     `);
 
   return data[0];
 };
 module.exports.updateShippable = async (
   conn,
-  { nombre, evidencia, prioridad, comentarios, idEntregable }
+  { nombre, evidencia, qn_valida, prioridad, comentarios, idEntregable }
 ) => {
   await conn.query(`
-      UPDATE vki40_entregables
+      UPDATE vki40_Readiness_entregables
       SET
         fecha = GETDATE(),
         nombre = '${nombre}',
         evidencia = '${evidencia}',
+        qn_valida = ${qn_valida !== null ? `'${qn_valida}'` : null},
         prioridad = '${prioridad}',
-        comentarios = '${comentarios}'
+        comentarios = ${comentarios !== null ? `'${comentarios}'` : null}
       WHERE id= ${idEntregable};
     `);
 
   const { data } = await conn.query(`
-      SELECT * FROM vki40_entregables WHERE id = ${idEntregable};
+      SELECT * FROM vki40_Readiness_entregables WHERE id = ${idEntregable};
     `);
 
   return data[0];
@@ -45,11 +55,11 @@ module.exports.updateShippable = async (
 
 module.exports.deleteShippable = async (conn, { idEntregable }) => {
   await conn.query(`
-    DELETE FROM vki40_avances WHERE idEntregable = ${idEntregable};
+    DELETE FROM vki40_Readiness_avances WHERE idEntregable = ${idEntregable};
   `);
 
   await conn.query(`
-    DELETE FROM vki40_entregables WHERE id = ${idEntregable};
+    DELETE FROM vki40_Readiness_entregables WHERE id = ${idEntregable};
   `);
 
   return idEntregable;

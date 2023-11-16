@@ -7,6 +7,12 @@ import phase from "./phase";
 import kpis from "./kpis";
 import settings from "./settings";
 import setAdvance from "./setAdvance";
+import projects from "./projects";
+import champions from "./champions";
+import auth from "./auth";
+import users from "./users";
+import products from "./products";
+import logs from "./logs";
 
 const reducer = {
   expectancy,
@@ -18,6 +24,12 @@ const reducer = {
   kpis,
   settings,
   setAdvance,
+  projects,
+  champions,
+  auth,
+  users,
+  products,
+  logs,
 };
 
 export default reducer;

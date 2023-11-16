@@ -1,7 +1,34 @@
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-const ColumnChart = ({ series, height, categories }) => {
+Highcharts.setOptions({
+  lang: {
+    months: [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre",
+    ],
+  },
+});
+
+const ColumnChart = ({ series, height, categories, cumplience, showYear }) => {
+  const seriesLine = [
+    {
+      name: "Cumplimiento",
+      type: "spline",
+      data: cumplience,
+      color: "#757575",
+    },
+  ];
   return (
     <HighchartsReact
       highcharts={Highcharts}
@@ -10,7 +37,7 @@ const ColumnChart = ({ series, height, categories }) => {
           type: "column",
           height,
           style: {
-            fontFamily: "Roboto",
+            fontFamily: "Montserrat",
           },
           time: {
             timezone: "America/Mexico_City",
@@ -18,7 +45,12 @@ const ColumnChart = ({ series, height, categories }) => {
           backgroundColor: "transparent",
         },
         title: null,
-        xAxis: categories ? { categories } : { type: "datetime" },
+        xAxis: categories
+          ? { categories }
+          : {
+              type: "datetime",
+              labels: { format: showYear ? "{value:%Y}" : "{value:%B}" },
+            },
         yAxis: {
           allowDecimals: false,
           min: 0,
@@ -36,7 +68,7 @@ const ColumnChart = ({ series, height, categories }) => {
 
         tooltip: {
           shared: true,
-          xDateFormat: "%d/%m/%Y",
+          xDateFormat: showYear ? "%Y" : "%d/%m/%Y",
         },
 
         plotOptions: {
@@ -47,7 +79,7 @@ const ColumnChart = ({ series, height, categories }) => {
             },
           },
         },
-        series,
+        series: cumplience ? [...series, ...seriesLine] : series,
         colors: [
           "#303F9F",
           "#f44336",

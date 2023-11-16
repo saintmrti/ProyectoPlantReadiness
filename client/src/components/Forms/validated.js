@@ -1,5 +1,5 @@
 export const textFieldValidation = (value, maxLength) => {
-  const regex = /^[a-zA-Z0-9\s]+$/;
+  const regex = /^[^<>&'";=]+$/;
   if (typeof value !== "undefined" && value !== null) {
     if (!regex.test(value)) {
       return "Caracteres no permitidos";
@@ -9,6 +9,15 @@ export const textFieldValidation = (value, maxLength) => {
     }
     if (!value.trim()) {
       return "Campo requerido";
+    }
+    return value.length <= maxLength || `Máximo ${maxLength} caracteres`;
+  }
+};
+
+export const textFieldValidationV2 = (value, maxLength) => {
+  if (typeof value !== "undefined" && value !== null) {
+    if (typeof value !== "string") {
+      return "Debe ser un texto";
     }
     return value.length <= maxLength || `Máximo ${maxLength} caracteres`;
   }

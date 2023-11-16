@@ -1,7 +1,7 @@
 const Connection = require("../connection/db");
-const { successObj, errorObj } = require('./responseObjects');
+const { successObj, errorObj } = require("./responseObjects");
 
-const response = (res, tran = false, prom, ...values) => {
+const response = (res, tran, prom, ...values) => {
   const cn = new Connection(tran);
   prom(cn, ...values)
     .then((result) => success(res, cn, result))

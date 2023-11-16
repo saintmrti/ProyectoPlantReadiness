@@ -1,3 +1,4 @@
+const _ = require("lodash");
 const response = require("../helpers/response");
 const {
   insertMachine,
@@ -7,7 +8,11 @@ const {
 
 module.exports.getMachines = (req, res) => {
   try {
-    response(res, null, getSummary);
+    const { idProyecto } = req.query;
+    const project = {
+      idProyecto: parseInt(idProyecto),
+    };
+    response(res, false, getSummary, project);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -16,11 +21,16 @@ module.exports.getMachines = (req, res) => {
 
 module.exports.createMachine = (req, res) => {
   try {
-    const { machine } = req.body;
-    const newRegister = {
-      machine,
-    };
-    response(res, null, insertMachine, newRegister);
+    const { selectedMachines, idFase, idProyecto } = req.body;
+    const newMachines = _.map(selectedMachines, (machine) => {
+      return {
+        machine,
+        idFase,
+        idProyecto: parseInt(idProyecto),
+      };
+    });
+    console.log(newMachines);
+    response(res, false, insertMachine, newMachines);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
@@ -33,7 +43,7 @@ module.exports.eliminateMachine = (req, res) => {
     const deleteRegister = {
       idMaquina: parseInt(idMaquina),
     };
-    response(res, null, deleteMachine, deleteRegister);
+    response(res, false, deleteMachine, deleteRegister);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });

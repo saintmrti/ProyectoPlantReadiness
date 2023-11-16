@@ -14,9 +14,9 @@ import {
   updateAdvanceSuccess,
 } from "../slices/advance";
 
-function* fetchAdvance() {
+function* fetchAdvance({ payload: { idProyecto } }) {
   try {
-    const { data, isError } = yield call(fetchAdvanceApi.run);
+    const { data, isError } = yield call(fetchAdvanceApi.run, idProyecto);
     if (isError) throw new Error();
     yield put(fetchAdvanceSuccess({ data }));
   } catch (e) {
@@ -32,12 +32,12 @@ export function* fetchAdvanceSaga() {
   yield takeLatest(fetchAdvanceRequest.toString(), fetchAdvance);
 }
 
-function* insertAdvance({ payload }) {
+function* insertAdvance({ payload: { idProyecto, ...payload } }) {
   try {
     const { data, isError } = yield call(insertAdvanceApi.run, payload);
     if (isError) throw new Error();
     yield put(insertAdvanceSuccess({ data }));
-    router.navigate("/");
+    if (idProyecto) router.navigate(`/proyectos/${idProyecto}/registro`);
   } catch (e) {
     yield put(insertAdvanceError());
   } finally {
@@ -56,7 +56,6 @@ function* updateAdvance({ payload }) {
     const { data, isError } = yield call(updateAdvanceApi.run, payload);
     if (isError) throw new Error();
     yield put(updateAdvanceSuccess({ data }));
-    router.navigate("/");
   } catch (e) {
     yield put(updateAdvanceError());
   } finally {

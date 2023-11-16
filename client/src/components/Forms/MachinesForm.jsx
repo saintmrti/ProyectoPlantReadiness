@@ -13,11 +13,17 @@ import _ from "lodash";
 import { insertAdvanceRequest } from "../../slices/advance";
 import {
   textFieldValidation,
-  dateFieldValidation,
   numberFieldValidation,
+  textFieldValidationV2,
 } from "./validated";
 
-const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
+const MachinesForm = ({
+  idEntregable,
+  fases,
+  isFetching,
+  advanceState,
+  idProyecto,
+}) => {
   const dispatch = useDispatch();
   const {
     register,
@@ -41,24 +47,24 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
       const realDateFieldName = `realDate_${index}`;
       const advanceFieldName = `advance_${index}`;
       const commentsFieldName = `comments_${index}`;
-      setValue(responsibleFieldName, advanceState.responsable);
-      setValue(startDateFieldName, advanceState.fecha_inicio);
-      setValue(endDateFieldName, advanceState.fecha_termino);
-      setValue(realDateFieldName, advanceState.fecha_real);
-      setValue(advanceFieldName, advanceState.avance);
-      setValue(commentsFieldName, advanceState.comentarios);
+      setValue(responsibleFieldName, advanceState.responsible);
+      setValue(startDateFieldName, advanceState.startDate);
+      setValue(endDateFieldName, advanceState.endDate);
+      setValue(realDateFieldName, advanceState.realDate);
+      setValue(advanceFieldName, advanceState.advance);
+      setValue(commentsFieldName, advanceState.comments);
     }
   };
 
-  const validateDateField = (name, index) => {
-    return checkboxStates[fases[index].maquina]
-      ? register(name, {
-          validate: (value) => dateFieldValidation(value),
-        })
-      : register(name, {
-          required: false,
-        });
-  };
+  // const validateDateField = (name, index) => {
+  //   return checkboxStates[fases[index].maquina]
+  //     ? register(name, {
+  //         validate: (value) => dateFieldValidation(value),
+  //       })
+  //     : register(name, {
+  //         required: false,
+  //       });
+  // };
 
   const validateTextField = (name, index, maxLength) => {
     return checkboxStates[fases[index].maquina]
@@ -95,8 +101,9 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
 
           const value = values[key] !== undefined ? values[key] : "";
           result[index][fieldName] = value;
-          result[index]["idFase"] = fases[index].id;
+          result[index]["idMaquina"] = fases[index].id;
           result[index]["idEntregable"] = idEntregable;
+          result[index]["idProyecto"] = idProyecto;
         }
 
         return result;
@@ -106,7 +113,7 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
 
     const filteredArray = _.values(groupedValues);
 
-    dispatch(insertAdvanceRequest({ filteredArray }));
+    dispatch(insertAdvanceRequest({ advance: filteredArray, idProyecto }));
     reset();
   };
 
@@ -160,7 +167,7 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
             autoComplete="off"
             disabled={!checkboxStates[machine.maquina]}
             error={Boolean(errors[`responsible_${index}`])}
-            defaultValue={advanceState.responsable}
+            defaultValue={advanceState.responsible}
             helperText={errors[`responsible_${index}`]?.message}
             {...validateTextField(`responsible_${index}`, index, 30)}
           />
@@ -169,24 +176,24 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
             type="date"
             disabled={!checkboxStates[machine.maquina]}
             error={Boolean(errors[`startDate_${index}`])}
-            defaultValue={advanceState.fecha_inicio}
+            defaultValue={advanceState.startDate_}
             helperText={errors[`startDate_${index}`]?.message}
-            {...validateDateField(`startDate_${index}`, index)}
+            {...register(`startDate_${index}`, { required: false })}
           />
           <TextField
             sx={{ width: "11rem" }}
             type="date"
             error={Boolean(errors[`endDate_${index}`])}
-            defaultValue={advanceState.fecha_termino}
+            defaultValue={advanceState.endDate}
             disabled={!checkboxStates[machine.maquina]}
             helperText={errors[`endDate_${index}`]?.message}
-            {...validateDateField(`endDate_${index}`, index)}
+            {...register(`endDate_${index}`, { required: false })}
           />
           <TextField
             sx={{ width: "11rem" }}
             type="date"
             disabled={!checkboxStates[machine.maquina]}
-            defaultValue={advanceState.fecha_real}
+            defaultValue={advanceState.realDate}
             {...register(`realDate_${index}`, { required: false })}
           />
           <TextField
@@ -195,7 +202,7 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
             label="Avance"
             disabled={!checkboxStates[machine.maquina]}
             error={Boolean(errors[`advance_${index}`])}
-            defaultValue={advanceState.avance}
+            defaultValue={advanceState.advance}
             helperText={errors[`advance_${index}`]?.message}
             inputProps={{
               min: 0,
@@ -207,10 +214,12 @@ const MachinesForm = ({ idEntregable, fases, isFetching, advanceState }) => {
             sx={{ width: "11rem" }}
             type="text"
             label="Comentarios"
-            defaultValue={advanceState.comentarios}
+            defaultValue={advanceState.comments}
             disabled={!checkboxStates[machine.maquina]}
-            inputProps={{ maxLength: 120 }}
-            {...register(`comments_${index}`, { required: false })}
+            {...register(`comments_${index}`, {
+              required: false,
+              validate: (value) => textFieldValidationV2(value, 255),
+            })}
           />
         </div>
       ))}

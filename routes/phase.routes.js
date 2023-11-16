@@ -1,10 +1,18 @@
 const { Router } = require("express");
+const { auth } = require("../middlewares/auth");
 
-const { getPhases, createPhase } = require("../controllers/phase.controller");
+const {
+  getPhases,
+  createPhase,
+  modifyPhase,
+  deletePhase,
+} = require("../controllers/phase.controller");
 
 const router = Router();
 
-router.get("/", getPhases);
-router.post("/", createPhase);
+router.get("/", auth, getPhases);
+router.post("/", auth, createPhase);
+router.put("/", auth, modifyPhase);
+router.delete("/", auth, deletePhase);
 
 module.exports = router;

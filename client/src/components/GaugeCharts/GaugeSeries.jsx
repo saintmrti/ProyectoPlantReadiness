@@ -17,7 +17,7 @@ const GaugeSeries = ({ height, title, total, value, rate }) => {
           backgroundColor: "transparent",
           height,
           style: {
-            fontFamily: "montserrat",
+            fontFamily: "Montserrat",
           },
         },
         plotOptions: {

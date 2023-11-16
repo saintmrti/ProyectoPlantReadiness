@@ -1,5 +1,4 @@
 import { useSelector, useDispatch } from "react-redux";
-import _ from 'lodash';
 import {
   Dialog,
   DialogActions,
@@ -8,21 +7,19 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
-import {deleteShippableRequest} from '../../slices/shippable';
+import { deleteShippableRequest } from "../../slices/shippable";
+import { getShippable } from "../../selectors/shippable";
 
 export const ShippableAlert = ({ open, onClose, deleteShi, setDeleteShi }) => {
-
   const dispatch = useDispatch();
 
-  const { data: shippables } = useSelector((state) => state.shippable);
-
-  const shippableFinded = _.find(shippables, { id: deleteShi });
+  const shippable = useSelector((state) => getShippable(state, deleteShi));
 
   const handleOnConfirm = () => {
-    dispatch(deleteShippableRequest({idEntregable: deleteShi}));
+    dispatch(deleteShippableRequest({ idEntregable: deleteShi }));
     setDeleteShi(null);
     onClose();
-  }
+  };
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -32,7 +29,7 @@ export const ShippableAlert = ({ open, onClose, deleteShi, setDeleteShi }) => {
       <DialogContent>
         <DialogContentText>
           Esta acción no se puede deshacer. Por favor, confirma si estás seguro
-          de eliminar <span className="font-semibold">{shippableFinded?.nombre}</span>
+          de eliminar <span className="font-semibold">{shippable?.nombre}</span>
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -40,7 +37,7 @@ export const ShippableAlert = ({ open, onClose, deleteShi, setDeleteShi }) => {
           Cancelar
         </Button>
         <Button onClick={handleOnConfirm} color="primary" variant="contained">
-          Confirmar
+          Eliminar
         </Button>
       </DialogActions>
     </Dialog>

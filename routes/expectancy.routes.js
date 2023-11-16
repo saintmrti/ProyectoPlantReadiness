@@ -1,10 +1,18 @@
 const { Router } = require("express");
+const { auth } = require("../middlewares/auth");
 
-const { getExpectancies, createExpectancy } = require("../controllers/expectancy.controller");
+const {
+  getExpectancies,
+  createExpectancy,
+  modifyExpectancy,
+  eliminateExpectancy,
+} = require("../controllers/expectancy.controller");
 
 const router = Router();
 
-router.get("/", getExpectancies);
-router.post("/", createExpectancy);
+router.get("/", auth, getExpectancies);
+router.post("/", auth, createExpectancy);
+router.put("/", auth, modifyExpectancy);
+router.delete("/", auth, eliminateExpectancy);
 
 module.exports = router;

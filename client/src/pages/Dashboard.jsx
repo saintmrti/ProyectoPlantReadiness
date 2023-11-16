@@ -1,78 +1,38 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import _ from "lodash";
 
-// import securityIcon from "../img/securityIcon.png";
-// import rhIcon from "../img/rhIcon.png";
-// import calidadIcon from "../img/calidadIcon.png";
-// import produccionIcon from "../img/produccionIcon.png";
-// import matenimientoIcon from "../img/mantenimientoIcon.png";
-import energizer1 from "../assets/img/energizer1.png";
-import energizer2 from "../assets/img/energizer2.jpg";
-import energizer3 from "../assets/img/energizer3.jpg";
-import energizer4 from "../assets/img/energizer4.jpg";
-import energizer6 from "../assets/img/energizer6.jpg";
-import energizer7 from "../assets/img/energizer7.jpg";
 import GaugeSeries from "../components/GaugeCharts/GaugeSeries";
 import SolidGauge from "../components/GaugeCharts/SolidGauge";
 import StackedBar from "../components/BarCharts/StackedBar";
 import ColumnChart from "../components/BarCharts/ColumnChart";
 import MachineTable from "../components/Tables/MachineTable";
-import FilterButton from "../components/ButtonGroup";
-import { kpisRequest } from "../slices/kpis";
+import { FilterButton } from "../components/FilterButton";
+import { fetchKpisRequest } from "../slices/kpis";
+import { fetchChampionsRequest } from "../slices/champions";
+import { fetchPhaseRequest } from "../slices/phase";
 import { getSummaryKpis } from "../selectors/kpis";
-import ProgressBar from "../components/ProgressBar";
+import { DashboardBar } from "../components/ProgressBar/DashboardBar";
 import { Spinner } from "../components/Spinner";
 import { Error } from "../components/Error";
-import { maquinas } from "../components/Tables/data";
-
-const cumplimientoGral = [
-  {
-    name: "Plan",
-    data: [
-      ["Fase 1", 46],
-      ["Fase 2", 38],
-      ["Gral", 43],
-    ],
-  },
-  {
-    name: "Real",
-    data: [
-      ["Fase 1", 54],
-      ["Fase 2", 31],
-      ["Gral", 44],
-    ],
-  },
-];
-
-const cumplimientoYTD = [
-  {
-    name: "Plan",
-    data: [
-      ["Fase 1", 100],
-      ["Fase 2", 100],
-      ["Gral", 100],
-    ],
-  },
-  {
-    name: "Real",
-    data: [
-      ["Fase 1", 116],
-      ["Fase 2", 81],
-      ["Gral", 103],
-    ],
-  },
-];
-
-const categories = ["Fase 1", "Fase 2", "Gral."];
 
 const Dashboard = () => {
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const { idProyecto } = useParams();
   const summaryKpis = useSelector(getSummaryKpis);
   const { isFetching, didError } = useSelector((state) => state.kpis);
+  const { list: champions } = useSelector((state) => state.champions);
+  const { list: phases } = useSelector((state) => state.phase);
+  const { tokenData } = useSelector((state) => state.auth);
+
+  const arrayPhases = _.map(phases, "id");
 
   const [isFilterButtonVisible, setIsFilterButtonVisible] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState({
@@ -90,9 +50,10 @@ const Dashboard = () => {
     const newFilter = {
       phase: phaseString,
       priority: priorityString,
+      idProyecto,
     };
 
-    dispatch(kpisRequest(newFilter));
+    dispatch(fetchKpisRequest(newFilter));
   };
 
   useEffect(() => {
@@ -101,8 +62,11 @@ const Dashboard = () => {
     const newFilter = {
       phase: phaseString,
       priority: priorityString,
+      idProyecto,
     };
-    dispatch(kpisRequest(newFilter));
+    dispatch(fetchKpisRequest(newFilter));
+    dispatch(fetchPhaseRequest({ idProyecto }));
+    dispatch(fetchChampionsRequest({ idProyecto }));
   }, []);
   return (
     <>
@@ -118,6 +82,9 @@ const Dashboard = () => {
                 setSelectedFilter={setSelectedFilter}
                 selectedFilter={selectedFilter}
                 handleBtnClickFilter={handleBtnClickFilter}
+                idProyecto={idProyecto}
+                phases={arrayPhases}
+                tokenData={tokenData}
               />
             )}
             <div className="h-80 flex items-end justify-center">
@@ -128,77 +95,166 @@ const Dashboard = () => {
           </>
         ) : (
           <>
-            <button className="ml-2" onClick={toggleFilterButton}>
+            <Button
+              variant="text"
+              onClick={toggleFilterButton}
+              sx={{ ml: 1, padding: 0 }}
+            >
               Mostrar / Ocultar
-            </button>
+            </Button>
             {isFilterButtonVisible && (
               <FilterButton
                 setSelectedFilter={setSelectedFilter}
                 selectedFilter={selectedFilter}
                 handleBtnClickFilter={handleBtnClickFilter}
+                idProyecto={idProyecto}
+                phases={arrayPhases}
+                tokenData={tokenData}
               />
             )}
-            {/* {console.log(summaryKpis)} */}
-            <div className="grid grid-cols-9 gap-2">
-              <div className="col-span-2">
-                <Card sx={{ height: "260px" }}>
-                  {/* <h2 className="text-base text-center mt-3">
-                      Total Entregables
-                    </h2> */}
-                  <div className="mx-4 mt-1">
-                    <ProgressBar
-                      rubro={summaryKpis?.shippable_total["1"]?.rubro}
-                      real={summaryKpis?.shippable_total["1"]?.reales}
-                      plan={summaryKpis?.shippable_total["1"]?.planes}
-                      total={summaryKpis?.shippable_total["1"]?.totales}
-                    />
+            <div className="grid grid-cols-12 gap-2">
+              <div className="col-span-4">
+                <Card sx={{ height: "100%", padding: "10px 15px" }}>
+                  <div className="text-base text-center">
+                    Avance Entregables
                   </div>
-                  <div className="mx-4 mt-1">
-                    <ProgressBar
-                      rubro={summaryKpis?.shippable_total["2"]?.rubro}
-                      real={summaryKpis?.shippable_total["2"]?.reales}
-                      plan={summaryKpis?.shippable_total["2"]?.planes}
-                      total={summaryKpis?.shippable_total["2"]?.totales}
+                  {_.map(summaryKpis?.shippable_total, (item) => (
+                    <DashboardBar
+                      key={item?.Id}
+                      rubro={item?.rubro}
+                      real={item?.reales}
+                      plan={item?.planes}
+                      total={item?.totales}
+                      date={item?.fechaHoy}
                     />
+                  ))}
+                </Card>
+              </div>
+              <div className="col-span-8">
+                <Card sx={{ height: "100%", padding: "10px 10px" }}>
+                  <div className="text-base text-center mb-2">
+                    Avance por máquina
                   </div>
-                  <div className="mx-4 mt-1">
-                    <ProgressBar
-                      rubro="RH"
-                      real={summaryKpis?.shippable_total["3"]?.reales}
-                      plan={summaryKpis?.shippable_total["3"]?.planes}
-                      total={summaryKpis?.shippable_total["3"]?.totales}
-                    />
-                  </div>
-                  <div className="mx-4 mt-1">
-                    <ProgressBar
-                      rubro="Producción"
-                      real={summaryKpis?.shippable_total["4"]?.reales}
-                      plan={summaryKpis?.shippable_total["4"]?.planes}
-                      total={summaryKpis?.shippable_total["4"]?.totales}
-                    />
-                  </div>
-                  <div className="mx-4 mt-1">
-                    <ProgressBar
-                      rubro="Mantenimiento"
-                      real={summaryKpis?.shippable_total["5"]?.reales}
-                      plan={summaryKpis?.shippable_total["5"]?.planes}
-                      total={summaryKpis?.shippable_total["5"]?.totales}
-                    />
-                  </div>
+                  <MachineTable
+                    data={summaryKpis?.advanceMachines}
+                    rubros={summaryKpis?.headingMachines}
+                  />
                 </Card>
               </div>
               <div className="col-span-4">
-                <Card sx={{ height: "260px" }}>
-                  <div className="grid grid-cols-2 gap-2 mt-3">
+                <Card sx={{ height: "100%", padding: 1 }}>
+                  <div className="text-base text-center">Champions Pilares</div>
+                  {_.map(champions, (item) => (
+                    <div className="mt-2 px-4" key={item.id}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          bgcolor: "bgcolor",
+                          padding: "5px",
+                          borderRadius: "8px",
+                          boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+                        }}
+                      >
+                        <Avatar
+                          alt={item?.nombre}
+                          src={item?.imagen}
+                          sx={{ width: 40, height: 40 }}
+                        />
+                        <div className="w-full flex justify-center">
+                          <div className="w-36">
+                            <p className="text-sm">{item?.nombre}</p>
+                            <p
+                              className="text-sm"
+                              style={{ color: theme.palette.text.secondary }}
+                            >
+                              {item?.rubro}
+                            </p>
+                          </div>
+                        </div>
+                      </Box>
+                    </div>
+                  ))}
+                </Card>
+              </div>
+              <div className="col-span-4 space-y-2">
+                <Card sx={{ height: "49%" }}>
+                  <div className="text-base text-center mt-2">
+                    Cumplimiento por fase total
+                  </div>
+                  <ColumnChart
+                    height={186}
+                    series={summaryKpis?.phasesTotal}
+                    categories={summaryKpis?.categoriesPhases?.phasesTotal}
+                  />
+                </Card>
+                <Card sx={{ height: "49%" }}>
+                  <div className="text-base text-center mt-2">
+                    Cumplimiento por fase YTD
+                  </div>
+                  <ColumnChart
+                    height={186}
+                    series={summaryKpis?.phasesYTD}
+                    categories={summaryKpis?.categoriesPhases?.phasesYTD}
+                  />
+                </Card>
+              </div>
+              <div className="col-span-4 space-y-2">
+                <Card sx={{ height: "49%" }}>
+                  <div className="text-base text-center mt-2">
+                    Cumplimiento mensual
+                  </div>
+                  <ColumnChart
+                    height={180}
+                    series={summaryKpis?.shippable_month}
+                    cumplience={summaryKpis?.cumplience_month}
+                    showYear={false}
+                  />
+                </Card>
+                <Card sx={{ height: "49%" }}>
+                  <div className="text-base text-center mt-2">
+                    Cumplimiento anual
+                  </div>
+                  <ColumnChart
+                    height={180}
+                    series={summaryKpis?.shippable_year}
+                    cumplience={summaryKpis?.cumplience_year}
+                    showYear={true}
+                  />
+                </Card>
+              </div>
+              <div className="col-span-3">
+                <Card sx={{ height: "100%" }}>
+                  <div className="text-base text-center mt-2">
+                    Avance Rubros
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 gap-y-0">
+                    {_.map(summaryKpis?.compliance_headings, (item) => (
+                      <SolidGauge
+                        key={item.Id}
+                        height={130}
+                        name={item?.rubro || ""}
+                        value={item?.completados || 0}
+                        total={item?.totales || 0}
+                        rate={item?.porcentaje || 0}
+                      />
+                    ))}
+                  </div>
+                </Card>
+              </div>
+              <div className="col-span-5">
+                <Card sx={{ height: "100%" }}>
+                  <div className="grid grid-cols-2 gap-2 mt-2 px-1">
                     <GaugeSeries
-                      height={250}
+                      height={280}
                       title="Cumplimiento Total"
                       total={summaryKpis?.compliance_total[0]?.totales}
                       value={summaryKpis?.compliance_total[0]?.completados}
                       rate={summaryKpis?.compliance_total[0]?.porcentaje}
                     />
                     <GaugeSeries
-                      height={250}
+                      height={280}
                       title="Cumplimiento YTD"
                       total={summaryKpis?.compliance_YTD[0]?.totales}
                       value={summaryKpis?.compliance_YTD[0]?.completados}
@@ -207,200 +263,14 @@ const Dashboard = () => {
                   </div>
                 </Card>
               </div>
-              <div className="col-span-3">
-                <Card sx={{ height: "260px" }}>
-                  <div className="grid grid-cols-3 gap-2 gap-y-0 mt-3">
-                    <SolidGauge
-                      name="Seguridad"
-                      height={120}
-                      value={summaryKpis?.compliance_headings["1"]?.completados}
-                      total={summaryKpis?.compliance_headings["1"]?.totales}
-                      rate={summaryKpis?.compliance_headings["1"]?.porcentaje}
-                    />
-                    <SolidGauge
-                      name="Calidad"
-                      height={120}
-                      value={summaryKpis?.compliance_headings["2"]?.completados}
-                      total={summaryKpis?.compliance_headings["2"]?.totales}
-                      rate={summaryKpis?.compliance_headings["2"]?.porcentaje}
-                    />
-                    <SolidGauge
-                      name="RH"
-                      height={120}
-                      value={summaryKpis?.compliance_headings["3"]?.completados}
-                      total={summaryKpis?.compliance_headings["3"]?.totales}
-                      rate={summaryKpis?.compliance_headings["3"]?.porcentaje}
-                    />
-                    <SolidGauge
-                      name="Producción"
-                      height={120}
-                      value={summaryKpis?.compliance_headings["4"]?.completados}
-                      total={summaryKpis?.compliance_headings["4"]?.totales}
-                      rate={summaryKpis?.compliance_headings["4"]?.porcentaje}
-                    />
-                    <SolidGauge
-                      name="Mantenimiento"
-                      height={120}
-                      value={summaryKpis?.compliance_headings["5"]?.completados}
-                      total={summaryKpis?.compliance_headings["5"]?.totales}
-                      rate={summaryKpis?.compliance_headings["5"]?.porcentaje}
-                    />
-                  </div>
-                </Card>
-              </div>
               <div className="col-span-2">
-                <Card sx={{ height: "486px" }}>
-                  <h2 className="text-base text-center mt-3">
-                    Champions Pilares
-                  </h2>
-                  <div className="px-4 mt-1">
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        bgcolor: "bgcolor",
-                        padding: "5px",
-                        borderRadius: "8px",
-                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-                      }}
-                    >
-                      <Avatar
-                        alt="Remy Sharp"
-                        src={energizer7}
-                        sx={{ width: 56, height: 56 }}
-                      />
-                      <div className="w-full pl-14">
-                        <p className="text-lg">J. L. Díaz</p>
-                        <p className="text-sm text-gray-600">Champion UEN</p>
-                      </div>
-                    </Box>
-                  </div>
-                  <div className="px-4 mt-2">
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        bgcolor: "bgcolor",
-                        padding: "5px",
-                        borderRadius: "8px",
-                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-                      }}
-                    >
-                      <Avatar
-                        alt="Remy Sharp"
-                        src={energizer1}
-                        sx={{ width: 56, height: 56 }}
-                      />
-                      <div className="w-full pl-14">
-                        <p className="text-lg">C. Camacho</p>
-                        <p className="text-sm text-gray-600">Seguridad</p>
-                      </div>
-                    </Box>
-                  </div>
-                  <div className="px-4 mt-2">
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        bgcolor: "bgcolor",
-                        padding: "5px",
-                        borderRadius: "8px",
-                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-                      }}
-                    >
-                      <Avatar
-                        alt="Remy Sharp"
-                        src={energizer2}
-                        sx={{ width: 56, height: 56 }}
-                      />
-                      <div className="w-full pl-14">
-                        <p className="text-lg">Y. Tadeo</p>
-                        <p className="text-sm text-gray-600">Calidad</p>
-                      </div>
-                    </Box>
-                  </div>
-                  <div className="px-4 mt-2">
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        bgcolor: "bgcolor",
-                        padding: "5px",
-                        borderRadius: "8px",
-                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-                      }}
-                    >
-                      <Avatar
-                        alt="Remy Sharp"
-                        src={energizer3}
-                        sx={{ width: 56, height: 56 }}
-                      />
-                      <div className="w-full pl-14">
-                        <p className="text-lg">R. Parga</p>
-                        <p className="text-sm text-gray-600">RH</p>
-                      </div>
-                    </Box>
-                  </div>
-                  <div className="px-4 mt-2">
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        bgcolor: "bgcolor",
-                        padding: "5px",
-                        borderRadius: "8px",
-                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-                      }}
-                    >
-                      <Avatar
-                        alt="Remy Sharp"
-                        src={energizer4}
-                        sx={{ width: 56, height: 56 }}
-                      />
-                      <div className="w-full pl-14">
-                        <p className="text-lg">J. Chapa</p>
-                        <p className="text-sm text-gray-600">Producción</p>
-                      </div>
-                    </Box>
-                  </div>
-                  <div className="px-4 mt-2">
-                    <Box
-                      sx={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        bgcolor: "bgcolor",
-                        padding: "5px",
-                        borderRadius: "8px",
-                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-                      }}
-                    >
-                      <Avatar
-                        alt="Remy Sharp"
-                        src={energizer6}
-                        sx={{ width: 56, height: 56 }}
-                      />
-                      <div className="w-full pl-14">
-                        <p className="text-lg">J. Marroquin</p>
-                        <p className="text-sm text-gray-600">Mantenimiento</p>
-                      </div>
-                    </Box>
-                  </div>
-                </Card>
-              </div>
-              <div className="col-span-2">
-                <Card sx={{ height: "486px" }}>
-                  <h2 className="text-base text-center mt-3">
+                <Card sx={{ height: "100%" }}>
+                  <div className="text-base text-center mt-2">
                     Entregables Energizador
-                  </h2>
+                  </div>
                   <div className="px-2">
                     <StackedBar
-                      height={450}
+                      height={400}
                       categories={summaryKpis?.shippable_energizer?.categories}
                       series={summaryKpis?.shippable_energizer?.series}
                     />
@@ -408,67 +278,15 @@ const Dashboard = () => {
                 </Card>
               </div>
               <div className="col-span-2">
-                <Card sx={{ height: "486px" }}>
-                  <h2 className="text-base text-center mt-3">
+                <Card sx={{ height: "100%" }}>
+                  <div className="text-base text-center mt-2">
                     Avance Entregables
-                  </h2>
+                  </div>
                   <StackedBar
-                    height={450}
+                    height={400}
                     categories={summaryKpis?.shippable_advance?.categories}
                     series={summaryKpis?.shippable_advance?.series}
                   />
-                </Card>
-              </div>
-              <div className="space-y-2 col-span-3">
-                <Card sx={{ height: "239px" }}>
-                  <h2 className="text-base text-center mt-3">
-                    Cumplimiento mensual
-                  </h2>
-                  <ColumnChart
-                    height={200}
-                    series={summaryKpis?.shippable_month}
-                  />
-                </Card>
-                <Card sx={{ height: "239px" }}>
-                  <h2 className="text-base text-center mt-3">
-                    Cumplimiento anual
-                  </h2>
-                  <ColumnChart
-                    height={200}
-                    series={summaryKpis?.shippable_year}
-                  />
-                </Card>
-              </div>
-              <div className="col-span-3">
-                <Card sx={{ height: "300px" }}>
-                  <h2 className="text-base text-center mt-3">
-                    Cumplimiento por fase total
-                  </h2>
-                  <ColumnChart
-                    height={250}
-                    series={cumplimientoGral}
-                    categories={categories}
-                  />
-                </Card>
-              </div>
-              <div className="col-span-3">
-                <Card sx={{ height: "300px" }}>
-                  <h2 className="text-base text-center mt-3">
-                    Cumplimiento por fase YTD
-                  </h2>
-                  <ColumnChart
-                    height={250}
-                    series={cumplimientoYTD}
-                    categories={categories}
-                  />
-                </Card>
-              </div>
-              <div className="col-span-3">
-                <Card sx={{ height: "300px" }}>
-                  <h2 className="text-base text-center mt-3">
-                    Avance por máquina
-                  </h2>
-                  <MachineTable tableValues={maquinas} />
                 </Card>
               </div>
             </div>

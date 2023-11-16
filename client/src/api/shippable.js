@@ -2,10 +2,11 @@ import axios, { CancelToken } from "axios";
 
 export const fetchShippableApi = {
   cancel: null,
-  run: () =>
+  run: (idProyecto) =>
     axios
       .get("/api/entregables", {
         cancelToken: new CancelToken((c) => (fetchShippableApi.cancel = c)),
+        params: { idProyecto },
       })
       .then(({ data }) => data),
 };

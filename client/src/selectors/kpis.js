@@ -14,10 +14,13 @@ export const getSummaryKpis = createSelector(
     const parseAdvance = JSON.parse(kpis[0]?.entregables_Avance);
     const parseShippableYear = JSON.parse(kpis[0]?.plan_EntregablesAnio);
     const parseShippableMonth = JSON.parse(kpis[0]?.plan_EntregablesMes);
+    const parseMachines = JSON.parse(kpis[0]?.avancePorMaquina);
+    const parsePhases = JSON.parse(kpis[0]?.cumplimientoPorFaseTotal);
+    const parsePhasesYTD = JSON.parse(kpis[0]?.cumplimientoPorFaseYTD);
 
     const sortedEnergizer = _.orderBy(parseEnergizer, "totales", "desc");
-    const energizers = _.map(sortedEnergizer, "energizador");
-    const energizerTotal = _.map(sortedEnergizer, "totales");
+    const energizers = _.map(sortedEnergizer, "energizador").slice(0, 10);
+    const energizerTotal = _.map(sortedEnergizer, "totales").slice(0, 10);
     const orderedAdvance = _.orderBy(parseAdvance, (item) => {
       const avance = item.avance;
       const match = avance.match(/(\d+)%/);
@@ -29,23 +32,102 @@ export const getSummaryKpis = createSelector(
     const advanceRate = _.map(orderedAdvance, "avance");
     const advanceTotal = _.map(orderedAdvance, "totales");
     const groupedByPlanYear = _.map(parseShippableYear, (value) => {
-      return [moment(`${value.año}-01-01`).valueOf(), value.plan];
+      return [moment(`${value?.anio}-01-01`).valueOf(), value?.plan];
     });
     const groupedByRealYear = _.map(parseShippableYear, (value) => {
-      return [moment(`${value.año}-01-01`).valueOf(), value.real];
+      return [moment(`${value?.anio}-01-01`).valueOf(), value?.real];
     });
     const groupedByPlanMonth = _.map(parseShippableMonth, (value) => {
       return [
-        moment(`${moment().year()}-${value.mes}-01`).valueOf(),
-        value.plan,
+        moment(`${moment().year()}-${value?.mes}-01`).valueOf(),
+        value?.plan,
       ];
     });
     const groupedByRealMonth = _.map(parseShippableMonth, (value) => {
       return [
-        moment(`${moment().year()}-${value.mes}-01`).valueOf(),
-        value.real,
+        moment(`${moment().year()}-${value?.mes}-01`).valueOf(),
+        value?.real,
       ];
     });
+
+    const cumplience_year = _.map(parseShippableYear, (value) => {
+      return [moment(`${value?.anio}-01-01`).valueOf(), value?.cumplimiento];
+    });
+
+    const cumplience_month = _.map(parseShippableMonth, (value) => {
+      return [
+        moment(`${moment().year()}-${value?.mes}-01`).valueOf(),
+        value?.cumplimiento,
+      ];
+    });
+
+    const headingMachines = _.uniq(_.map(parseMachines, "rubro"));
+
+    const advanceMachines = _.reduce(
+      parseMachines,
+      (result, item) => {
+        const existingMachine = _.find(result, { name: item?.descripcion });
+
+        if (existingMachine) {
+          if (!existingMachine.rubros) {
+            existingMachine.rubros = {};
+          }
+
+          headingMachines.forEach((rubro) => {
+            if (!existingMachine.rubros[rubro]) {
+              existingMachine.rubros[rubro] = [0, 0];
+            }
+          });
+
+          existingMachine.rubros[item?.rubro] = [item?.Real, item?.Plan];
+        } else {
+          const newMachine = {
+            idMaquina: item?.idMaquina,
+            tipo: item?.tipo,
+            name: item?.descripcion,
+            rubros: {},
+          };
+
+          headingMachines.forEach((rubro) => {
+            newMachine.rubros[rubro] = [0, 0];
+          });
+
+          newMachine.rubros[item?.rubro] = [item?.Real, item?.Plan];
+
+          result.push(newMachine);
+        }
+
+        return result;
+      },
+      []
+    );
+
+    const phasesTotal = [
+      {
+        name: "Plan",
+        data: parsePhases.map((element) => [element?.Fase, element?.Plan]),
+      },
+      {
+        name: "Real",
+        data: parsePhases.map((element) => [element?.Fase, element?.Real]),
+      },
+    ];
+
+    const phasesYTD = [
+      {
+        name: "Plan",
+        data: parsePhasesYTD.map((element) => [element?.Fase, element?.Plan]),
+      },
+      {
+        name: "Real",
+        data: parsePhasesYTD.map((element) => [element?.Fase, element?.Real]),
+      },
+    ];
+
+    const categoriesPhases = {
+      phasesTotal: _.map(parsePhases, "Fase"),
+      phasesYTD: _.map(parsePhasesYTD, "Fase"),
+    };
 
     const shippable_energizer = {
       categories: energizers,
@@ -77,7 +159,13 @@ export const getSummaryKpis = createSelector(
         data: groupedByRealMonth,
       },
     ];
-    const shippable_total = _.keyBy(parseShippable, "Id");
+
+    const arrayShippable = _.map(parseShippable, (value) => ({
+      ...value,
+      fechaHoy: moment().tz("America/Mexico_City").format("DD-MMM"),
+    }));
+
+    const shippable_total = _.keyBy(arrayShippable, "Id");
     const compliance_headings = _.keyBy(parseHeadings, "Id");
     const compliance_total = JSON.parse(kpis[0]?.cumplimiento_Total);
     const compliance_YTD = JSON.parse(kpis[0]?.cumplimiento_YTD);
@@ -91,6 +179,13 @@ export const getSummaryKpis = createSelector(
       shippable_advance,
       shippable_year,
       shippable_month,
+      advanceMachines,
+      headingMachines,
+      phasesTotal,
+      phasesYTD,
+      cumplience_year,
+      cumplience_month,
+      categoriesPhases,
     };
 
     return data;
